@@ -1,5 +1,6 @@
 <header class="top"><div class="top-in">
-  <button class="brand" data-go="home" aria-label="Accueil"><span class="brand-tag" id="brand-tag"></span><span class="brand-name" id="brand-name"></span></button>
+  <button class="brand" data-go="home" aria-label="Accueil"><span class="brand-tag">Le Mur</span><span class="brand-name">de Manon</span></button>
+  <div class="ds-tabs" role="tablist" aria-label="Collection de fiches" id="ds-tabs"></div>
   <nav class="nav-top" aria-label="Navigation principale" id="nav-top"></nav>
 </div></header>
 <main id="app"></main>
@@ -11,5 +12,4 @@
    ==x== surligné (mot-clé)  ++x++ chiffre (encre verte)  !!x!! encre rouge
    "§Titre" = sous-titre dans une liste ; un tableau [] = sous-liste
    ========================================================= */
-const ITEMS = [];
-function F(spec, num, title, cards){ ITEMS.push({id:spec+"-"+num, spec, num, title, cards}); }
+const DATASETS = {}, DS_ORDER = [];

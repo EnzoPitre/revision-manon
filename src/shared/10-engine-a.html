@@ -40,9 +40,8 @@ const I = {
   cane: ic('<path d="M9 22V8a4 4 0 0 1 8 0v1"/><path d="M5 22h8"/>'),
   pill: ic('<rect x="2.5" y="8" width="19" height="8" rx="4" transform="rotate(-35 12 12)"/><path d="M9.5 8.5l5 7"/>')
 };
-const SPEC_ORDER = CONFIG.specs.map(s => s.id);
-const SPECS = {}; CONFIG.specs.forEach(s => SPECS[s.id] = {name:s.name, icon:I[s.icon] || I.cards, c:s.c});
-const ITEM_BY = {}; ITEMS.forEach(it => ITEM_BY[it.id] = it);
+/* Jeu de données actif (onglet) : réassigné par useDataset() */
+let CONFIG, ITEMS, GROUPS, TRIS, ORDRES, FLASH, SPEC_ORDER, SPECS, ITEM_BY, CARDS, SEARCH, KEY, S, DS_ID;
 const MODES = [
   {id:"flash",name:"Flashcards",desc:"Question au recto, réponse au verso. Ce que tu rates revient plus souvent.",icon:I.layers,unit:"%"},
   {id:"quiz",name:"QCM",desc:"10 questions, corrigées tout de suite avec la fiche d'origine.",icon:I.list,unit:"%"},
@@ -54,22 +53,41 @@ const MODES = [
 
 /* ---------- cartes (flashcards) ---------- */
 function hash(s){ let h=5381; for(let i=0;i<s.length;i++) h=((h<<5)+h+s.charCodeAt(i))|0; return (h>>>0).toString(36); }
-const CARDS = [];
-GROUPS.forEach(g => g.pairs.forEach(p => CARDS.push({id:"g"+hash(g.id+p[0]), item:p[2]||g.item, q:g.q.replace("{k}",p[0]), a:p[1]})));
-FLASH.forEach(f => CARDS.push({id:"f"+hash(f[1]), item:f[0], q:f[1], a:f[2]}));
 
 /* ---------- état sauvegardé ---------- */
-const KEY = CONFIG.key;
-const S = (() => {
+function loadState(key){
   let d = {};
-  try { d = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e) {}
-  return Object.assign({mastered:{}, box:{}, best:{}, days:{}, exam:null, filter:"all"}, d);
-})();
+  try { d = JSON.parse(localStorage.getItem(key)) || {}; } catch(e) {}
+  return Object.assign({mastered:{}, box:{}, best:{}, days:{}, filter:"all"}, d);
+}
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} }
 function iso(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
 function today(){ return iso(new Date()); }
-if (!S.exam) { const d = new Date(); d.setDate(d.getDate()+7); S.exam = iso(d); save(); }
-function daysLeft(){ return Math.round((new Date(S.exam+"T00:00") - new Date(today()+"T00:00")) / 864e5); }
+
+/* Date du concours : commune aux deux onglets */
+const EXAM_KEY = "revision-manon-exam", DS_KEY = "revision-manon-onglet";
+let EXAM = null;
+try { EXAM = localStorage.getItem(EXAM_KEY) || (JSON.parse(localStorage.getItem("mur-de-manon-v1")) || {}).exam || null; } catch(e) {}
+if (!EXAM) { const d = new Date(); d.setDate(d.getDate()+7); EXAM = iso(d); }
+function setExam(v){ EXAM = v; try { localStorage.setItem(EXAM_KEY, v); } catch(e) {} }
+setExam(EXAM);
+function daysLeft(){ return Math.round((new Date(EXAM+"T00:00") - new Date(today()+"T00:00")) / 864e5); }
+
+/* ---------- changer d'onglet ---------- */
+function useDataset(id){
+  const d = DATASETS[id] || DATASETS[DS_ORDER[0]];
+  ({CONFIG, ITEMS, GROUPS, TRIS, ORDRES, FLASH} = d);
+  DS_ID = CONFIG.id;
+  SPEC_ORDER = CONFIG.specs.map(s => s.id);
+  SPECS = {}; CONFIG.specs.forEach(s => SPECS[s.id] = {name:s.name, icon:I[s.icon] || I.cards, c:s.c});
+  ITEM_BY = {}; ITEMS.forEach(it => ITEM_BY[it.id] = it);
+  CARDS = [];
+  GROUPS.forEach(g => g.pairs.forEach(p => CARDS.push({id:"g"+hash(g.id+p[0]), item:p[2]||g.item, q:g.q.replace("{k}",p[0]), a:p[1]})));
+  FLASH.forEach(f => CARDS.push({id:"f"+hash(f[1]), item:f[0], q:f[1], a:f[2]}));
+  SEARCH = {}; ITEMS.forEach(it => SEARCH[it.id] = itemText(it));
+  KEY = CONFIG.key; S = loadState(KEY);
+  try { localStorage.setItem(DS_KEY, DS_ID); } catch(e) {}
+}
 function tick(){ const t = today(); S.days[t] = (S.days[t]||0) + 1; save(); }
 function saveBest(mode, v){ if (!(S.best[mode] >= v)) S.best[mode] = v; save(); }
 function streak(){
@@ -105,7 +123,6 @@ function itemText(it){
   it.cards.forEach(c => { out.push(c.h); if (c.l) walk(c.l); if (c.table) c.table.rows.forEach(r => out.push(r.join(" "))); });
   return norm(out.join(" "));
 }
-const SEARCH = {}; ITEMS.forEach(it => SEARCH[it.id] = itemText(it));
 function cardsOfSpec(spec){ return CARDS.filter(c => !spec || specOf(c.item) === spec); }
 function acquired(list){ return list.filter(c => (S.box[c.id]||0) >= 2).length; }
 
@@ -128,7 +145,14 @@ function go(route){
   render();
   window.scrollTo(0, 0);
 }
+function tabsHtml(){
+  return DS_ORDER.map(id => {
+    const c = DATASETS[id].CONFIG, on = id === DS_ID;
+    return `<button role="tab" aria-selected="${on}" data-act="ds" data-ds="${id}">${esc(c.tab)}<span class="ds-n">${DATASETS[id].ITEMS.length}</span></button>`;
+  }).join("");
+}
 function render(){
+  $("#ds-tabs").innerHTML = tabsHtml();
   $("#nav-top").innerHTML = navHtml();
   $("#nav-bot").innerHTML = navHtml();
   const views = {home:vHome, fiches:vFiches, fiche:vFiche, jeux:vJeux, game:vGame, progres:vProgres};
@@ -165,7 +189,7 @@ function vHome(){
     <div class="paper count tape">
       <div class="big">${big}</div>
       <div class="hand sub">${heroWords(dl)}</div>
-      <label for="exam-date">Date du concours <input type="date" id="exam-date" value="${S.exam}"></label>
+      <label for="exam-date">Date du concours <input type="date" id="exam-date" value="${EXAM}"></label>
     </div>
     <div class="plain plan">
       <div class="eyebrow">Programme du jour</div>
@@ -207,7 +231,7 @@ function modesGrid(){
 }
 function bindDate(){
   const el = $("#exam-date"); if (!el) return;
-  el.addEventListener("change", () => { if (el.value) { S.exam = el.value; save(); render(); } });
+  el.addEventListener("change", () => { if (el.value) { setExam(el.value); render(); } });
 }
 
 /* ---------- FICHES ---------- */

@@ -66,6 +66,13 @@ svg.i{width:22px;height:22px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .brand-tag{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:15px;letter-spacing:.04em;background:var(--card);border:1px solid var(--rule);padding:3px 9px;transform:rotate(-2deg);display:inline-block;box-shadow:var(--shadow)}
 .brand-name{font-family:var(--f-hand);font-size:26px;font-weight:700;color:var(--pen-red);line-height:1}
 .nav-top{display:none;gap:4px}
+.ds-tabs{display:flex;gap:2px;padding:3px;margin-left:auto;background:var(--paper-deep);border:1px solid var(--rule);border-radius:10px}
+.ds-tabs button{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:7px;font-weight:700;font-size:13.5px;color:var(--ink-soft);white-space:nowrap}
+.ds-tabs button:hover{color:var(--ink)}
+.ds-tabs button[aria-selected="true"]{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+.ds-n{font-size:11.5px;font-weight:700;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+@media (max-width:520px){.brand-name,.ds-n{display:none}.ds-tabs button{padding:6px 9px}}
+@media (min-width:860px) and (max-width:1040px){.brand-name{display:none}}
 .nav-top button,.nav-bot button{display:flex;align-items:center;gap:8px;color:var(--ink-soft);font-weight:700;font-size:14px;border-radius:8px}
 .nav-top button{padding:8px 12px}
 .nav-top button[aria-current="page"]{color:var(--ink);background:var(--card);box-shadow:var(--shadow)}

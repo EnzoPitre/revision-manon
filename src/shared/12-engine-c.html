@@ -34,7 +34,7 @@ function vProgres(){
       <div class="records">${MODES.map(m => `<div class="plain rec"><span>${m.name}</span><b>${S.best[m.id] != null ? S.best[m.id] + m.unit : "–"}</b></div>`).join("")}</div>
     </section>
     <section class="plain box stack" style="gap:12px">
-      <label class="row" for="exam-date" style="justify-content:space-between"><b>Date du concours</b><input type="date" id="exam-date" value="${S.exam}" style="border:1px solid var(--rule);background:var(--card);border-radius:8px;padding:6px 8px"></label>
+      <label class="row" for="exam-date" style="justify-content:space-between"><b>Date du concours</b><input type="date" id="exam-date" value="${EXAM}" style="border:1px solid var(--rule);background:var(--card);border-radius:8px;padding:6px 8px"></label>
       <div class="row" style="justify-content:space-between">
         <span class="muted" style="font-size:14px">La progression est enregistrée dans ce navigateur, sur cet appareil.</span>
         <button class="btn ghost small danger" data-act="reset">${R.confirmReset ? "Confirmer : tout effacer" : "Remettre à zéro"}</button>
@@ -45,6 +45,13 @@ function vProgres(){
 
 /* ---------- actions ---------- */
 const ACT = {
+  ds(d){
+    if (d.ds === DS_ID) return;
+    clearTimer(); G = null; useDataset(d.ds);
+    if (R.v === "fiche" || R.v === "game") R = {v:R.v === "fiche" ? "fiches" : "jeux"};
+    if (R.v === "fiches") R = {v:"fiches", spec:"all"};
+    render(); window.scrollTo(0, 0);
+  },
   randomFiche(){ const pool = ITEMS.filter(i => !S.mastered[i.id]); go("fiche:" + pick(pool.length ? pool : ITEMS).id); },
   fspec(d){ R.spec = d.spec; render(); },
   gspec(d){ S.filter = d.spec; save(); render(); },
@@ -52,8 +59,8 @@ const ACT = {
   master(){ S.mastered[R.id] = !S.mastered[R.id]; if (!S.mastered[R.id]) delete S.mastered[R.id]; else tick(); save(); render(); },
   reset(){
     if (!R.confirmReset) { R.confirmReset = true; render(); return; }
-    const exam = S.exam;
-    Object.assign(S, {mastered:{}, box:{}, best:{}, days:{}, exam, filter:"all"}); save();
+
+    Object.assign(S, {mastered:{}, box:{}, best:{}, days:{}, filter:"all"}); save();
     R.confirmReset = false; render();
   },
   flip(){ G.flipped = !G.flipped; render(); },
@@ -141,6 +148,7 @@ document.addEventListener("keydown", e => {
     if (e.key === "ArrowRight") ACT.vf({v:"1"});
   }
 });
-$("#brand-tag").textContent = CONFIG.brandTag; $("#brand-name").textContent = CONFIG.brandName;
+let savedDs = null; try { savedDs = localStorage.getItem(DS_KEY); } catch(e) {}
+useDataset(savedDs);
 render();
 </script>

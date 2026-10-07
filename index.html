@@ -68,6 +68,13 @@ svg.i{width:22px;height:22px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .brand-tag{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:15px;letter-spacing:.04em;background:var(--card);border:1px solid var(--rule);padding:3px 9px;transform:rotate(-2deg);display:inline-block;box-shadow:var(--shadow)}
 .brand-name{font-family:var(--f-hand);font-size:26px;font-weight:700;color:var(--pen-red);line-height:1}
 .nav-top{display:none;gap:4px}
+.ds-tabs{display:flex;gap:2px;padding:3px;margin-left:auto;background:var(--paper-deep);border:1px solid var(--rule);border-radius:10px}
+.ds-tabs button{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:7px;font-weight:700;font-size:13.5px;color:var(--ink-soft);white-space:nowrap}
+.ds-tabs button:hover{color:var(--ink)}
+.ds-tabs button[aria-selected="true"]{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+.ds-n{font-size:11.5px;font-weight:700;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+@media (max-width:520px){.brand-name,.ds-n{display:none}.ds-tabs button{padding:6px 9px}}
+@media (min-width:860px) and (max-width:1040px){.brand-name{display:none}}
 .nav-top button,.nav-bot button{display:flex;align-items:center;gap:8px;color:var(--ink-soft);font-weight:700;font-size:14px;border-radius:8px}
 .nav-top button{padding:8px 12px}
 .nav-top button[aria-current="page"]{color:var(--ink);background:var(--card);box-shadow:var(--shadow)}
@@ -294,7 +301,8 @@ b.n{color:var(--pen-green);font-weight:700;font-variant-numeric:tabular-nums}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 <header class="top"><div class="top-in">
-  <button class="brand" data-go="home" aria-label="Accueil"><span class="brand-tag" id="brand-tag"></span><span class="brand-name" id="brand-name"></span></button>
+  <button class="brand" data-go="home" aria-label="Accueil"><span class="brand-tag">Le Mur</span><span class="brand-name">de Manon</span></button>
+  <div class="ds-tabs" role="tablist" aria-label="Collection de fiches" id="ds-tabs"></div>
   <nav class="nav-top" aria-label="Navigation principale" id="nav-top"></nav>
 </div></header>
 <main id="app"></main>
@@ -306,15 +314,18 @@ b.n{color:var(--pen-green);font-weight:700;font-variant-numeric:tabular-nums}
    ==x== surligné (mot-clé)  ++x++ chiffre (encre verte)  !!x!! encre rouge
    "§Titre" = sous-titre dans une liste ; un tableau [] = sous-liste
    ========================================================= */
+const DATASETS = {}, DS_ORDER = [];
+DS_ORDER.push("mur"); DATASETS["mur"] = (function(){
 const ITEMS = [];
 function F(spec, num, title, cards){ ITEMS.push({id:spec+"-"+num, spec, num, title, cards}); }
 /* ---------- Configuration de l'appli ---------- */
 const CONFIG = {
+  id: "mur", tab: "Mes fiches",
   key: "mur-de-manon-v1",
   brandTag: "Le Mur", brandName: "de Manon",
   fichesTag: "le mur, en version poche",
   foot: "Tout le contenu vient des fiches de Manon : Ophtalmo, ORL, Pneumo, Psy et Réa.",
-  other: {url:"https://claude.ai/artifact/99xceCcrdyhyfG8yUdqLyR", label:"Ouvrir l’errata rang A"},
+  other: null,
   specs: [
     {id:"ophtalmo", name:"Ophtalmo", icon:"eye",   c:"--c-ophtalmo"},
     {id:"orl",      name:"ORL",      icon:"ear",   c:"--c-orl"},
@@ -718,6 +729,854 @@ const FLASH = [
  ["rea-336","Respirations pathologiques du coma ?","Cheyne-Stokes, hyperpnée, apneustique, Kussmaul, ataxique"],
  ["rea-336","Examens devant un coma ?","Glycémie capillaire · NFS, iono, urée, créat, Ca²⁺, BH, TP, TCA, fibrinogène · GDS + HbCO · OH, ammoniémie, toxiques · TDM cérébrale"]
 ];
+return {CONFIG, ITEMS, GROUPS, TRIS, ORDRES, FLASH};
+})();
+DS_ORDER.push("errata"); DATASETS["errata"] = (function(){
+const ITEMS = [];
+function F(spec, num, title, cards){ ITEMS.push({id:spec+"-"+num, spec, num, title, cards}); }
+
+/* ---------- Configuration de l'appli ---------- */
+const CONFIG = {
+  id: "errata", tab: "Errata rang A",
+  key: "errata-rang-a-v1",
+  brandTag: "Errata", brandName: "rang A",
+  fichesTag: "tout l'errata, gynéco en tête",
+  foot: "Tout le contenu vient de l'errata rang A de Manon, de la gynéco à la pharmaco.",
+  other: null,
+  specs: [
+    {id:"gyneco",   name:"Gynéco",    icon:"female",  c:"--c-pink"},
+    {id:"infectio", name:"Infectio",  icon:"virus",   c:"--c-pneumo"},
+    {id:"pneumo",   name:"Pneumo",    icon:"lungs",   c:"--c-ophtalmo"},
+    {id:"interne",  name:"Méd. interne", icon:"steth", c:"--c-psy"},
+    {id:"ophtalmo", name:"Ophtalmo",  icon:"eye",     c:"--c-orl"},
+    {id:"neuro",    name:"Neuro",     icon:"bolt",    c:"--c-olive"},
+    {id:"rhumato",  name:"Rhumato",   icon:"bone",    c:"--c-rea"},
+    {id:"nephro",   name:"Néphro",    icon:"kidney",  c:"--c-pink"},
+    {id:"hemato",   name:"Hémato",    icon:"drop",    c:"--c-rea"},
+    {id:"psy",      name:"Psy",       icon:"brain",   c:"--c-psy"},
+    {id:"cardio",   name:"Cardio",    icon:"heart",   c:"--c-rea"},
+    {id:"ortho",    name:"Ortho",     icon:"bone",    c:"--c-orl"},
+    {id:"onco",     name:"Onco",      icon:"ribbon",  c:"--c-pink"},
+    {id:"rea",      name:"Réa",       icon:"heart",   c:"--c-ophtalmo"},
+    {id:"dig",      name:"Dig",       icon:"stomach", c:"--c-olive"},
+    {id:"dermato",  name:"Dermato",   icon:"skin",    c:"--c-orl"},
+    {id:"endoc",    name:"Endoc",     icon:"gland",   c:"--c-pneumo"},
+    {id:"orl",      name:"ORL",       icon:"ear",     c:"--c-orl"},
+    {id:"geria",    name:"Géria",     icon:"cane",    c:"--c-olive"},
+    {id:"lca",      name:"LCA",       icon:"chart",   c:"--c-ophtalmo"},
+    {id:"pharmaco", name:"Pharmaco",  icon:"pill",    c:"--c-psy"}
+  ]
+};
+
+/* ---------------- GYNÉCO ---------------- */
+F("gyneco","23","Suivi de grossesse",[
+ {h:"Consultations obligatoires",l:["++7++ consultations prénatales : ++1++ ==avant 15 SA== puis ==1×/mois==","++1++ consultation postnatale : ==6–8 sem PP=="]},
+ {h:"Périodes de la grossesse",l:["Préimplantatoire ++0–2 SA++ : ==loi du tout ou rien==","Organogenèse ++3–8 SA++ : ==risque tératogène==","Période fœtale ++> 8 SA++ : ==risque fonctionnel==, trouble du développement"]},
+ {h:"Diabète gestationnel",l:["Glycémie à jeun T1 : ++0,92 ≤ x < 1,26++ → ==diabète gestationnel==","Ou HGPO :",["À jeun : ++0,92 ≤ x < 1,26++","H1 ≥ ++1,80++","H2 ≥ ++1,53++"]]},
+ {h:"Congé maternité",table:{head:["Enfants à naître","Déjà à charge","Congé prénatal","Congé postnatal"],rows:[["1","0 ou 1","6 semaines","10 semaines"],["1","2 ou plus","8 semaines","18 semaines"],["2","–","12 semaines","22 semaines"],["3 ou plus","–","24 semaines","22 semaines"]]}}
+]);
+F("gyneco","24","Placenta praevia et HRP",[
+ {h:"Placenta praevia",l:["Hémorragie ==abondante==, sang ==rouge==","Utérus ==souple et indolore==","Présentation ==siège ou transverse==","RCF ok","Placenta bas inséré à proximité de l'==orifice interne du col utérin (< 50 mm)== ou recouvrant le col utérin"]},
+ {h:"HRP",l:["Contexte ==vasculaire== : > ++35 ans++, HTA, tabac, cocaïne, primipare, prééclampsie","Hémorragie peu abondante, noirâtre, ==incoagulable==","Douleurs utérines brutales, permanentes : « ==ventre de bois== »","==Retentissement maternel== sévère et sans rapport avec l'abondance des hémorragies","==Anomalie du RCF=="]}
+]);
+F("gyneco","33","Allaitement et nouveau-né",[
+ {h:"Lait maternel",l:["Eau, oligoéléments, lactose, α-lactoglobuline, lysozymes, Ig, lactoferrine","AGE : acide linoléique et α-linoléique","TG","==Pauvre en caséine=="]},
+ {h:"Lait artificiel",l:["++1++ cuillère-mesure pour ++30 mL++"]},
+ {h:"Vitamine K",sub:"contre la maladie hémorragique du nouveau-né",l:["==H4 – J4==","(– ==S4== si allaitement maternel exclusif)"]}
+]);
+F("gyneco","36","Contraception",[
+ {h:"Délais selon la pilule",sub:"schéma de la fiche",tone:"postit",l:["Drospirénone seule : < ++24 h++","Pilule combinée ou désogestrel seul : < ++12 h++","Pilule microprogestative (lévonorgestrel) : < ++3 h++"]}
+]);
+F("gyneco","37","IVG",[
+ {h:"Après l'IVG",l:["Consultation post-IVG ++J14–J21++ !!OBLIGATOIRE!!"]}
+]);
+F("gyneco","39","AMP",[
+ {h:"Conditions",l:["FIV / ICSI : femme < ++42 ans++ (prélèvement) / < ++44 ans++ (utilisation), conjoint < ++59 ans++","Conservation des gamètes : femme ++29–37 ans++, homme ++29–45 ans++","Remboursement : ++6++ inséminations, ++4++ FIV ou ICSI","Max ++10++ enfants créés par donneur"]},
+ {h:"Bilan avant AMP",l:["Sérologies VIH + VHB + VHC + syphilis < ++3 mois++","PV < ++6 mois++","Bilan spermatique + test de migration < ++1 an++"]},
+ {h:"Insémination",l:["Possible si ≥ ++1++ trompe perméable + ≥ ++1 million++ de spz mobiles","Stimulation de l'ovulation via ==FSH==","→ déclenchement de l'ovulation quand ==follicules matures== : ==analogue hCG==","→ insémination ++36 h++ après le déclenchement"]},
+ {h:"FIV",l:["Bloquer l'axe HH : ==agoniste / antagoniste GnRH==","→ blocage obtenu : ==FSH==","→ follicules ++16–20 mm++ : ==analogue hCG / agonistes GnRH==","→ ponction ovocytaire ++36 h++ après déclenchement + prélèvement de ==sperme==","Fécondation ++20–24 h++ → transfert ++2–3 j++ après la ponction",["Stade 4 cellules (==J2==)","Stade 8 cellules (==J3==)","Blastocyste (==J5==)"],"Test de grossesse ==J14== de la ponction"]},
+ {h:"Préservation de la fertilité",l:["Oncofertilité","Transposition ovarienne (RT)","FIV avec ==vitrification==","MIV ovocytes","Conservation"]}
+]);
+F("gyneco","124","Ménopause : THS",[
+ {h:"Schémas",l:["TTT ==séquentiel== : œstrogène ++J1–J25++ + progestatif ++J12–J25++","TTT ==combiné / continu== : œstrogène + progestatif ++J1–J30++"]},
+ {h:"Voies",l:["Œstrogène : ==transdermique==","Progestatif : PO, vaginale, DIU (lévonorgestrel) → > ++12 j/mois++"]}
+]);
+F("gyneco","344","Prééclampsie",[
+ {h:"Définition",tone:"postit",l:["PE = PAS > ++140++ et/ou PAD > ++90++","+ protéinurie des 24 h > ++0,3 g/L++"]}
+]);
+
+/* ---------------- INFECTIO (1/2) ---------------- */
+F("infectio","149","Angines",[
+ {h:"Angine pseudomembraneuse",l:["==EBV==","==Diphtérie== (adhère + déborde)","==VIH=="]},
+ {h:"Angine vésiculeuse",l:["Herpétique (==HSV1==)","Herpangine (==entérovirus== = coxsackie, échovirus)","==VZV==","!!TOUJOURS!! viral"]},
+ {h:"Angine ulcéro-nécrotique",l:["==Vincent== (Fusobacterium necrophorum + Treponema vincenti → mauvais état bucco-dentaire, haleine fétide)","Chancre ==syphilitique==","==K==","==Agranulocytose== sur hémopathie"]},
+ {h:"Score de Mac Isaac",sub:"moyen mnémo : F(A3)T",table:{head:["Critère","Point"],rows:[["Température > 38 °","1"],["Absence de toux","1"],["Adénopathie(s) cervicale(s) antérieure(s) douloureuse(s)","1"],["Augmentation de volume ou exsudat amygdalien","1"],["Âge 15 à 44 ans","0"],["Âge > 45 ans","−1"]]}},
+ {h:"TDR",l:["Pas < ++3 ans++","!!SYSTÉMATIQUE!! ++3–15 ans++","Si Mac Isaac ≥ ++2++ à > ++15 ans++"]},
+ {h:"À retenir",l:["Sd de ==Lemierre== : thrombose de la veine jugulaire interne post angine de Vincent","TTT diphtérie : ==déclaration obligatoire ARS + précaution gouttelettes==","TTT SBHA / scarlatine : ==éviction de collectivité 48 h=="]}
+]);
+F("infectio","151","Méningites et méningo-encéphalites",[
+ {h:"Méninges",l:["Pachyméninge = ==dure-mère==","Leptoméninge = ==arachnoïde, pie-mère=="]},
+ {h:"Germes et voies",l:["Méningo-encéphalite : ==HSV1== ++","Méningite virale : ==entérovirus== ++","Méningite, méningo-encéphalite : ==hématogène== ++","Abcès (frontal ++) : ==contiguïté== ++","++1–25 ans++ : ==méningocoque== ++","< ++1 an++ et > ++25 ans++ : ==pneumocoque== ++"]},
+ {h:"Examen clé",l:["Méningite : ==PL==","Encéphalite : IRMc + ==EEG==","Méningo-encéphalite : ==IRMc avant PL== + EEG"]},
+ {h:"Ponction lombaire",l:["L4-L5, ++2–3 mL++/tube = ++40–60++ gouttes","NFS + TP + TCA + fibrinogène + ==glycémie veineuse==","§IRM avant PL si",["Signe de focalisation, HTIC, GSC < ++11++, crise d'épilepsie"],"§CI à la PL",["TP < ++50 %++, TCA > ++1,5++, plaquettes < ++50++","Coagulopathie, anticoag (!!PAS les AAP!!), CIVD (purpura)","Instabilité, infection au point de ponction","Signe de processus extensif, signe d'engagement","Crise convulsive persistante"]]},
+ {h:"Bilan biologique",l:["Méningite : NFS, plaquettes, iono, créat, ==BH==, TP, TCA, fibrinogène, glycémie veineuse, ==procalcitonine==, hémocs","Méningo-encéphalite : ==+ CRP, glycémie capillaire, calcémie, sérologie VIH, PCR HSV1=="]},
+ {h:"Analyse du LCS",table:{head:["","LCS normal","LCS purulent","Clair · Listeria / BK","Clair · virus"],rows:[
+   ["Macroscopie","Clair « eau de roche »","Trouble","Clair","Clair"],
+   ["Éléments","< 5/mm³, 100 % mononucléées","> 100/mm³, en général > 1000/mm³, PNN > 50 %","> 5/mm³, en général 20–100/mm³, PNN > 50 % (> 10/mm³ chez le nouveau-né)","> 5/mm³, en général 20–100/mm³ · phase aiguë (30 % des méningites virales, entérovirus ++) : PNN > 50 % · puis PNN ≤ 50 % « panaché » ou prédominance lymphocytaire (> 10/mm³ chez le nouveau-né)"],
+   ["Glycorachie","> 2/3 × glycémie","≤ 0,4 × glycémie (Se 80 %, Sp 98 % pour bactérienne)","≤ 0,4 × glycémie","> 0,4 × glycémie"],
+   ["Protéinorachie","< 0,4 g/L","En général > 1 g/L","> 0,4 g/L, entre 1–2 g/L en général","> 0,4 g/L, souvent < 1 g/L"],
+   ["Lactatorachie","< 3,2 mmol/L","> 3,2 mmol/L","> 3,2 mmol/L","< 3,2 mmol/L"],
+   ["Examen direct","Négatif","Positif 60–80 % si Φ ATB · si négatif : méningite décapitée, bactérie fragile, faible inoculum","Positif dans < 1/3 des cas si Listeria ou BK","Négatif"],
+   ["Étiologie","LCS normal","Pneumocoque, méningocoque, H. influenzae, rarement Listeria (suite coupée sur la fiche)","L. monocytogenes, M. tuberculosis, spirochètes : Lyme, syphilis, leptospirose","Herpès, entérovirus, grippe, rougeole, oreillons"]]}},
+ {h:"TTT méningite à méningocoque",l:["==C3G IV== relais amox IV (ciprofloxacine) ++4 j++ + ==CTC== ++4 j++","==Déclaration obligatoire== ARS + précaution gouttelettes > ++24 h++","Cas contacts < ++10 j++ : ATB-prophylaxie (rifampicine ++2 j++, FQ, C3G IV) + vaccin ==ACYW135=="]},
+ {h:"TTT méningite à pneumocoque",l:["==C3G== (rifampicine + vancomycine, imipénème) ++10–14 j++ + CTC ++4 j++"]},
+ {h:"TTT méningite à Haemophilus",l:["C3G ++7 j++ + CTC ++4 j++ (chez l'enfant) + ==éviction scolaire==","Cas contact < ++4 ans++ : rifampicine ++4 j++"]},
+ {h:"Listeria et tuberculose",l:["Méningite à L. monocytogenes : ==rhombencéphalite== (atteinte du TC)","Méningite tuberculeuse : ==méningite basilaire== (TC + dysautonomie)","TTT Listeria : amox ++21 j++ + gentamicine ++7 j++ + ==déclaration obligatoire==","TTT neuro-tuberculose : quadrithérapie ++2 mois++ + bithérapie ++10 mois++ + ==précaution air== + ==CTC== + ==déclaration obligatoire CLAT + ARS=="]},
+ {h:"Lyme et syphilis",l:["TTT Lyme : C3G IV ++3–4 sem++","TTT syphilis : péni G IV ++2–3 sem++"]}
+]);
+F("infectio","152","Endocardite infectieuse",[
+ {h:"Porte d'entrée → germe",table:{head:["Porte d'entrée","Germe"],rows:[["Cutanée, matériel, toxico","S. aureus, staph coagulase (−), Candida"],["Buccodentaire","Streptocoques oraux = groupe D, groupe HACEK"],["Digestive","Streptococcus gallolyticus"],["Digestive, urinaire","Entérocoque"]]}},
+ {h:"Cardiopathies à risque d'EI",table:{head:["Haut risque (incidence > 100/pop. générale)","Risque moins élevé (incidence > 10–50/pop. générale)"],rows:[["Prothèses valvulaires (mécaniques, homogreffes ou bioprothèses, TAVI, TMVI)","Valvulopathies aortiques : insuffisance aortique, rétrécissement aortique, bicuspidie"],["Cardiopathies congénitales cyanogènes* non opérées et dérivations chirurgicales pulmonaires systémiques","Insuffisance mitrale ; prolapsus valvulaire mitral avec IM et/ou épaississement valvulaire"],["Antécédents d'endocardite infectieuse","Cardiopathies congénitales non cyanogènes** sauf CIA ; CMH obstructive avec souffle"]]}},
+ {h:"Notes du tableau",l:["TAVI : remplacement percutané de la valve aortique · TMVI : remplacement percutané de la mitrale","* tétralogie de Fallot, transposition des gros vaisseaux","** CIV, canal artériel persistant, canal atrioventriculaire"]},
+ {h:"Critères de Duke modifiés",sub:"moyen mnémo : BE TIMER",l:["§Majeurs : BE",["==B==lood culture : hémocs positives > 2 fois à 12 h d'intervalle","==E==cho : atteinte endocardique à l'échographie"],"§Mineurs : TIMER",["==T==empérature > ++38 °C++","==I==mmunologique : nodules d'Osler, taches de Roth","==M==icrobiologique : hémoc positive sans critère majeur","==E==mbolique : emboles artériels, emboles septiques, hémorragie conjonctivale, lésions cutanées indolores","==R==isque : cardiopathie congénitale ou toxicomanie IV"],"Diagnostic ==certain== : 2 majeurs, ou 1 majeur + 3 mineurs, ou 5 mineurs","Diagnostic ==possible== : 1 majeur + 1 mineur, ou 3 mineurs"]},
+ {h:"Traitement",l:["EI communautaire, sur prothèse > ++1 an++ : ==amox + oxacilline + gentamicine==","EI nosocomiale, sur prothèse < ++1 an++ : ==vancomycine + rifampicine + gentamicine==","Staph : oxacilline ++6 sem++","Streptocoque : amoxicilline ++4 sem++","Entérocoques : amox + gentamicine ou amox + C3G ++6 sem++","Hémocs négatives : augmentin + gentamicine ++6 sem++","Allergie : ==vancomycine=="]},
+ {h:"Clinique et examens",l:["Faux panaris d'==Osler== (nodule douloureux fugace), tache de ==Roth== (FO), placard de ==Janeway== (palmoplantaire)","EC de 1re intention : hémocs, ETT + ETO","!!TOUJOURS!! hémocs : ++3++ paires, prévenir le labo pour incubation ++14 j++"]},
+ {h:"SEPHORA",sub:"complications",l:["==S==PM","==É==rythème de Janeway","==P==urpura vasculaire","==H==émorragie sous-unguéale","Faux panaris d'==O==sler","Taches de ==R==oth","==A==névrisme mycotique"]},
+ {h:"Suivi et prévention",l:["Guérison = ==absence de rechute==","Prévention si dentiste : ==amox PO < 1 h avant==","Panoramique dentaire = ==orthopantomogramme 1×/an=="]}
+]);
+F("infectio","154","PAC : antibiothérapie",[
+ {h:"Score CRB65",sub:"gravité",l:["Confusion","FR > ++30++","PAS < ++90++, PAD < ++60++","> ++65 ans++"]},
+ {h:"TTT PAC grave / réa",l:["==C3G + macrolides ou lévofloxacine (FQ)== ++7 j++","Si FR de P. aeruginosa : pipé-tazo ou C4G ou carbapénème + aminosides + macrolides ou FQ","Si légionelle : ==déclaration obligatoire à l'ARS=="]},
+ {h:"TTT PAC ambulatoire / hospit",l:["Ambulatoire : ==amox ou macrolides==",["Si FR : augmentin ou C3G ou FQ"],"Hospitalisation : ==amox== ++"]},
+ {h:"À retenir",l:["Qualité de l'ECBC : PNN > ++25++/champ, cellules épithélioïdes < ++10++/champ","ATB efficaces contre légionelle : ==MAQUIS== (macrolides, quinolones)"]}
+]);
+F("infectio","155","Infections cutanées et mycoses",[
+ {h:"Candidose",l:["Saprophyte ==muqueux==","==Intertrigo== des grands plis (fond rouge, enduit, fissuré, bordure pustuleuse)","==Onychomycoses== des mains (prox + lat)",["→ ==imidazolé== / ciclopiroxolamine / terbinafine local, ==fluconazole== PO"],"==Perlèche==, glossite, muguet",["→ ==amphotéricine B, miconazole=="],"Vulvovaginite (lait caillé), balanite, urétrite",["→ antifongique local + ==savon alcalin=="],"Cuir chevelu (toxico IV)"]},
+ {h:"Dermatophytose",l:["!!NON!! saprophyte, !!RESPECTE!! les muqueuses","==Intertrigo== des petits plis (centrifuge, guérison centrale, bordure squameuse) : ==2 feet 1 hand==","==Ongles== des orteils (distal + lat)",["→ ==imidazolé== / ciclopiroxolamine / terbinafine local, ==terbinafine== / ==itraconazole== PO"],"==Peau glabre== : herpès circiné, kératodermie palmoplantaire","Teigne ==microsporique== (grande, éloignée), ==trichophytique== (petites, émergence), ==kérion== (teigne suppurée)",["→ ==éviction scolaire== + terbinafine (trichophytique) / itraconazole (microsporique)"]]},
+ {h:"Infections staphylococciques",l:["Impétigo, furonculose hors poussée : ==mupirocine==","Furoncle, furonculose en poussée : ==clindamycine, pristinamycine==","Abcès : ==clindamycine, pristinamycine, oxacilline, cloxacilline=="]}
+]);
+F("infectio","156","Infections ostéo-articulaires",[
+ {h:"Généralités",l:["Aiguë < ++4 sem++ / chronique ==> 4 sem==","ATB = ==bithérapie== initiale"]},
+ {h:"Traitement",l:["Arthrite septique : céfazoline / oxacilline / cloxacilline IV",["SASM : + clindamycine / FQ / rifampicine ++4–6 sem++","Streptocoque : amox ++4–6 sem++ (dont ++2 sem++ IV)"],"Spondylodiscite : ++6 sem++","Ostéite chronique : ++6–12 sem++"]},
+ {h:"Bonne diffusion osseuse : FC FRAC",l:["==F==osfomycine","==C==lindamycine","==F==Q","==R==ifampicine","==A==cide fusidique","==C==yclines (doxycycline)"]}
+]);
+F("infectio","159","Tuberculose",[
+ {h:"TTT de l'ITL",l:["Isoniazide ++6 mois++","Rifampicine + isoniazide ++3 mois++","Rifampicine ++4 mois++"]},
+ {h:"TTT PIT / TM",l:["Rifampicine + isoniazide + éthambutol + pyrazinamide ++2 mois++, puis rifampicine + isoniazide ++4 mois++","Rifampicine + isoniazide + éthambutol ++2 mois++, puis rifampicine + isoniazide ++7 mois++","ALD valable ++3 ans++"]},
+ {h:"Suivi",l:["Consultation : ++J15, M1, M2, M4, M6, M9, 2 ans++","Radio thorax : ++M1, M2, M6, M9, 2 ans++","ASAT / ALAT : ++J15, M1, M2, M4, M6++","Examen ophtalmo : ++M2++"]},
+ {h:"Précaution air",l:["Masque ==FFP2== pour les soignants","Masque ==chirurgical== + isolement en chambre à ==pression (−)== pour le patient"]},
+ {h:"Imagerie",l:["Cavités multiples dans des opacités ==bilatérales supérieures=="]}
+]);
+F("infectio","161","Infections urinaires",[
+ {h:"Échographie",l:["Si cystite ==récidivante compliquée=="]},
+ {h:"FR de BLSE",l:["IU / colonisation < ++3 mois++","ATB < ++3 mois++","Voyage < ++3 mois++","IAS","Anomalie de l'arbre urinaire"]},
+ {h:"PNA à risque de complication",l:["Anomalie de l'arbre urinaire","Homme","Grossesse","> ++65 ans++ + ≥ ++3++ critères de Fried, > ++75 ans++","DFG < ++30++","ID"]}
+]);
+F("infectio","162","IST",[
+ {h:"Syphilis",l:["TT = ==TPHA== (Sp tréponématose) : (+) ==à vie==","TNT = ==VDRL==","Guérison = ==négativation du VDRL== (++1 an++ si syphilis précoce, ++2 ans++ si tardive)"]},
+ {h:"Gonocoque et Chlamydia",l:["Gonocoque : ==pharyngite== (conjonctivite purulente du NN ++J2–J4++)","Chlamydia : ==Sd oculo-urétro-synovial== (conjonctivite pseudomembraneuse du NN ++J8++)"]}
+]);
+F("infectio","164","Exanthèmes et érythrodermie",[
+ {h:"Érythrodermie",l:["Érythème > ++90 %++ de la peau, > ++6 sem++, desquamative","Psoriasis, dermatite atopique, eczéma, DRESS, lichen plan","Lymphome T (==Sd de Sézary==)","VIH, gale hyperkératosique"]},
+ {h:"Exanthèmes",l:["Scarlatiniforme : origine ==bactérienne== ++","Morbilliforme : origine ==virale, médicamenteuse=="]}
+]);
+
+/* ---------------- INFECTIO (2/2) ---------------- */
+F("infectio","169","VIH",[
+ {h:"Traitement et objectifs",l:["TTT : ==2 INTI== + 1 INNTI OU 1 inhibiteur d'intégrase","Objectif : CV < ++50 copies/mL++, LTCD4 > ++500++","Suivi en ville : stabilité > ++12 mois++, LTCD4 > ++350++, CV indétectable"]},
+ {h:"Infections opportunistes",l:["Prévention de la toxoplasmose cérébrale et de la pneumocystose pulmonaire : ==cotrimoxazole==","TTT pneumocystose : ==cotrimoxazole IV + CTC PO==","TTT toxoplasmose : ==sulfadiazine + pyriméthamine + acide folinique + alcalinisation des urines=="]},
+ {h:"Infections selon le taux de CD4",sub:"lecture de la courbe de la fiche",l:["Vers ++400–500/mm³++ : infections bactériennes, herpès, tuberculose","Entre ++400++ et ++200++ : candidose œsophagienne","Vers ++200++ : pneumocystose, cryptosporidiose","Vers ++100++ : toxoplasmose, cryptococcose, cytomégalovirus","Vers ++50++ : mycobactérie atypique, aspergillose"]},
+ {h:"Pathologies classant SIDA",l:["Infection opportuniste","PNP bactérienne","Bactériémie à Salmonella enterica non typhi","Lymphome non hodgkinien","Kaposi (HHV8)","K du col de l'utérus"]},
+ {h:"À retenir",l:["Circoncision = ==facteur protecteur==","dTP ==tous les 10 ans== (au lieu de tous les 20 ans)","IRM sur la fiche : cryptococcose, toxoplasmose, leucoencéphalopathie multifocale progressive"]}
+]);
+F("infectio","170","Paludisme",[
+ {h:"Critères de gravité",l:["GSC < ++11++, confusion","VNI / VI avec PaO₂/FiO₂ < ++300++","PaO₂ < ++60++, SpO₂ < ++92++, FR > ++30++","PAS < ++80++, signes de choc","Hémorragie, ictère clinique","Lactates > ++2++","Bilirubine totale > ++50++","Hb < ++7++, Hte < ++20 %++","Glycémie < ++2,2 mmol/L++","HCO₃ < ++15++, pH < ++7,35++","Parasitémie > ++4 %++","Créat > ++265++"]},
+ {h:"Signes de gravité : différences chez l'enfant",tone:"postit",l:["Lactates > ++5++","Parasitémie > ++10 %++"]},
+ {h:"Critères d'hospitalisation",l:["Terrain","Enfant","Signes de gravité","==Plaquettes== < ++50++","Hb < ++10++","Créat > ++150++","Parasitémie > ++2 %++","Problème pour le TTT PO","Risque de mauvaise observance","Échec du 1er TTT"]},
+ {h:"Clinique et suivi",l:["++90 %++ : Afrique subsaharienne","Diarrhée, anémie hémolytique (ictère, SPM), thrombopénie, cytolyse < ++10N++","Suivi ++J3, J7, J28++"]},
+ {h:"Traitement",l:["Palu grave : ==artésunate IV== ++H0–H12–H24++",["Anémie hémolytique retardée (NFS hebdomadaire pendant ++1 mois++)"],"Palu simple : ==artéméther-luméfantrine, arténimol-pipéraquine==",["↗ QT : faire un ECG","CI au T1 de la grossesse","Si vomissements : ==quinine IV== → acouphènes, amaurose"]]},
+ {h:"Prévention",l:["Doxycycline ==S+4== 1×/j, !!CI grossesse!!","Atovaquone-proguanil ==S+3== 1×/j","(Méfloquine ==J-10 à S+3== 1×/sem, !!CI si épilepsie ou trouble psy!!)","Enfant : chloroquine, proguanil"]}
+]);
+F("infectio","171","Gale et pédiculoses",[
+ {h:"Gale",l:["Parasite : ==Sarcoptes scabiei== femelle","Prurit diffus nocturne ==épargnant le visage== (!!SAUF!! gale hyperkératosique)","Sillons scabieux, vésicules perlées, nodules scabieux (→ ++ face antérieure des bras)","Formes : gale profuse, gale hyperkératosique"]},
+ {h:"TTT de la gale",sub:"patient + entourage",l:["==Ivermectine PO J0–J7== + ==benzoate de benzyle== (douche → TTT → 24 h → douche) J0–J8",["Enfant : + éviction de collectivité ++3 j++"],"Gale profuse / hyperkératosique : + isoler le patient (hospit)",["Enfant : + éviction de collectivité jusqu'à EC (−)"]]},
+ {h:"Poux",l:["TTT pédiculose du cuir chevelu : produits lenticides = ==diméticone, oxyphthirine==","Morpion (poux du pubis), gale : ==dépistage IST=="]}
+]);
+F("infectio","173","Zoonoses",[
+ {h:"Maladie de Lyme",sub:"Borrelia burgdorferi → sérologie ELISA confirmée par Western Blot",l:["Localisée précoce : ==érythème migrant > 5 cm==","Disséminée précoce < ++6 mois++ : méningite lymphocytaire, oligoarthrite du genou non destructrice, lymphocytome borrélien, BAV","Disséminée tardive > ++6 mois++ : ==acrodermatite chronique atrophiante==, oligoarthrite du genou"]},
+ {h:"Autres zoonoses",l:["==Pasteurellose== = BGN : rapide, en quelques ==heures==, plaie infectée","Maladie des griffes du chat = ==bartonellose== = BGN IC : ==ADP== avec ==granulome== épithélioïde, EI","Fièvre Q = ==Coxiella== burnetii : ==hépatite fébrile==, PNP, fièvre isolée → EI","Toxoplasmose : ADP, cérébral + oculaire","Leishmaniose : papule carmin, bourrelet rouge, indolore, puis ulcération","Hydatidose = ==échinococcose== : kyste dans les organes, !!CI ponction-biopsie!!","Échinococcose alvéolaire : masse hépatique pseudo-tumorale asymptomatique pendant ++20 ans++","Rage = ==lyssavirus=="]},
+ {h:"Granulome : CROCS",l:["==C==rohn","==R==humatoïde (nodule)","==O==rigine externe (silice, béryllium, fils de suture)","==C==hat (maladie des griffes du chat = bartonellose)","==S==arcoïdose"]},
+ {h:"Traitements",l:["Lyme : ==doxycycline 14 j== (enfant : amox)","Pasteurellose : probabiliste ==augmentin== → amox / C3G / doxycycline","Griffes du chat : ==azithromycine 5 j==","Fièvre Q aiguë : ==doxycycline 2–3 sem==, rifampicine, FQ","Fièvre Q chronique : ==doxycycline + hydroxychloroquine 18–24 mois==","Toxoplasmose : !!uniquement chez l'ID!! (voir VIH)","Leishmaniose : ==cryothérapie + antimonié==","Hydatidose : ==chir ± albendazole M-1 à M+1=="]}
+]);
+F("infectio","174","Santé des migrants",[
+ {h:"À faire",tone:"postit",l:["Sérologies VIH, VHB, VHC !!systématiques!!","Migrant + CTC / IS : ==ivermectine== (contre l'anguillulose)"]}
+]);
+F("infectio","175","Pathologie du voyageur",[
+ {h:"Vaccins obligatoires",l:["Fièvre jaune : !!obligatoire!! en zone intertropicale, Amazonie (dès ++9 mois++, ==à vie==)","Méningocoque C : !!obligatoire!! pour le pèlerinage en Arabie saoudite (++3 ans++)"]},
+ {h:"Vaccins recommandés",l:["Conditions d'hygiène précaires : ==hépatite A== M0–M6/12 (dès ++1 an++, ++10 ans++)","Hygiène précaire et séjour prolongé : ==typhoïde== (dès ++2 ans++, ++3 ans++), VHB","Haut risque rabique (Asie / Afrique / Amérique du Sud + séjour prolongé) : ==rage== 3× (dès la marche, ++5 ans++)","Rizières, marécages, extérieur en saison des pluies, zones forestières : ==encéphalite à tiques== J0–J28"]},
+ {h:"Vecteurs",l:["Paludisme = ==anophèle==","Arboviroses, fièvre jaune = ==aedes==","Leishmaniose = ==phlébotome femelle==","Encéphalite japonaise = ==culex=="]},
+ {h:"Diarrhée du voyageur",l:["ATB non recommandés, ==racécadotril== (si besoin : azithromycine)"]},
+ {h:"Fièvre au retour : délai d'apparition",table:{head:["< 7 j","7–14 j","> 14 j","Plusieurs mois"],rows:[["Diarrhées : shigella, choléra, salmonella non typhi · arboviroses : dengue, zika, chikungunya","Paludisme · spirochétoses : leptospirose, borréliose · rickettsiose · typhoïde · VIH","Paludisme · typhoïde · VHA, VHB, VHE · schistosomose · VIH","Trypanosomoses · leishmaniose viscérale · amoebose hépatique · paludisme à P. non falciparum"]]}},
+ {h:"Clinique",l:["Dengue : arthralgies, myalgies, rash cutané, ==CRP basse==","Fièvre typhoïde = Salmonella enterica typhi / paratyphi : ==pouls dissocié==, fièvre en plateau, angine de Duguet, insomnie, tuphos (neuro), exanthème lenticulaire","Eau douce : ==schistosomose== = bilharziose (HPE)","Pieds nus : ==anguillulose== = strongyloïdose, ankylostomose"]}
+]);
+F("infectio","176","Diarrhées infectieuses",[
+ {h:"Trois tableaux",table:{head:["","Cholériforme","Dysentérique","Gastro-entéritique"],rows:[["Clinique","Liquidienne « eau de riz » · PAS de fièvre","Selles glairo-sanglantes · fièvre · épreintes, ténesme","Diarrhée aspécifique · N/V"],["Germes","Rotavirus, norovirus, adénovirus · S. aureus, Bacillus cereus, Clostridium perfringens · E. coli entérotoxinogène · Vibrio cholerae","Shigella spp · E. coli entéro-invasif / entérohémorragique · amoebose colique","Campylobacter spp · Salmonella enterica non typhi · Yersinia spp · E. coli entéropathogène"]]}},
+ {h:"ATB",l:["Dysentérique fébrile, cholériforme / gastro-entéritique sévère : ==azithromycine, FQ=="]}
+]);
+F("infectio","177","Résistances bactériennes",[
+ {h:"Mécanismes de résistance",l:["Inactivation enzymatique = ==bêta-lactamase==","Modification de cible = ==PLP / PLP2a==","↘ perméabilité membranaire","↗ efflux"]}
+]);
+
+/* ---------------- PNEUMO ---------------- */
+F("pneumo","75","Tabac",[
+ {h:"Tabac comme protecteur",l:["Sarcoïdose","K de l'endomètre","PE","Parkinson, Alzheimer","RCH"]},
+ {h:"K indépendants du tabac",l:["K du testicule","K de la prostate","Cholangiocarcinome = K des voies biliaires"]},
+ {h:"Épidémiologie",l:["Responsable de ++25 %++ des K","K = ==1re cause de mortalité== liée au tabac (2e = CV)","==1re cause de mortalité CV évitable==","==1er FRCV== chez la femme non ménopausée"]},
+ {h:"Questionnaire de Fagerström",l:["==Combien de temps après votre réveil fumez-vous votre première cigarette ?==","Trouvez-vous difficile de vous abstenir de fumer dans les endroits où c'est interdit ?","À quelle cigarette renonceriez-vous le plus difficilement ?","==Combien de cigarettes fumez-vous par jour ?==","Fumez-vous plus fréquemment le matin que durant le reste de la journée ?","Fumez-vous même lorsque vous êtes malade au point de rester au lit la majeure partie de la journée ?"]},
+ {h:"Fagerström simplifié (2 questions)",l:["§Cigarettes par jour",["≤ ++10++ : 0","++11–20++ : 1","++21–30++ : 2","≥ ++31++ : 3"],"§Délai après le réveil",["< ++5 min++ : 3","++6–30 min++ : 2","++31–60 min++ : 1","> ++1 h++ : 0"],"§Interprétation",["++0–1++ : pas de dépendance","++2–3++ : dépendance modérée","++4–5–6++ : dépendance forte"]]}
+]);
+F("pneumo","154","Pneumonie : bilan",[
+ {h:"Examens",l:["EC de 1re intention : radio thorax, BH, créat, NFS, TP, TCA, fibrinogène, hémocs, GDS","EC pneumonie grave : ==antigénurie pneumocoque + légionelle==, ECBC, PCR"]},
+ {h:"À retenir",l:["==qSOFA== → diagnostic de sepsis","TTT forme grave : ==C3G + macrolides / FQ==","Opacités ==systématisées denses homogènes==, ou excavées"]}
+]);
+F("pneumo","188","Asthme et rhinite allergique",[
+ {h:"Asthme aigu grave = signes de défaillance",l:["Parle par ==mots==, penché en avant, agité","FR > ++30++, tirage, FC > ++120++","SpO₂ < ++90++, DEP < ++50 %++","==Silence auscultatoire==, respiration paradoxale, troubles de conscience","↗ ==PaCO₂=="]},
+ {h:"Traitement",l:["Asthme aigu grave : ==O₂, CTC IV, BDCA en nébulisation==","==Rincer la bouche après les CTC inhalés=="]},
+ {h:"Rhinite allergique",l:["Persistante = ==> 4 sem==","TTT :",["Antihistaminiques H1 locaux / systémiques","Inhibiteurs de la dégranulation mastocytaire locaux","CTC locaux"]]}
+]);
+F("pneumo","203","GDS et échelles de dyspnée",[
+ {h:"GDS normaux",tone:"postit",l:["PaO₂ : ++75–100++","PaCO₂ : ++38–42++","pH : ++7,38–7,42++","HCO₃ : ++22–26++"]},
+ {h:"Échelle mMRC",l:["Stade ++0++ : essoufflé uniquement pour un effort important","Stade ++1++ : essoufflé en se dépêchant à plat ou en montant une pente légère","Stade ++2++ : marche moins vite que les gens de son âge à plat, ou doit s'arrêter en marchant à son pas","Stade ++3++ : s'arrête pour respirer après ++90 m++ ou après quelques minutes à plat","Stade ++4++ : trop essoufflé pour quitter la maison, ou essoufflé rien qu'à s'habiller"]},
+ {h:"Classes NYHA",l:["Classe ++1++ : aucune limitation d'activité ; des efforts inhabituels peuvent essouffler","Classe ++2++ : limitation légère à modérée, pas au repos, pour des activités normales (annoté : ==> 2 étages==)","Classe ++3++ : limitation marquée, pour des activités inférieures à la normale (annoté : ==< 2 étages==)","Classe ++4++ : limitation au moindre effort et/ou au repos"]}
+]);
+F("pneumo","204","Toux",[
+ {h:"À retenir",l:["Aiguë = ==< 3 sem== / chronique = ==> 8 sem==","EC de 1re intention : ==radio thorax, EFR=="]}
+]);
+F("pneumo","205","Hémoptysie",[
+ {h:"Examen de 1re intention",l:["==Angio-TDM== thoracique au temps aortique"]},
+ {h:"Causes : ABCDE",sub:"JAMAIS la BPCO",l:["==A==spergillome","==B== : BK = tuberculose","==C==ancer","==D==ilatation des bronches : bronchectasies","==E==P","!!JAMAIS BPCO!!"]},
+ {h:"Grande abondance",l:["> ++100 mL++ en une fois","> ++200 mL/24 h++ (sujet sain) ou > ++50 mL/24 h++ (insuffisant respiratoire chronique)","Récidivant, > ++600 mL/48 h++"]}
+]);
+F("pneumo","206","Pleurésie purulente",[
+ {h:"Définition",sub:"épanchement parapneumonique COMPLIQUÉ = empyème pleural",l:["≥ ++1++ critère parmi :",["Abondant = ==dépasse le hile==","Cloisonné = ==non déclive==","Aspect ==purulent==","Germe à l'==examen direct==","==Culture (+)=="]]}
+]);
+F("pneumo","208","Insuffisance respiratoire chronique",[
+ {h:"Définition",l:["IRC = PaO₂ < ++70 mmHg++ à ==3 sem== d'intervalle"]},
+ {h:"Effet shunt, shunt vrai",sub:"hypocapnie ou O₂ + CO₂ < 120",l:["Effet shunt : HTP, ICD","Shunt vrai anatomique : FOP, MAV, cardiopathie cyanogène","Shunt vrai fonctionnel : atélectasie, PNP, OAP, SDRA"]},
+ {h:"Hypoventilation alvéolaire pure, espace mort",sub:"hypercapnie",l:["Hypoventilation : opiacés, insuffisance diaphragmatique, problème anatomique de la cage thoracique","Espace mort : EP, emphysème"]},
+ {h:"Atteinte de la diffusion alvéolo-capillaire",sub:"hypocapnie",l:["PID, emphysème, HTAP"]}
+]);
+F("pneumo","209","BPCO",[
+ {h:"Examens",l:["EC de 1re intention : EFR, radio thorax, ECG, NFS, ==dosage de l'α1-antitrypsine, ETT==","!!JAMAIS!! de réversibilité complète (EFR)"]},
+ {h:"Score BODE",l:["==B== = Body Mass Index (IMC)","==O== = obstruction (VEMS)","==D== = dyspnée (mMRC)","==E== = effort (test de marche de 6 min)"]},
+ {h:"Outil ABE de GOLD",l:["Diagnostic confirmé par spirométrie : après bronchodilatation, VEMS/CVF < ++0,7++","§Degré d'obstruction (VEMS %)",["GOLD 1 : ≥ ++80++","GOLD 2 : ++50–79++","GOLD 3 : ++30–49++","GOLD 4 : < ++30++"],"§Exacerbations et symptômes",["≥ ++2++ exacerbations modérées ou ≥ ++1++ avec hospitalisation : ==E==","0 ou 1 exacerbation modérée sans hospit + mMRC 0–1, CAT < ++10++ : ==A==","0 ou 1 exacerbation modérée sans hospit + mMRC ≥ 2, CAT ≥ ++10++ : ==B=="]]}
+]);
+F("pneumo","309","Cancer du poumon",[
+ {h:"Syndromes paranéoplasiques",l:["Hippocratisme digital","Ostéoarthropathie hypertrophiante de ==Pierre-Marie==","SIADH = Sd de ==Schwartz-Bartter==","Fièvre prolongée","Pseudomyasthénie, neuropathies périphériques","Pseudo-PTH → ==hyperCa==","Pseudo-ACTH → ==Sd de Cushing=="]}
+]);
+F("pneumo","360","Pneumothorax",[
+ {h:"À retenir",tone:"postit",l:["PNO soupape = ==PNO sous tension=="]}
+]);
+
+/* ---------------- MÉDECINE INTERNE ---------------- */
+F("interne","4","Précautions d'hygiène",[
+ {h:"Trois types de précautions",table:{head:["","Gouttelettes","Air","Contact"],rows:[["Mesures","Chambre individuelle · masque chirurgical dès l'entrée dans la chambre","Chambre individuelle en pression négative · masque FFP2 avant d'entrer","Chambre individuelle (regroupement des cas) · tablier UU si soins auprès du patient · nettoyer les surfaces à la javel"],["Pathologies","Grippe, méningocoque, coqueluche, rubéole, oreillons, parvovirus B19, VRS, covid-19","Rougeole, tuberculose, varicelle","BMR (SARM, BLSE), varicelle, C. difficile, entérovirus, gastro-entérite, VRS, gale, pédiculose"]]}}
+]);
+F("interne","186","Allergie",[
+ {h:"Prick tests",l:["Arrêt des antihistaminiques ++5–7 j++ avant, omalizumab ++6 sem++ avant, dermocorticoïdes ++3 sem++ avant","CTC PO en cure courte : ==ok=="]},
+ {h:"Définitions",l:["Atopie, allergie = ==type I de Gell et Coombs== = immédiate = ==IgE== = voie ==Th2== (infection = voie Th1)","Atopie = prédisposition génétique à produire des IgE spécifiques d'un allergène habituellement inoffensif"]}
+]);
+F("interne","191","Neutropénie fébrile",[
+ {h:"Traitement",l:["Ambulatoire (PNN > ++0,1 G/L++, < ++7 j++) : ==augmentin + ciprofloxacine==","Hospitalier : ==tazocilline, céfépime== ± vancomycine, daptomycine, amikacine"]}
+]);
+F("interne","194","Lupus et SAPL",[
+ {h:"Lupus cutané et articulaire",l:["Lupus subaigu : photosensible, ==respecte le visage==, corrélé aux anti-SSA","Lupus chronique : discoïde, engelure, verruqueux, panniculite, tumidus","Polyarthrite des petites + moyennes articulations, symétrique, ==non destructrice, non déformante=="]},
+ {h:"Biologie",l:["AAN (IFI sur cellules Hep2 ==> 1/160==), anti-ADN natif, anti-SSA, anti-SSB, anti-Sm, anti-RNP","↘ C3 + C4 + CH50","IFD : IgG, IgM, IgA, C1q, C3","PBR si protU > ++0,5 g/j++"]},
+ {h:"Suivi",l:["NFS, iono, créat, BU, C3 + C4 + CH50, anti-ADN natif","Sous hydroxychloroquine : FO + CV + électrorétinogramme / OCT / FO en autofluorescence, ECG"]},
+ {h:"Traitement",l:["Photoprotection + contraception (!!CI œstrogènes!!) + ==hydroxychloroquine== (fond) + ==CTC== (poussée)"]},
+ {h:"Déclencheurs",l:["Facteurs de poussée ==SO MUV== : Silice, Œstrogènes, Médicaments, UV, Virus (EBV)","Médicaments ==BIMAC== : BB, Interféron, Minocycline, Anti-TNF α, Carbamazépine"]},
+ {h:"GN lupique",l:["==I== : dépôts immuns mésangiaux en IF (non visibles en MO = ==normal==)","==II== : dépôts immuns, prolifératif en MO + IF = ==épaississement== mésangial","==IIIa / IIIc / IIIa-c== : prolifération ==endo + extracapillaire==, dépôts immuns mésangiaux + sous-endothéliaux ≤ ++50 %++ des glomérules","==IVa / IVc / IVa-c== : prolifération endo + extracapillaire, dépôts immuns mésangiaux + sous-endothéliaux ≥ ++50 %++ des glomérules","==V== : dépôts immuns granuleux ==extramembraneux==","==VI== : > ++90 %++ de glomérules scléreux, « ==pain à cacheter== »"]},
+ {h:"SAPL : diagnostic",sub:"au moins 1 critère clinique + au moins 1 critère biologique",l:["§Critères cliniques",["Thromboses : ≥ ++1++ thrombose objectivée par imagerie de référence ou examen histopathologique","Obstétricaux : ≥ ++1++ mort fœtale inexpliquée ≥ ++10e++ semaine (morphologie normale)","et/ou ≥ ++1++ naissance prématurée < ++34e++ semaine (éclampsie, prééclampsie grave ou insuffisance placentaire)","et/ou ≥ ++3++ avortements spontanés consécutifs < ++10e++ semaine sans cause anatomique, hormonale ou chromosomique"],"§Critères biologiques (≥ 2 reprises, ≥ 12 sem d'intervalle)",["Lupus anticoagulant (recommandations ISTH)","Ac anti-cardiolipides IgG et/ou IgM : titre > ++40++ GPL ou MPL, ou > 99e percentile, ELISA","Ac anti-β2 GP-I IgG et/ou IgM : titre > ++40++ GPL ou MPL, ou > 99e percentile, ELISA"]]},
+ {h:"SAPL : clinique et traitement",l:["Endocardite de ==Libman-Sacks==","==Livedo racemosa==","TTT sans ATCD de thrombose : ==aspirine==","TTT avec ATCD : ==héparine, AVK==","TTT récidive sous anticoag, grossesse : ==+ aspirine=="]}
+]);
+F("interne","195","ACG, Takayasu, PPR",[
+ {h:"Artérite à cellules géantes",sub:"vascularite granulomateuse des gros vaisseaux > 50 ans",l:["Claudication intermittente de la mâchoire / langue, ==NOIAA== (œdème papillaire + flammèches), arthrites distales, AAA","Anémie, thrombocytose, cholestase anictérique","Biopsie de l'artère temporale + écho de l'A. temporale + ==TDM TAP injecté + TEP 18FDG==","TTT : CTC ++0,7 mg/kg/j++, sevrage sur ==18 mois=="]},
+ {h:"Maladie de Takayasu",l:["Vascularite granulomateuse des ==gros== vaisseaux < ++50 ans++"]},
+ {h:"PPR",sub:"rhumatisme inflammatoire non érosif des ceintures > 1 mois",l:["NFS, CRP, fibrinogène, EPS, ==TSH, CPK, FR, anti-CCP, radio thorax, radio articulaire==","TTT : CTC ++0,2–0,3 mg/kg/j++"]},
+ {h:"ACG et PPR",tone:"postit",l:["==PPR 3× plus fréquente que l'ACG==","++50 %++ des ACG = PPR, ++20 %++ des PPR = ACG"]}
+]);
+F("interne","201","Mort encéphalique",[
+ {h:"3 critères simultanés",l:["Absence totale de conscience et d'activité motrice spontanée","Abolition de ==tous les réflexes du tronc cérébral==","Absence totale de ventilation spontanée : ==épreuve d'hypercapnie, PaCO₂ > 60=="]},
+ {h:"Caractère irréversible",l:["==2 EEG== nuls et aréactifs à ≥ ++4 h++ d'intervalle, amplification maximale, ++30 min++ d'enregistrement","Ou ==angiographie== objectivant l'arrêt de la circulation cérébrale"]},
+ {h:"Éliminer les circonstances simulatrices",l:["Hypothermie","Hypotension artérielle","Médicaments dépresseurs du SNC","Curarisation"]}
+]);
+F("interne","211","Sarcoïdose",[
+ {h:"Biologie",l:["Hypercalcémie (↗ 1-25 OH active, ↘ 25 OH inactive, par la 1-α hydroxylase du granulome)","Hypergammaglobulinémie ==polyclonale via les LB==","↘ ==LTCD4==","↗ ECA"]},
+ {h:"Clinique",l:["Sd de ==Löfgren== : érythème noueux, ADP hilaires bilatérales, arthralgies, fièvre, fatigue","> ++90 %++ : ADP intrathoraciques","Diagnostic d'==exclusion=="]}
+]);
+F("interne","220","Adénopathies",[
+ {h:"ADP médiastinales",l:["Tuberculose","Lymphomes, LLC","Métastase","Silicose, bérylliose","Sarcoïdose"]},
+ {h:"Absence d’ADP",l:["SMD","Myélome"]}
+]);
+
+/* ---------------- OPHTALMO ---------------- */
+F("ophtalmo","81","Neuropathies optiques",[
+ {h:"Papille",l:["NORB : ==papille ok==","NOIAA (= ischémie de la tête du nerf optique) : ==papille anormale=="]}
+]);
+F("ophtalmo","83","Œil rouge",[
+ {h:"À retenir",l:["!!Pas de collyre de CTC sans diagnostic précis!!","Patient mélanoderme : risque de glaucome ==×3–4=="]}
+]);
+F("ophtalmo","84","Collyres du glaucome",[
+ {h:"Deux mécanismes",l:["↘ sécrétion d'humeur aqueuse : ==BB, inhibiteurs de l'anhydrase carbonique, α2-adrénergiques==","↗ élimination d'humeur aqueuse : ==prostaglandines=="]}
+]);
+
+/* ---------------- NEURO ---------------- */
+F("neuro","98","Myasthénie",[
+ {h:"Bilan",l:["Ac anti-RACh (++80 %++ forme générale, ++50 %++ forme oculaire), anti-MuSK (++10 %++), EMG","==TDM thorax non injecté, T4, TSH, anti-TPO, anti-TG, vit. B12, FR, FAN, anti-DNA, anti-ENA (SSA, SSB, Sm, Scl70)=="]},
+ {h:"À retenir",l:["Myasthénie oculaire = atteinte localisée aux yeux ==> 2 ans==","Test anticholinestérasique : néostigmine, édrophonium","Score de gravité : ==GARCHES==","Effet muscarinique (en gros, symptômes liquidiens), effet nicotinique (fasciculations, crampes)"]},
+ {h:"Traitement",l:["Symptomatique : anticholinestérasiques ==pyridostigmine, ambénonium==","Crise : ==Ig polyvalentes IV 5 j== / échanges plasmatiques ++1–3 sem++","Fond : azathioprine / MMF, CTC","Forme anti-MuSK : ==rituximab=="]},
+ {h:"TTT contre-indiqués",tone:"postit",l:["Aminosides, cyclines IV / IM, macrolides, quinolones","Succinylcholine (curare dépolarisant)"]}
+]);
+F("neuro","99","Céphalées et douleurs faciales",[
+ {h:"Céphalées chroniques",l:["Céphalées chroniques quotidiennes : ==> 15 j/mois== pendant ==> 3 mois==","Céphalées par abus médicamenteux : ==> 15 j/mois== de céphalées + céphalée préexistante +",["Triptans, antalgiques combinés, opioïdes : ==> 10 j/mois==","AINS, paracétamol : ==> 15 j/mois=="]]},
+ {h:"Horaire de la douleur",l:["Douleur fonctionnelle / organique (désordre de l'ATM) : ==diurne==","Douleur neuropathique (névralgie du trijumeau) : ==nocturne=="]}
+]);
+F("neuro","105","État de mal épileptique",[
+ {h:"Conduite à tenir",l:["Crise tonico-clonique généralisée > ++5 min++ et/ou ++2++ crises sans retour à la conscience = ==ÉTAT DE MAL==",["→ ==Rivotril 1 mg IV directe=="],"Persistance après ++5 min++ supplémentaires",["→ ==Rivotril 1 mg IVD=="],"Persistance après ++5 min++ supplémentaires",["→ ==lévétiracétam, valproate, phénobarbital, fosphénytoïne IV lente== + appel réa"]]},
+ {h:"Vocabulaire",tone:"postit",l:["IVD = flash / bolus à la seringue","IVL = perfusette sur ++10–15 min++"]}
+]);
+F("neuro","106","Parkinson",[
+ {h:"Triade",l:["==Bradykinésie==","==Rigidité plastique==","==Tremblement de repos=="]}
+]);
+F("neuro","108-132","Mémoire et Alzheimer",[
+ {h:"Troubles de la mémoire",l:["Encodage, attention sélective, mémoire de travail = problème de ==rappel immédiat==","Stockage = problème de ==rappel différé non aidé par l'indiçage== (Alzheimer)"]},
+ {h:"Examens",l:["!!AUCUN!! EC nécessaire devant une clinique typique de Parkinson","Devant un trouble neurocognitif : ==IRMc=="]},
+ {h:"Alzheimer",l:["Accumulation de peptides ==β-amyloïde== = plaques amyloïdes ==extracellulaires==","Accumulation de protéine ==Tau== = dégénérescence neurofibrillaire ==intracellulaire==","Pré-démentielle : trouble de la mémoire épisodique, stockage non aidé par l'indiçage (==test des 5 mots==)","Démence : syndrome ==aphaso-apraxo-agnosique==","Démence très sévère : troubles neuro, troubles du comportement"]}
+]);
+F("neuro","131","Hydrocéphalie à pression normale",[
+ {h:"Triade de HAKIM",l:["Troubles de la ==marche== (astasie-abasie, apraxie de la marche, petits pas, pieds glissés au sol)","Troubles ==vésico-sphinctériens== (incontinence urinaire)","Troubles des ==fonctions supérieures== (troubles de la mémoire)"]}
+]);
+F("neuro","341","Hémorragie sous-arachnoïdienne",[
+ {h:"À retenir",tone:"postit",l:["TTT du vasospasme post-HSA : ==nimodipine=="]}
+]);
+
+/* ---------------- RHUMATO ---------------- */
+F("rhumato","95","Nerfs et racines du membre supérieur",[
+ {h:"Territoires",table:{head:["","Sensitif","Moteur"],rows:[
+   ["N. médian","Face palmaire des 3 premiers doigts","Court abducteur du pouce, opposant du pouce, loge thénar"],
+   ["N. ulnaire","Palmaire + dorsale du 5e + moitié latérale du 4e","Adducteur du pouce, interosseux, loge hypothénar, fléchisseurs 4e–5e + carpe"],
+   ["N. radial","Face dorsale des 1er + 2e doigts","Extenseurs des doigts + carpe (main tombante), long supinateur"],
+   ["C5","Moignon, bras latéral, ROT bicipital","Abduction du bras, rotation de l'épaule"],
+   ["C6","Bras antérieur, avant-bras latéral, pouce → comme le radial","Flexion du coude + pouce, supination"],
+   ["C7","Tout le bras postérieur → comme le médian","Extension du coude aux doigts, pronation"],
+   ["C8-T1","Face médiale du bras → comme l'ulnaire","Loge thénar (via N. médian), hypothénar (via ulnaire)"]]}}
+]);
+F("rhumato","128","Ostéoporose",[
+ {h:"Ostéoporose primitive",l:["Post-ménopausique : os ==trabéculaire== (vertèbre, poignet)","Sénile : os ==trabéculaire + cortical== (col du fémur)"]}
+]);
+F("rhumato","196","Polyarthrite rhumatoïde : DMARD",[
+ {h:"Trois familles",l:["==csDMARD== ++ : méthotrexate, sulfasalazine, léflunomide, hydroxychloroquine","==bDMARD== : anti-TNF (adalimumab, étanercept, infliximab), anti-IL6 (tocilizumab), anti-CD20 (rituximab), anti-CTLA4 (abatacept)","==tsDMARD== : inhibiteurs des JAK kinases (tofacitinib, baricitinib, upadacitinib)"]}
+]);
+F("rhumato","200","Liquide articulaire",[
+ {h:"Mécanique ou inflammatoire",l:["Liquide mécanique : GB ==< 2000/mm³==, jaune citrin / translucide, ==visqueux==","Liquide inflammatoire : GB > ++2000/mm³++, trouble, ==fluide=="]}
+]);
+
+/* ---------------- NÉPHRO ---------------- */
+F("nephro","259","Protéinurie et syndrome néphrotique",[
+ {h:"Albuminurie",table:{head:["","mg/g","mg/mmol"],rows:[["Normal","< 30","< 3"],["Microalbuminurie","30–300","3–30"],["Albuminurie clinique","> 300","> 30"]]}},
+ {h:"Protéinurie",l:["ProtU : ==> 30 mg/mmol==, ==> 0,2 g/L== (+ ++0,3 g/L++, ++ ++1 g/L++, +++ ++3 g/L++)","Réduction néphrotique = protU sans SN"]},
+ {h:"ProtU intermittente : PV FOIE",l:["==P==olyglobulie","==V==D (ICD)","==F==ièvre","==O==rthostatique","==I==nfection","==E==ffort"]},
+ {h:"Syndrome néphrotique",l:["SN = protU ==> 3 g/j ou > 3 g/g== + hypoalbuminémie < ++30 g/L++",["Chez l'enfant : protU > ++2 g/g++ ou > ++200 mg/mmol++"],"SN pur : pas d'hématurie ==m==, pas d'HTA, pas d'IRA ==organique==","↗ α2 + β globulines, ==hypogammaglobulinémie==, hyperlipidémie","EPP : gris = normal, noir = SN (schéma de la fiche)"]},
+ {h:"Bilan et traitement",l:["EC de 1re intention : BU, RPC sur ==échantillon== d'urines, EPU, EPS, ==AAN==, écho / TDM non injecté","==PBR== !!SAUF!! : 1–10 ans avec SN pur, SN sans hématurie chez un patient avec rétinopathie diabétique, amylose sur BGSA, ATCD familial, danger","TTT : restriction sodée, diurétiques de l'anse","SN primitif : ==GEM== +++, SNLGM, HSF"]},
+ {h:"SN secondaire au TTT : VALD",l:["==V==EGF (anti-)","==A==INS","==L==ithium","==D==-pénicillamine"]}
+]);
+F("nephro","261","Glomérulopathies",[
+ {h:"Quand faire la PBR",l:["PBR si syndrome glomérulaire !!SAUF!! : 1–10 ans, SN + Ac anti-PLA2R, rétinopathie diabétique sans hématurie, amylose sur BGSA, ATCD familial de glomérulopathie"]},
+ {h:"Types de prolifération",l:["Mésangiale : ==néphropathie à IgA (Berger), lupus==","Endocapillaire","Extracapillaire : ==GNRP=="]},
+ {h:"SNLGM",sub:"SN idiopathique, SNLGM secondaire",l:["==SN pur== + œdèmes, Φ dépôts + Φ prolifération, ==fusion des podocytes==, TTT ==CTC==","Pas de PBR si SN pur, 1–10 ans, SN corticosensible, Φ ATCD familial, Φ signe extrarénal, complément ok"]},
+ {h:"GEM",l:["==SN impur==, dépôts ==granuleux IgG + C3== extramembraneux, Φ prolifération","Pas de PBR si SN + ==Ac anti-PLA2R==","Causes : K solides, LES, Sjögren, thyroïdite AI, sarcoïdose, VHB, VHC, syphilis, lèpre, filariose, AINS"]},
+ {h:"Néphropathie à IgA",sub:"primitive = Berger",l:["==Hématurie macroscopique récidivante==, prolifération + dépôts ==IgA + C3 mésangiaux==","Causes : cirrhose, MICI, SpA, dermatose bulleuse, purpura rhumatoïde"]},
+ {h:"GNRP",l:["==Type 1== = Goodpasture = Ac anti-MBG : ==Sd pneumo-rénal== (IR organique + protU + hématurie), ==croissants== extracapillaires + dépôts ==IgG linéaires== le long de la MBG, TTT CTC + ==plasmaphérèse== + cyclophosphamide","==Type 2== = dépôts ==endomembraneux de complexes immuns== : LES, cryoglobulinémie, néphropathie à IgA, infection","==Type 3== = pauci-immune : Φ dépôts, ==croissants== extracapillaires, TTT CTC + IS",["Vascularites à ANCA : granulomatose avec polyangéite = c-ANCA + anti-PR3 ; polyangéite microscopique = p-ANCA + anti-MPO"]]},
+ {h:"GNA post-infectieuse",l:["==15 j== d'intervalle libre","==Sd néphritique== : brutal + IRA + protU + hématurie + HTA + œdèmes","Prolifération ==endocapillaire==, dépôts ==C3 mésangiaux (ciel étoilé + humps)=="]},
+ {h:"GN avec hypocomplémentémie : L'E2CG",l:["==L==upus","==E==ndocardite, ==E==mboles de cholestérol","==C==ryoglobulinémie","==G==NA post-streptococcique"]}
+]);
+F("nephro","263","Microangiopathie thrombotique et vasculaire rénal",[
+ {h:"MAT",l:["= anémie hémolytique mécanique + thrombopénie (de consommation)","==PTT== = Sd de ==Moschowitz== = déficit en ==ADAMTS-13== : atteinte cérébrale","==SHU== = typique (entérobactéries à toxine shiga-like) / atypique (mutation de la voie alterne du complément) : atteinte rénale"]},
+ {h:"SHU",l:["SHU post-diarrhéique < ++15 ans++ : ==déclaration== !!OBLIGATOIRE!!",["E. coli O157:H7, salmonella, shigella","==PCR== sur écouvillon rectal, ==pas de PBR=="],"SHU atypique : ==PBR=="]},
+ {h:"Néphroangiosclérose maligne",l:["HTA grade 3, œdème papillaire (grade 4), MAT, coagulopathie","!!CI diurétiques!!"]},
+ {h:"Maladie des emboles de cholestérol",l:["Rupture de plaque athéromateuse → ==endartérite oblitérante==","Orteils pourpres, livedo reticularis, gangrène distale, purpura nécrotique","HPE, hypocomplémentémie"]},
+ {h:"À retenir",tone:"postit",l:["Sténose athéromateuse de l'A. rénale : ==pas== une cause d'HTA"]}
+]);
+F("nephro","266","Polykystose rénale",[
+ {h:"Génétique",l:["==PKD1== ++ = polycystine 1 → IR terminale à ++54 ans++","==PKD2== = polycystine 2 → IR terminale à ++69 ans++",["Absence de kyste > ++40 ans++ !!EXCLUT!!"]]},
+ {h:"Atteintes",l:["Kystes hépatiques (==jamais d'insuffisance hépatique==)","Anévrisme intracrânien de la circulation antérieure / polygone de Willis ++"]},
+ {h:"Diagnostic et évolution",l:["Diagnostic : ATCD familial + > ++10++ kystes (si < ++5++ kystes !!EXCLUT!!)","IRC sans hématurie, sans protU, ==sans anémie== (car les kystes sécrètent de l'EPO)","==Pas de récidive== après transplantation"]}
+]);
+F("nephro","267","Osmolarité et trou anionique",[
+ {h:"Formules",tone:"postit",l:["==Osm = 2 × Na + glycémie==","TA = [Na⁺] + [K⁺] − [Cl⁻ + HCO₃⁻] = ==16 ± 4 mmol/L=="]}
+]);
+F("nephro","348","Insuffisance rénale aiguë",[
+ {h:"IRA fonctionnelle ou NTA",table:{head:["Signe","IRA F","NTA"],rows:[["Urée / créatinine P (µmol/L)","> 100","< 50"],["Na⁺ U","< 20 mmol/L (sans diurétiques)","> 40 mmol/L"],["FE Na⁺","< 1 % (sans diurétiques)","> 1–2 %"],["FE urée (utile si diurétiques)","< 35 %","> 35–40 %"],["Na⁺/K⁺ urinaire","< 1","> 1"],["U/P urée","> 10","< 10"],["U/P créatinine","> 30","< 30"]]}},
+ {h:"Formules",l:["FE Na⁺ = ClNa / Clcr = (UNa/PNa) / (Ucr/Pcr) × 100","FE urée = ClUrée / Clcr = (UUrée/PUrée) / (Ucr/Pcr) × 100"]},
+ {h:"Nécrose tubulaire aiguë",l:["Choc","Toxicité directe : aminosides, PDC iodés, AINS, cisplatine, amphotéricine B, C1G, anticalcineurines (ciclosporine, tacrolimus)","Précipitation intratubulaire : aciclovir, inhibiteurs de protéase, MTX, sulfamides, myélome, rhabdomyolyse, hémolyse, CIVD, Sd de lyse tumorale"]},
+ {h:"Néphropathie interstitielle",l:["PNA","Infection hématogène","Leptospirose","Fièvre hémorragique","Immunoallergique : sulfamides, ampicilline, méthicilline, AINS, FQ, rifampicine, fluindione, IPP, immunothérapie"]}
+]);
+
+/* ---------------- HÉMATO ---------------- */
+F("hemato","213","Anémie par carence martiale",[
+ {h:"Bilan",l:["EC : ==ferritine==","Si normale (SIB, K, IRC) : CRP + ==orosomucoïde== + ==fer sérique== + transferrine + CST + ==CTF== → !!À JEUN!!"]}
+]);
+F("hemato","214","PTI",[
+ {h:"Bilan de 1re intention",l:["NFS sur tube citraté + frottis (en l'absence de clinique évocatrice)","TP + TCA + fibrinogène","==Sérologies VIH + VHB + VHC==","BH, iono, EPS, ABO-Rh, RAI, ==AAN=="]}
+]);
+F("hemato","296","Agranulocytose",[
+ {h:"Causes",l:["Toxique ++ après CT (pancytopénie) / immunoallergique (↘ seulement la lignée granulocytaire)","TTT en cause : clozapine, ==antithyroïdiens==, ATB, rituximab","Infections : VIH, leishmaniose, typhoïde, brucellose"]},
+ {h:"Examens",l:["EC de 1re intention : ==myélogramme==, frottis médullaire (richesse diminuée), ± BOM"]},
+ {h:"Neutropénie fébrile",l:["< ++7 j++ ou > ++0,1 G/L++ : ==augmentin + ciprofloxacine 5 j==","> ++7 j++ : ==pipéracilline-tazobactam== ± aminosides ou ciprofloxacine",["Si sepsis, SARM, infection de KT : + ==vancomycine=="]]}
+]);
+F("hemato","319","Lymphomes",[
+ {h:"Immunophénotype",table:{head:["Lymphome","Marqueurs"],rows:[["Hodgkin","CD30, CD15"],["Folliculaire","CD20, CD10, BCL6, BCL2 (t(14;18))"],["Du manteau","CD20, CD5, cycline D1, t(11;14)"],["De la zone marginale","CD20"],["De Burkitt","CD20, CD10"]]}},
+ {h:"Diagnostic",l:["Cellules de ==Reed-Sternberg== (2 noyaux, 1 nucléole) : lymphome de Hodgkin","Diagnostic : lymphome = ==histologie== / leucémie = ==cytologie=="]},
+ {h:"Signes B",l:["Fièvre > ++38++ pendant ==> 8 j==","Amaigrissement ==> 10 % en < 6 mois==","Sueurs"]},
+ {h:"Bilans",l:["Extension : radio thorax, TDM TAP, TEP","Pré-TTT : ECG, ETT, CECOS","Agressifs curables, !!PAS!! les indolents"]},
+ {h:"Classification d'Ann Arbor",l:["==I== : maladie localisée, un seul groupe de ganglions","==II== : ≥ ++2++ groupes de ganglions du même côté (poitrine ou abdomen)","==III== : ≥ ++2++ groupes à la fois dans la poitrine et l'abdomen, ± organe proche","==IV== : maladie généralisée, plusieurs organes ou tissus (moelle, foie, poumons…) ± ganglions","A : absence d'AEG · B : signes B"]}
+]);
+
+/* ---------------- PSY ---------------- */
+F("psy","66","Troubles anxieux et de l'humeur",[
+ {h:"Bilan d'un EDC",l:["EC de 1re intention : ==calcémie==, TSHus, CRP, iono, urée, créat"]},
+ {h:"Molécules",l:["ISRS : ==fluoxétine, sertraline, escitalopram==","IRSNA : ==duloxétine, venlafaxine==","Antipsychotique 1re G : ==halopéridol==","Antipsychotiques 2e G : ==rispéridone, olanzapine, aripiprazole=="]},
+ {h:"Critères et traitements",l:["EDC : ++2++ sur ++2 sem++ → ISRS","TAG : ++3++ sur ++6 mois++ → ISRS / IRSNA (fond > ++6 mois++) + BZD / hydroxyzine (crise < ++12 sem++)","Trouble panique : ++1++ sur ++1 mois++ → ISRS / IRSNA (fond) + BZD / hydroxyzine (crise)","Agoraphobie : ++2++ sur ++6 mois++"]},
+ {h:"Phobies, TOC",l:["Phobie spécifique : ++6 mois++ → ISRS (fond) + BZD (crise), !!ABSENCE!! de TTT efficace","Phobie sociale : ++6 mois++ → ==ISRS / IRSNA== (fond) + BZD (crise), !!ABSENCE!! de TTT efficace","TOC : → ISRS (fond, ==dose × 2== par rapport à l'EDC) + BZD (crise)"]},
+ {h:"Stress et adaptation",l:["TSPT : ++1++ évitement + ++2++ altérations (−) de l'humeur + ++2++ altérations de la réactivité sur ++1 mois++ (chronique > ++12 mois++) → !!ÉVITER LES BZD!!","Trouble de stress aigu : ++9++ sur ++3 j – 1 mois++","Trouble de l'adaptation : stress < ++3 mois++ + ++1++ critère sur < ++6 mois++ après l'arrêt du stress → BZD, hydroxyzine, hypnotique (zolpidem, zopiclone)"]},
+ {h:"Autres",l:["Troubles de la personnalité : paranoïaque, schizoïde, schizotypique, antisociale, borderline, histrionique, narcissique, évitante, dépendante, obsessionnelle-compulsive","TCA : sur ++3 mois++"]}
+]);
+F("psy","67","Troubles du neurodéveloppement",[
+ {h:"TSA",l:["Diagnostic : ==ADI-R== (entretien semi-structuré avec les parents), ==ADOS== (observation semi-structurée des symptômes)","EC : ==audiogramme, PEA, IRMc, bilan psychométrique (QI), EEG veille + sommeil, génétique==, bio"]},
+ {h:"TDAH",l:["Formes : hyperactive / impulsive (Sd d'hyperactivité au premier plan), combinée, inattentive (Sd d'inattention au premier plan)","Critères : ++2++ contextes + début < ++12 ans++ sur ++6 mois++ → ==méthylphénidate== (dès ++6 ans++)","Diagnostic : ==ADHD rating scale, Conners=="]},
+ {h:"Classification",l:["Troubles du neurodéveloppement : TSA, TDAH, handicap intellectuel, tics","Troubles du comportement : trouble oppositionnel avec provocation (TOP), trouble des conduites","Troubles des apprentissages : dyscalculie, dyslexie, dysorthographie"]}
+]);
+F("psy","74","Psychotropes",[
+ {h:"Antipsychotiques",sub:"antagonistes des récepteurs dopaminergiques D2",l:["Durée : ≥ ++2 ans++ (si récidive ≥ ++5 ans++)","1re G : ==-mazine, halopéridol, loxapine==","2e G : ==amisulpride, olanzapine, clozapine, quétiapine, rispéridone, aripiprazole==","CI : ↗ QT, < ++65 bpm++, hypoK, ATCD de Sd malin, ATCD d'agranulocytose / GAFA / RAU, épilepsie, arythmie, IDM, HTO, grossesse / allaitement, diabète, sevrage OH, barbituriques, BZD","Surveillance : NFS (clozapine : 1×/sem puis 1×/mois), GAJ (M3, 1×/an), EAL (M3, tous les 5 ans), ==PRL==, βHCG, ECG (M1, 1×/an)"]},
+ {h:"Benzodiazépines",l:["Anxiolytiques, sédatives, anticonvulsivantes, myorelaxantes, amnésiantes, orexigènes ; max ++4–12 sem++","Molécules : ==-zépam, alprazolam==","CI : insuffisance respiratoire sévère, IH, SAOS non traité, myasthénie, grossesse / allaitement, IR, ATCD d'addiction / de réaction paradoxale"]},
+ {h:"Autres anxiolytiques",l:["Antihistaminique : ==hydroxyzine==","BB : ==propranolol==","==Buspirone=="]},
+ {h:"Antidépresseurs",l:["§ISRS",["Escitalopram, sertraline, paroxétine, fluoxétine","CI : + IMAO, grossesse / allaitement, IR, IH","EI : ==potentialise les AVK=="],"§IRSNA",["Venlafaxine, duloxétine","CI : + IMAO, grossesse / allaitement, IR, IH"],"§Tricycliques = imipraminiques",["Amitriptyline, clomipramine","CI : GAFA, HBP, SCA récent, IC décompensée, TdR, + IMAO, épilepsie, démence","Surveillance : ECG, BR, BH"],"§IMAO",["Moclobémide","CI : HTA, AVC, phéochromocytome, polynévrite, tryptophane, tyramine","Surveillance : ECG, BR, BH"]]},
+ {h:"Hypnotiques",l:["==Max 4 sem en incluant le sevrage==","BZD (lormétazépam, loprazolam, nitrazépam, estazolam), antihistaminique (alimémazine)",["CI : SAOS non appareillé","Indication : trouble du sommeil !!AIGU!!"],"§Z-drugs : zolpidem, zopiclone",["CI : SAOS non appareillé, grossesse / allaitement, < ++15 ans++, insuffisance respiratoire sévère, myasthénie, intolérance au galactose","Zolpidem : ==ordonnance sécurisée, max 28 j=="]]},
+ {h:"Syndromes iatrogènes",l:["§Sd malin des neuroleptiques (antipsychotiques)",["Toute ==hyperthermie avec Sd confusionnel== chez un patient sous antipsychotiques","Rigidité extrapyramidale","TTT : ==bromocriptine== (agoniste dopaminergique)"],"§Sd sérotoninergique (antidépresseurs)",["Agitation, confusion, myoclonies, rigidité musculaire, hyperréflexie, troubles de la coordination, mydriase…"],"§Sd anticholinergique",["Sécheresse buccale, constipation, RGO, RAU, GAFA, fausse route"],"TTT de la dyskinésie aiguë : ==tropatépine== (anticholinergique IM)"]}
+]);
+F("psy","76","Alcool",[
+ {h:"Usages",l:["Usage simple = absence de risque","Mésusage = usage à risque / usage nocif (conséquences) / usage avec dépendance (perte de contrôle)","Sd de sevrage possible ==que si dépendance=="]},
+ {h:"Repérage",l:["==g d'OH = degré × volume (L) × 8==","Dosage de la transferrine désialylée (Sp)","Questionnaires : CDA, ==AUDIT-C== (≥ ++4++ H / ≥ ++3++ F : nocif ; ≥ ++5++ H / ≥ ++4++ F : dépendance), FACE"]},
+ {h:"Urgences",l:["Coma éthylique : > ++3 g/L++, calme ; !!TOUJOURS!! rechercher ==hypoglycémie, acidocétose, hyponatrémie==","TTT du sevrage : ==vit B1 PO== ± diazépam (BZD à demi-vie longue)","TTT du delirium tremens : ==USI / réa + vit B1 + B6 + PP + BZD IV== (diazépam)"]},
+ {h:"Aide",l:["Aide au sevrage : ==nalméfène==, baclofène","Maintien de l'abstinence : ==acamprosate==, ==naltrexone==, disulfirame"]},
+ {h:"Complications neurologiques",l:["Encéphalopathie de ==Gayet-Wernicke== (B1) : confusion, oculomoteur (nystagmus, diplopie), cérébelleux ==statique==, ==hypertonie oppositionnelle==","Encéphalopathie ==pellagreuse== (B3 = PP) : confusion, hypertonie extrapyramidale, glossite","Encéphalopathie ==hépatique== : confusion, astérixis, extrapyramidal → lactulose + néomycine","Sd de ==Korsakoff== (circuit de Papez) : amnésie antérograde (fausses reconnaissances, fabulations), Sd dysexécutif","Maladie de ==Marchiafava-Bignami== : mutisme akinétique, astasie-abasie","==Convulsions possibles lors de l'intoxication, du sevrage, des complications==","Neuropathie optique : scotome central, dyschromatopsie → vit B","Polyneuropathie longueur-dépendante → vit + TTT de la douleur neuropathique","Neuropathies focales"]}
+]);
+
+/* ---------------- CARDIO ---------------- */
+F("cardio","153","Prothèses valvulaires",[
+ {h:"INR cible des valves mécaniques",table:{head:["Risque thrombotique de la prothèse","0 facteur de risque patient","≥ 1 facteur de risque"],rows:[["Faible","2,5","3,0"],["Moyen","3,0","3,5"],["Élevé","3,5","4,0"]]}},
+ {h:"Facteurs de risque liés au patient",l:["Prothèse en position mitrale, tricuspide ou pulmonaire","ATCD thromboembolique","Fibrillation atriale","Sténose mitrale (quelle que soit la sévérité)","Fraction d'éjection < ++35 %++"]},
+ {h:"Anticoagulation des bioprothèses",table:{head:["Prothèse","Anticoagulation / AAP","AOD"],rows:[["Bioprothèse aortique","Aspirine ou AVK 3 mois puis rien","Autorisé > 3 mois si indication non valvulaire"],["Bioprothèse mitrale","AVK 3 mois puis rien","Toléré dès le postopératoire si FA · autorisé > 3 mois et indication non valvulaire"],["Bioprothèse tricuspide, plastie mitrale","AVK 3 mois puis rien","Autorisé > 3 mois et indication non valvulaire"],["Endoprothèse aortique (TAVI)","Aspirine seule au long cours si rythme sinusal · anticoagulation si FA","Autorisé si indication FA"]]}}
+]);
+F("cardio","222","Facteurs de risque CV",[
+ {h:"FRCV majeurs",l:["Tabac, HTA, DT2, dyslipidémie, obésité abdominale, sédentarité, âge, sexe masculin, ATCD familiaux"]},
+ {h:"Formule de Friedewald",tone:"postit",l:["==LDLc = CT − HDLc − (TG/5)==","Possible si TG < ++3,5 g/L++"]},
+ {h:"SCORE-2",l:["Âge, sexe, ==cholestérol non HDL==, ==PAS==, tabac","Pas adapté : hypertendus sévères (PA ≥ ++180/110 mmHg++), diabétiques, IRC, hypercholestérolémie familiale","Utilisé en ==prévention primaire== et non secondaire"]}
+]);
+F("cardio","223","Dyslipidémies",[
+ {h:"TTT par statines",l:["EAL à ==2–3 mois puis 1×/an== (en l'absence de nécessité de TTT : tous les ++3 ans++)","BH avant, puis à ==2–3 mois==, puis si signes d'appel","Si signes d'appel : ==CPK== → si > ++5N++ arrêt des statines / si < ++5N++ diminuer la dose, changer de statine, prise intermittente"]},
+ {h:"Stratégie",l:["Hypercholestérolémie pure : 1re ==statines==, 2e ézétimibe, 3e inhibiteur de PCSK9","Hypertriglycéridémie pure : 1re ==fibrate==, 2e acides gras ω3","TTT après ==3–6 mois== de RHD","Hypercholestérolémie : risque d'==athérome== / hypertriglycéridémie : PA, rétinopathie"]},
+ {h:"Dyslipidémies secondaires",table:{head:["Hypercholestérolémie pure","Hypertriglycéridémie pure","Hyperlipidémie mixte"],rows:[["Hypothyroïdie · cholestase · anorexie · ciclosporine","IRC · OH · diabète · hypercorticisme · acromégalie · œstrogènes · CTC · rétinoïdes · ARV · BB","Hypothyroïdie · SN · VIH · grossesse · IRC · hypercorticisme · CTC · ciclosporine · diurétiques thiazidiques"]]}}
+]);
+F("cardio","224","Urgence hypertensive",[
+ {h:"Bilan de 1re intention",l:["Urée, créat, BU, NFS, plaquettes","==TP, TCA, fibrinogène, troponine, dosage des toxiques, frottis sanguin, bilirubine, haptoglobine, LDH==","ECG, ETT, ==radio thorax, FO=="]}
+]);
+F("cardio","235","Péricardite",[
+ {h:"Bilan d'une douleur thoracique aiguë",sub:"schéma de la fiche",l:["§Précordialgie typique",["Prolongée","Majorée à l'inspiration ou en décubitus","Soulagée en antéflexion","Frottement péricardique (rare)"],"§Autres symptômes fréquents",["Fébricule","Contage infectieux","Dyspnée (douleur thoracique inspiratoire ?)"]]},
+ {h:"Examens",l:["§ECG",["==Sus-ST concave vers le haut==, T+","==Sous-décalage du segment PQ==","Tachycardie sinusale","Microvoltage (si tamponnade)"],"§Biologie",["Inflammation dont CRP","Troponine","Ionogramme sanguin","Hémocultures si fièvre"],"§Échocardiographie",["Épanchement péricardique ?","Altération de la fonction contractile, FEVG"]]},
+ {h:"Diagnostic",tone:"postit",l:["≥ ++2++ critères parmi :",["Précordialgie typique","Frottement péricardique","Modifications ECG","Épanchement péricardique"]]}
+]);
+
+/* ---------------- ORTHO ---------------- */
+F("ortho","361","Traumatologie",[
+ {h:"Classification de Salter et Harris",sub:"chez l'enfant",l:["==I== : glissement épiphysaire seul","==II== ++ : fracture à travers le cartilage de croissance avec un triangle métaphysaire attaché","==III== : fracture à travers l'épiphyse jusqu'au cartilage de croissance","==IV== : fracture de l'épiphyse et de la métaphyse, traversant le cartilage de croissance","==V== : écrasement du cartilage de croissance"]},
+ {h:"Critères d'Ottawa (cheville)",sub:"> 6 ans",l:["Fracture significative des malléoles et du médiopied exclue sans radio si le patient :",["Peut faire ==4 pas== (immédiatement après le traumatisme et lors de la consultation)","N'a pas de douleur à la palpation :",["De la pointe et des ++6 cm++ distaux du bord postérieur des malléoles interne et externe","De la base du ==Ve métatarsien==","Du scaphoïde tarsien = ==os naviculaire=="]]]}
+]);
+
+/* ---------------- ONCO ---------------- */
+F("onco","290","Épidémiologie des cancers",[
+ {h:"Incidence",l:["Population générale : 1er ==sein==, 2e prostate, 3e poumon, 4e CCR","Homme : 1er ==prostate==, 2e poumon, 3e CCR, 4e vessie","Femme : 1er ==sein==, 2e CCR, 3e poumon","Incidence homme ↘ / incidence femme ↗"]},
+ {h:"Mortalité",l:["K = ==1re cause de mortalité en France==","Homme : 1er ==poumon==, 2e CCR, 3e prostate","Femme : 1er ==sein==, 2e poumon, 3e CCR"]},
+ {h:"Facteurs de risque",l:["1er FR = ==âge==","Tabac > OH > alimentation (++20–25 %++) > infectieux (++4 %++) > environnement (++5–10 %++) dont professionnel (++3 %++)"]},
+ {h:"Dépistage",l:["Efficacité du dépistage jugée sur la mortalité ou l'incidence","Dépistage = prévention ==secondaire==","Biais : avance au diagnostic, évolutivité, surdiagnostic"]}
+]);
+F("onco","292","Anatomopathologie",[
+ {h:"Prélèvement à l'état frais",l:["K pédiatrique, lymphome, ostéosarcome","Examen extemporané","IFD (glomérulopathies, dermatoses bulleuses)"]}
+]);
+
+/* ---------------- RÉA ---------------- */
+F("rea","332","État de choc",[
+ {h:"Diagnostic",tone:"postit",l:["Diagnostic d'état de choc = ==signes d'hypoperfusion périphérique=="]}
+]);
+F("rea","337","Intoxication au paracétamol",[
+ {h:"Enfant < 6 ans",l:["Paracétamol ≥ ++250 mg/kg++ : paracétamolémie à ==H4== (==H2== si forme liquide)","NAC si paracétamolémie à H2 > ++225 µg/mL++, ou en zone toxique à H4 sur le nomogramme"]},
+ {h:"≥ 6 ans",l:["Paracétamol ≥ ++150 mg/kg++","Vu avant H2 après la prise : ==charbon activé==","Paracétamolémie en zone toxique à H4 sur le nomogramme : ==NAC=="]},
+ {h:"N-acétylcystéine",l:["NAC si ingestion < ++8 h++ + paracétamolémie en zone toxique sur le nomogramme de ==Rumack-Matthew==","Ingestion > ++8 h++ / heure inconnue : ==NAC dans tous les cas==, à arrêter si la paracétamolémie faite entre ++H4++ et ++H15++ est en zone non toxique"]}
+]);
+F("rea","345","Malaise du nourrisson",[
+ {h:"Malaise grave du nourrisson",l:["Modification du tonus !!+!! modification de la coloration des téguments ==± perte de connaissance==","EC de 1re intention : glycémie, iono, créat, urée, NFS, CRP, ==PCT, Ca, BH, lactates==, BU, ECG, radio thorax","Bénin pour sûr : surveillance ++6–12 h++ puis ambulatoire / sinon hospitalisation !!minimum!! ++24–48 h++"]},
+ {h:"Mort du nourrisson",l:["Mort inattendue du nourrisson : mort brutale sans ATCD la justifiant chez un enfant ==< 2 ans==","Mort subite du nourrisson : diagnostic si ==absence d'étiologie après enquête complète=="]}
+]);
+
+/* ---------------- DIG ---------------- */
+F("dig","167","Hépatites",[
+ {h:"Hépatite aiguë",l:["Évolution ==< 6 mois==","↗ ASAT/ALAT + nécrose hépatocytaire"]}
+]);
+F("dig","279","Cirrhose",[
+ {h:"Score de Child-Pugh",table:{head:["","1 point","2 points","3 points"],rows:[["Ascite","Absente","Modérée","Tendue ou réfractaire aux diurétiques"],["Bilirubine (µmol/L)","< 35","35–50","> 50"],["Albumine (g/L)","> 35","28–35","< 28"],["INR","< 1,7","1,7–2,2","> 2,2"],["TP","> 50 %","40–50 %","< 40 %"],["Encéphalopathie","Absente","Légère à modérée (stade 1-2)","Sévère (stade 3-4)"]]}},
+ {h:"Pronostic",l:["Child-Pugh ==A== (++5–6++ points) : survie à 1 an ++100 %++","Child-Pugh ==B== (++7–9++ points) : survie à 1 an ++80 %++","Child-Pugh ==C== (++10–15++ points) : survie à 1 an ++45 %++"]},
+ {h:"Score MELD",tone:"postit",sub:"liste de transplantation",l:["==Bilirubine, INR, créat=="]}
+]);
+F("dig","304","Carcinome hépatocellulaire",[
+ {h:"Diagnostic de CHC",l:["Critères de ==Barcelone== au complet à l'IRM / TDM !!+!! patient cirrhotique","Ou biopsie hépatique"]},
+ {h:"Critères de Barcelone",l:["Contexte de ==cirrhose==","Nodule > ++1 cm++","==Wash-in==","==Wash-out=="]},
+ {h:"Bilans",l:["Extension : BH, TP, TCA, fibrinogène, albumine, ==AFP==, TDM TAP ± scintigraphie osseuse","Cirrhose : FOGD, NFS, EPP"]}
+]);
+F("dig","355","Hémorragie digestive",[
+ {h:"Repères",l:["Gravité !!NON!! corrélée au volume extériorisé","Implication ++ : ==encéphalopathie hépatique==","Haute vs basse : angle ==duodéno-jéjunal== = angle de Treitz","Méléna vs rectorragies : ==angle colique droit=="]},
+ {h:"Prise en charge",l:["Avant l'EOGD : ==érythromycine IV== (vidange gastrique), !!FAIRE UN ECG AVANT!!","Suspicion de RVO : ==octréotide== (analogue de la somatostatine) / ==terlipressine== + IPP → relais BB non cardiosélectif (propranolol) après ++2–5 j++","Hémorragie digestive chez le cirrhotique : ==C3G / FQ== ++5–7 j++ (prévention de l'ISLA)","EC de 1re intention : NFS, iono, créat, ==Ca==, TP, TCA, BH, ==facteur V, TR==, EOGD","Rectorragies + déglobulisation, méléna, hématémèse : ==hospitalisation=="]},
+ {h:"Ulcère gastroduodénal",l:["Classification de ==FORREST== (risque de récidive hémorragique)","IPP IV (avant l'EOGD) :",["Forrest ==Ia–IIb== : IV ++72 h++ puis relais IPP double dose PO","Forrest ==IIc–III== : relais IPP double dose PO"],"Ulcération de ==Dieulafoy== : artère sous-muqueuse volumineuse"]}
+]);
+F("dig","356","Appendicite",[
+ {h:"Signes cliniques",l:["Signe de ==Blumberg== : douleur à la décompression de la FID","Signe de ==Rovsing== : douleur à la compression de la FIG","==Heel drop test==","Signe de ==Lapinski (Meltzer)== : appui sur McBurney + lever de la jambe"]},
+ {h:"Diagnostic",l:["Formes non compliquées : appendicite ==catarrhale, suppurée, gangréneuse==","Écho abdo : diamètre > ++6 mm++, paroi > ++3 mm++, incompressible sous la sonde, infiltration de la graisse","==Score d'Alvarado, score d'Andersson=="]},
+ {h:"Traitement",l:["Chirurgie : laparotomie oblique (incision de McBurney) / cœlioscopie + ATB-prophylaxie ==augmentin 1 dose=="]}
+]);
+F("dig","357","Péritonites",[
+ {h:"Classification de Hambourg",l:["Primaire : pneumocoque, ISLA, infection de KT de dialyse péritonéale, tuberculose, SN","Secondaire : due à une infection / perforation d'un viscère intra-abdominal","Tertiaire : persiste malgré le TTT","+ perforation, + péritonite septique (+ de germes en distal)"]},
+ {h:"Prise en charge",l:["==TDM AP injecté== (écho abdo chez l'enfant), ==sans retarder la chirurgie + si patient stable==","TTT chirurgical !!SAUF péritonite primaire!! : ==laparotomie médiane=="]},
+ {h:"Antibiothérapie",l:["Péritonite sur ISLA : ==C3G==","Péritonite sur infection de KT de dialyse : ==vancomycine + aminosides intrapéritonéaux==","Communautaire : ==augmentin + amikacine IV + chir== ou ==C3G + métronidazole IV + chir==","Nosocomiale, signes de gravité : ==pipé-tazo + aminosides IV + chir==","Si < ++3++ parmi choc / sus-mésocolique / femme / ATB > ++48 h++ : + ==échinocandine=="]}
+]);
+
+/* ---------------- DERMATO ---------------- */
+F("dermato","111","Acné",[
+ {h:"TTT local et cyclines",l:["==R==étinoïde = ==R==étentionnel","==P==eroxyde de benzoyle = ==P==apules / pustules","==Cy==clines = ==S==ébum + ==I==nflammation"]},
+ {h:"Isotrétinoïne",sub:"si échec de 3 mois de cyclines",l:["Contraception ==M-1 à M+1==","Prescription < ++7 j++ pour être délivrée","ASAT/ALAT + EAL ==tous les 3 mois==","βHCG ==tous les mois et 5 sem après l'arrêt=="]},
+ {h:"EI : L'ASH Fait Tout Lourdement",l:["==L==iver : ↗ ASAT/ALAT","==A==ugmentation de l'acné le 1er mois","==S==écheresse cutanée + oculaire (!!CI lentilles!!)","==H==TIC si cyclines","==F==œtus (tératogène)","==T==roubles de l'humeur","==L==igaments (douleurs)"]}
+]);
+F("dermato","302","Mélanome",[
+ {h:"Exérèse",l:["Mélanome = ==exérèse sans marge== d'emblée (indice de Breslow, niveau de Clark, ulcérations, mitoses)","Marges selon Breslow :",["Breslow < ++1 mm++ : marge ++1 cm++","Breslow ++1–2 mm++ : marge ++1–2 cm++","Breslow > ++2 mm++ : marge ++2 cm++"]]}
+]);
+
+/* ---------------- ENDOC ---------------- */
+F("endoc","49","Puberté",[
+ {h:"Bilans",l:["Puberté précoce : œstradiol / testostérone, ==inhibine B==, FSH + LH ==avec stimulation==, écho pelvienne, âge osseux","Retard pubertaire : œstradiol / testostérone, FSH + LH ==basales, TSH, T4L, IGF-1, cortisol, PRL=="]}
+]);
+F("endoc","219","Hémochromatose",[
+ {h:"Biologie",tone:"postit",l:["↗ ferritine + ==CST > 45 %=="]}
+]);
+F("endoc","241","Goitre et nodule thyroïdien",[
+ {h:"Goitre",l:["==TSH== → si anormale : T4L",["TSH augmentée : Ac anti-TPO → si (−) Ac anti-TG","TSH diminuée + goitre diffus : Ac anti-R-TSH","TSH diminuée + goitre plurinodulaire : scintigraphie thyroïdienne"]]},
+ {h:"Causes selon la fonction",table:{head:["Goitre +","Causes"],rows:[["Hyperthyroïdie","Maladie de Basedow · GHMNT · thyroïdite de De Quervain · iatrogène"],["Hypothyroïdie","Carence iodée · thyroïdite d'Hashimoto · hypothyroïdie congénitale · iatrogénie"],["Euthyroïdie","Goitre simple · cancers thyroïdiens · amylose"]]}},
+ {h:"Nodule thyroïdien",l:["==Écho, TSH, calcitonine==","TSH augmentée : cytoponction échoguidée (classification ==BETHESDA==)","TSH diminuée : T4L, scintigraphie"]},
+ {h:"Cancers",l:["Carcinomes d'origine vésiculaire (papillaire, vésiculaire, oncocytaire, anaplasique) : cellule folliculaire, ==thyroglobuline==","Carcinome médullaire (= neuroendocrine) : cellule C, ==calcitonine + ACE=="]}
+]);
+F("endoc","250","Dénutrition",[
+ {h:"Apports énergétiques",l:["1 g de lipides = ++9 kcal++","1 g de glucides = ++4 kcal++","1 g de protéines = « 1 kca » (écrit ainsi sur la fiche, à vérifier)"]},
+ {h:"Critères phénotypiques",sub:"1 seul critère suffit",l:["Perte de poids ≥ ++5 %++ en 1 mois ou ≥ ++10 %++ en 6 mois ou ≥ ++10 %++ par rapport au poids habituel avant la maladie","IMC < ++18,5 kg/m²++","Réduction quantifiée de la masse et/ou de la fonction musculaire"]},
+ {h:"Critères étiologiques",sub:"1 seul critère suffit",l:["Réduction de la prise alimentaire ≥ ++50 %++ pendant > 1 semaine, ou toute réduction pendant > 2 semaines","Absorption réduite (maldigestion / malabsorption)","Situation d'agression (hypercatabolisme protéique ± Sd inflammatoire) : pathologie aiguë, chronique évolutive ou maligne évolutive"]},
+ {h:"Sévérité",sub:"1 seul critère suffit",l:["§Modérée",["++17++ < IMC < ++18,5++","Perte ≥ ++5 %++ en 1 mois ou ≥ ++10 %++ en 6 mois ou ≥ ++10 %++ vs poids habituel","Albuminémie > ++30++ et < ++35 g/L++"],"§Sévère",["IMC ≤ ++17++","Perte ≥ ++10 %++ en 1 mois ou ≥ ++15 %++ en 6 mois ou ≥ ++15 %++ vs poids habituel","Albuminémie ≤ ++30 g/L++"]]},
+ {h:"Âges extrêmes",l:["< ++18 ans++, critère phénotypique : + changement de couloir > ++2–3 DS++","< ++18 ans++ : pas de notion d'albumine pour le diagnostic","> ++70 ans++ : sarcopénie plutôt que masse musculaire, IMC < ++22++ (écrit « > 20 sévère » sur la fiche), albumine pareil"]},
+ {h:"Prise en charge",sub:"arbre décisionnel de la fiche",l:["Évaluer l'état nutritionnel + les besoins protéino-énergétiques + les ingesta","§Pas de dénutrition",["Ingesta = besoins ou EVA ≥ 7/10 : poids 1×/semaine","Ingesta < 2/3 des besoins ou EVA < 7/10 : alimentation enrichie et/ou CNO"],"§Dénutrition modérée",["Ingesta ≥ 2/3 des besoins ou EVA ≥ 7/10 : alimentation enrichie et/ou CNO","Ingesta < 2/3 des besoins ou EVA < 7/10 : vers la nutrition artificielle"],"§Dénutrition sévère → tube digestif fonctionnel ?",["Oui : nutrition ==entérale== (< 4 sem : sonde nasale ; > 4 sem : gastro- ou jéjunostomie), si échec → parentérale","Non : nutrition ==parentérale== (courte durée ≤ 10 j : VVP ; toutes durées : VVC)"],"§Après alimentation enrichie / CNO : réévaluation 1×/semaine",["Prise de poids, ingesta = besoins, EVA ≥ 7/10 : poursuite","Perte de poids, ingesta < besoins, EVA < 7/10 : nutrition entérale"]]}
+]);
+
+/* ---------------- ORL ---------------- */
+F("orl","89","Tympanogramme",[
+ {h:"Quatre types",l:["==A== : normal (pic centré sur 0)","==B== : épanchement (otite séromuqueuse), courbe plate","==C== : dépression (dysfonction tubaire), pic vers les pressions négatives","==D== : hypercompliance (discontinuité osseuse), « Tour Eiffel »"]}
+]);
+
+/* ---------------- GÉRIA ---------------- */
+F("geria","123","Fragilité",[
+ {h:"Critères de fragilité de Fried",l:["Perte de poids involontaire au cours des 12 derniers mois > ++4,5 kg++ ou > ++5 %++ du poids","Fatigue subjective","Réduction des activités physiques","Vitesse de marche diminuée (++0,8 m/s++)","Force de préhension diminuée : ==hand grip test=="]}
+]);
+
+/* ---------------- LCA ---------------- */
+F("lca","Se/Sp","Sensibilité, spécificité, VPP, VPN",[
+ {h:"Intrinsèque ou extrinsèque",l:["==Intrinsèque== : indépendant de la prévalence = Sp, Se, RV","==Extrinsèque== : dépend de la prévalence = VPP, VPN"]},
+ {h:"Définitions",l:["==Sensibilité== : proba test (+) quand malade (erreur par défaut)","==Spécificité== : proba test (−) quand pas malade (erreur par excès)","==VPP== : proba d'être malade quand test (+)","==VPN== : proba de ne pas être malade quand test (−)","==RV positif== : proba test (+) quand malade / proba test (+) quand pas malade","==RV négatif== : proba test (−) quand malade / proba test (−) quand pas malade"]}
+]);
+
+/* ---------------- PHARMACO ---------------- */
+F("pharmaco","330","Antiagrégants et corticothérapie",[
+ {h:"Antiagrégants plaquettaires",l:["Aspirine = inhibiteur de ==COX 1== = inhibiteur du thromboxane ==A2== → action ==irréversible==","Clopidogrel, prasugrel (==thiénopyridines==) = antagonistes du récepteur P2Y12 → action ==irréversible==","Ticagrélor = antagoniste du récepteur P2Y12 → action ==réversible=="]},
+ {h:"Bilan avant CTC prolongée",l:["==ECG, ECBU, IDR / quantiféron, radio thorax, ostéodensitométrie==","NFS, iono, GAJ, bilan phosphocalcique, 25-OH vit D","==EAL, BH, sérologies VIH + VHB + VHC=="]}
+]);
+
+/* =========================================================
+   JEUX — paires [question, réponse, (fiche si différente)]
+   ========================================================= */
+const GROUPS = [
+ /* gynéco */
+ {id:"e-sa",item:"gyneco-23",q:"Grossesse, {k} :",pairs:[["0–2 SA (préimplantatoire)","Loi du tout ou rien"],["3–8 SA (organogenèse)","Risque tératogène"],["> 8 SA (période fœtale)","Risque fonctionnel, trouble du développement"]]},
+ {id:"e-conge",item:"gyneco-23",q:"Congé maternité (prénatal / postnatal) : {k}",pairs:[["1 enfant à naître, 0 ou 1 déjà à charge","6 sem / 10 sem"],["1 enfant à naître, 2 ou plus à charge","8 sem / 18 sem"],["2 enfants à naître","12 sem / 22 sem"],["3 enfants ou plus à naître","24 sem / 22 sem"]]},
+ {id:"e-dg",item:"gyneco-23",q:"Diabète gestationnel, seuil : {k}",pairs:[["Glycémie à jeun T1","0,92 ≤ x < 1,26"],["HGPO H1","≥ 1,80"],["HGPO H2","≥ 1,53"]]},
+ {id:"e-pil",item:"gyneco-36",q:"Délai pour la pilule : {k}",pairs:[["Drospirénone seule","< 24 h"],["Pilule combinée","< 12 h"],["Désogestrel seul","< 12 h"],["Microprogestative (lévonorgestrel)","< 3 h"]]},
+ {id:"e-ampage",item:"gyneco-39",q:"AMP, âge : {k}",pairs:[["Femme, FIV / ICSI (prélèvement)","< 42 ans"],["Femme, FIV / ICSI (utilisation)","< 44 ans"],["Conjoint","< 59 ans"],["Conservation des gamètes, femme","29–37 ans"],["Conservation des gamètes, homme","29–45 ans"]]},
+ {id:"e-ampbil",item:"gyneco-39",q:"AMP, délai de validité : {k}",pairs:[["Sérologies VIH + VHB + VHC + syphilis","< 3 mois"],["PV","< 6 mois"],["Bilan spermatique + test de migration","< 1 an"]]},
+ {id:"e-ampnb",item:"gyneco-39",q:"AMP, nombre : {k}",pairs:[["Inséminations remboursées","6"],["FIV ou ICSI remboursées","4"],["Enfants max créés par donneur","10"]]},
+ {id:"e-fivj",item:"gyneco-39",q:"FIV, transfert au stade {k} :",pairs:[["4 cellules","J2"],["8 cellules","J3"],["blastocyste","J5"]]},
+ {id:"e-ths",item:"gyneco-124",q:"THS, {k} :",pairs:[["séquentiel : œstrogène","J1–J25"],["séquentiel : progestatif","J12–J25"],["combiné / continu","Œstrogène + progestatif J1–J30"],["progestatif (durée)","> 12 j/mois"]]},
+ /* infectio */
+ {id:"e-ang",item:"infectio-149",q:"Angine due à {k} :",pairs:[["EBV","Pseudomembraneuse"],["Diphtérie","Pseudomembraneuse"],["HSV1","Vésiculeuse"],["Herpangine (entérovirus)","Vésiculeuse"],["VZV","Vésiculeuse"],["Vincent","Ulcéro-nécrotique"],["Chancre syphilitique","Ulcéro-nécrotique"],["Agranulocytose sur hémopathie","Ulcéro-nécrotique"]]},
+ {id:"e-mening",item:"infectio-151",q:"TTT : {k}",pairs:[["Méningite à méningocoque","C3G IV relais amox IV 4 j + CTC 4 j"],["Méningite à pneumocoque","C3G 10–14 j + CTC 4 j"],["Méningite à Haemophilus","C3G 7 j + CTC 4 j (enfant) + éviction scolaire"],["Listeria","Amox 21 j + gentamicine 7 j"],["Neuro-tuberculose","Quadrithérapie 2 mois + bithérapie 10 mois"],["Lyme (neuro)","C3G IV 3–4 sem"],["Syphilis (neuro)","Péni G IV 2–3 sem"]]},
+ {id:"e-lcs",item:"infectio-151",q:"LCS normal : {k}",pairs:[["Éléments","< 5/mm³, 100 % mononucléées"],["Glycorachie","> 2/3 × glycémie"],["Protéinorachie","< 0,4 g/L"],["Lactatorachie","< 3,2 mmol/L"]]},
+ {id:"e-eiporte",item:"infectio-152",q:"EI, porte d'entrée {k} :",pairs:[["cutanée, matériel, toxico","S. aureus, staph coagulase (−), Candida"],["buccodentaire","Streptocoques oraux, HACEK"],["digestive","Streptococcus gallolyticus"],["digestive ou urinaire","Entérocoque"]]},
+ {id:"e-eittt",item:"infectio-152",q:"EI, TTT : {k}",pairs:[["Staphylocoque","Oxacilline 6 sem"],["Streptocoque","Amoxicilline 4 sem"],["Entérocoque","Amox + gentamicine ou amox + C3G 6 sem"],["Hémocs négatives","Augmentin + gentamicine 6 sem"],["Allergie","Vancomycine"],["Communautaire, prothèse > 1 an","Amox + oxacilline + gentamicine"],["Nosocomiale, prothèse < 1 an","Vancomycine + rifampicine + gentamicine"]]},
+ {id:"e-eisig",item:"infectio-152",q:"EI : {k}",pairs:[["Faux panaris d'Osler","Nodule douloureux fugace"],["Tache de Roth","Au FO"],["Placard de Janeway","Palmoplantaire"]]},
+ {id:"e-fcfrac",item:"infectio-156",q:"Bonne diffusion osseuse, FC FRAC : {k}",pairs:[["F (1re lettre)","Fosfomycine"],["C (2e lettre)","Clindamycine"],["F (3e lettre)","FQ"],["R","Rifampicine"],["A","Acide fusidique"],["C (dernière lettre)","Cyclines (doxycycline)"]]},
+ {id:"e-osdur",item:"infectio-156",q:"Durée de TTT : {k}",pairs:[["Arthrite septique à SASM","4–6 sem"],["Arthrite à streptocoque","4–6 sem (dont 2 sem IV)"],["Spondylodiscite","6 sem"],["Ostéite chronique","6–12 sem"]]},
+ {id:"e-itl",item:"infectio-159",q:"ITL : {k}",pairs:[["Isoniazide seul","6 mois"],["Rifampicine + isoniazide","3 mois"],["Rifampicine seule","4 mois"]]},
+ {id:"e-palprev",item:"infectio-170",q:"Prévention du palu : {k}",pairs:[["Doxycycline","S+4, 1×/j (CI grossesse)"],["Atovaquone-proguanil","S+3, 1×/j"],["Méfloquine","J-10 à S+3, 1×/sem"],["Enfant","Chloroquine, proguanil"]]},
+ {id:"e-palseuil",item:"infectio-170",q:"Paludisme, seuil : {k}",pairs:[["Parasitémie, gravité (adulte)","> 4 %"],["Parasitémie, hospitalisation","> 2 %"],["Parasitémie, gravité (enfant)","> 10 %"],["Créat, gravité","> 265"],["Créat, hospitalisation","> 150"],["Hb, gravité","< 7"],["Hb, hospitalisation","< 10"],["Lactates, gravité (enfant)","> 5"],["PAS, gravité","< 80"],["Glycémie, gravité","< 2,2 mmol/L"]]},
+ {id:"e-zoo",item:"infectio-173",q:"{k} = ?",pairs:[["Maladie de Lyme","Borrelia burgdorferi"],["Maladie des griffes du chat","Bartonellose"],["Fièvre Q","Coxiella burnetii"],["Rage","Lyssavirus"],["Hydatidose","Échinococcose"]]},
+ {id:"e-zoottt",item:"infectio-173",q:"TTT : {k}",pairs:[["Lyme","Doxycycline 14 j (enfant : amox)"],["Pasteurellose","Augmentin probabiliste"],["Maladie des griffes du chat","Azithromycine 5 j"],["Fièvre Q aiguë","Doxycycline 2–3 sem"],["Fièvre Q chronique","Doxycycline + hydroxychloroquine 18–24 mois"],["Leishmaniose","Cryothérapie + antimonié"],["Hydatidose","Chir ± albendazole M-1 à M+1"]]},
+ {id:"e-vect",item:"infectio-175",q:"Vecteur : {k}",pairs:[["Paludisme","Anophèle"],["Arboviroses, fièvre jaune","Aedes"],["Leishmaniose","Phlébotome femelle"],["Encéphalite japonaise","Culex"]]},
+ {id:"e-vacc",item:"infectio-175",q:"Vaccin du voyageur {k} : à partir de / durée",pairs:[["fièvre jaune","Dès 9 mois, à vie"],["hépatite A","Dès 1 an, 10 ans"],["typhoïde","Dès 2 ans, 3 ans"],["rage","Dès la marche, 5 ans"]]},
+ {id:"e-retour",item:"infectio-175",q:"Fièvre au retour, délai d'apparition : {k}",pairs:[["Shigella, choléra","< 7 j"],["Dengue, zika, chikungunya","< 7 j"],["Leptospirose, borréliose","7–14 j"],["Rickettsiose","7–14 j"],["VHA, VHB, VHE","> 14 j"],["Schistosomose","> 14 j"],["Trypanosomoses","Plusieurs mois"],["Leishmaniose viscérale","Plusieurs mois"],["Amoebose hépatique","Plusieurs mois"]]},
+ /* pneumo */
+ {id:"e-gds",item:"pneumo-203",q:"GDS normaux : {k}",pairs:[["PaO₂","75–100"],["PaCO₂","38–42"],["pH","7,38–7,42"],["HCO₃","22–26"]]},
+ {id:"e-abcde",item:"pneumo-205",q:"Hémoptysie, ABCDE : {k}",pairs:[["A","Aspergillome"],["B","BK = tuberculose"],["C","Cancer"],["D","Dilatation des bronches"],["E","EP"]]},
+ {id:"e-bode",item:"pneumo-209",q:"Score BODE : {k}",pairs:[["B","IMC"],["O","Obstruction (VEMS)"],["D","Dyspnée (mMRC)"],["E","Effort (test de marche de 6 min)"]]},
+ {id:"e-gold",item:"pneumo-209",q:"VEMS : {k}",pairs:[["GOLD 1","≥ 80 %"],["GOLD 2","50–79 %"],["GOLD 3","30–49 %"],["GOLD 4","< 30 %"]]},
+ {id:"e-fager",item:"pneumo-75",q:"Fagerström simplifié, score : {k}",pairs:[["0–1","Pas de dépendance"],["2–3","Dépendance modérée"],["4–5–6","Dépendance forte"]]},
+ {id:"e-paraneo",item:"pneumo-309",q:"Sd paranéoplasique : {k}",pairs:[["SIADH","Sd de Schwartz-Bartter"],["Pseudo-PTH","HyperCa"],["Pseudo-ACTH","Sd de Cushing"]]},
+ /* interne */
+ {id:"e-somuv",item:"interne-194",q:"Lupus, SO MUV : {k}",pairs:[["S","Silice"],["O","Œstrogènes"],["M","Médicaments"],["U","UV"],["V","Virus (EBV)"]]},
+ {id:"e-bimac",item:"interne-194",q:"Lupus induit, BIMAC : {k}",pairs:[["B","BB"],["I","Interféron"],["M","Minocycline"],["A","Anti-TNF α"],["C","Carbamazépine"]]},
+ {id:"e-gnl",item:"interne-194",q:"GN lupique classe {k} :",pairs:[["I","Dépôts mésangiaux en IF, MO normale"],["II","Épaississement mésangial"],["III","Prolifération endo + extracapillaire ≤ 50 % des glomérules"],["IV","Prolifération endo + extracapillaire ≥ 50 % des glomérules"],["V","Dépôts granuleux extramembraneux"],["VI","> 90 % de glomérules scléreux"]]},
+ {id:"e-cs",item:"interne-195",q:"CTC, dose : {k}",pairs:[["ACG","0,7 mg/kg/j, sevrage sur 18 mois"],["PPR","0,2–0,3 mg/kg/j"]]},
+ /* neuro */
+ {id:"e-ceph",item:"neuro-99",q:"Céphalées, seuil : {k}",pairs:[["Céphalées chroniques quotidiennes","> 15 j/mois pendant > 3 mois"],["Abus de triptans, antalgiques combinés, opioïdes","> 10 j/mois"],["Abus d'AINS, paracétamol","> 15 j/mois"]]},
+ {id:"e-myas",item:"neuro-98",q:"Myasthénie, TTT {k} :",pairs:[["symptomatique","Pyridostigmine, ambénonium"],["de crise","Ig polyvalentes IV 5 j / échanges plasmatiques"],["de fond","Azathioprine / MMF, CTC"],["de la forme anti-MuSK","Rituximab"]]},
+ /* rhumato */
+ {id:"e-nerfs",item:"rhumato-95",q:"Sensibilité de {k} :",pairs:[["N. médian","Face palmaire des 3 premiers doigts"],["N. ulnaire","5e doigt + moitié latérale du 4e"],["N. radial","Face dorsale des 1er + 2e doigts"],["C5","Moignon, bras latéral, ROT bicipital"],["C7","Tout le bras postérieur"],["C8-T1","Face médiale du bras"]]},
+ {id:"e-nerfm",item:"rhumato-95",q:"Motricité de {k} :",pairs:[["N. médian","Court abducteur, opposant du pouce, loge thénar"],["N. ulnaire","Adducteur du pouce, interosseux, hypothénar"],["N. radial","Extenseurs (main tombante), long supinateur"],["C5","Abduction du bras, rotation de l'épaule"],["C6","Flexion du coude + pouce, supination"],["C7","Extension du coude aux doigts, pronation"]]},
+ /* néphro */
+ {id:"e-pvfoie",item:"nephro-259",q:"ProtU intermittente, PV FOIE : {k}",pairs:[["P","Polyglobulie"],["V","VD (ICD)"],["F","Fièvre"],["O","Orthostatique"],["I","Infection"],["E","Effort"]]},
+ {id:"e-vald",item:"nephro-259",q:"SN secondaire au TTT, VALD : {k}",pairs:[["V","Anti-VEGF"],["A","AINS"],["L","Lithium"],["D","D-pénicillamine"]]},
+ {id:"e-gnrp",item:"nephro-261",q:"{k} :",pairs:[["GNRP type 1","Ac anti-MBG, dépôts IgG linéaires"],["GNRP type 2","Dépôts endomembraneux de complexes immuns"],["GNRP type 3","Pauci-immune, Φ dépôts"],["Néphropathie à IgA","Dépôts IgA + C3 mésangiaux"],["GEM","Dépôts granuleux IgG + C3 extramembraneux"],["SNLGM","Fusion des podocytes, Φ dépôts"]]},
+ {id:"e-e2cg",item:"nephro-261",q:"GN avec hypocomplémentémie, L'E2CG : {k}",pairs:[["L","Lupus"],["E (1)","Endocardite"],["E (2)","Emboles de cholestérol"],["C","Cryoglobulinémie"],["G","GNA post-streptococcique"]]},
+ {id:"e-pkd",item:"nephro-266",q:"Polykystose : {k}",pairs:[["PKD1","IR terminale à 54 ans"],["PKD2","IR terminale à 69 ans"]]},
+ /* hémato */
+ {id:"e-lymph",item:"hemato-319",q:"Marqueurs du lymphome {k} :",pairs:[["de Hodgkin","CD30, CD15"],["folliculaire","CD20, CD10, BCL6, BCL2 (t(14;18))"],["du manteau","CD20, CD5, cycline D1, t(11;14)"],["de la zone marginale","CD20"],["de Burkitt","CD20, CD10"]]},
+ {id:"e-annarbor",item:"hemato-319",q:"Ann Arbor stade {k} :",pairs:[["I","Un seul groupe de ganglions"],["II","≥ 2 groupes du même côté"],["III","Poitrine et abdomen"],["IV","Maladie généralisée"]]},
+ /* psy */
+ {id:"e-psycrit",item:"psy-66",q:"Critère diagnostique : {k}",pairs:[["EDC","2 sur 2 sem"],["TAG","3 sur 6 mois"],["Trouble panique","1 sur 1 mois"],["Agoraphobie","2 sur 6 mois"],["Trouble de stress aigu","9 sur 3 j – 1 mois"],["TCA","Sur 3 mois"]]},
+ {id:"e-adclass",item:"psy-74",q:"Classe de : {k}",pairs:[["Escitalopram","ISRS"],["Paroxétine","ISRS"],["Venlafaxine","IRSNA"],["Duloxétine","IRSNA"],["Amitriptyline","Tricyclique"],["Clomipramine","Tricyclique"],["Moclobémide","IMAO"],["Halopéridol","Antipsychotique 1re G"],["Loxapine","Antipsychotique 1re G"],["Amisulpride","Antipsychotique 2e G"],["Quétiapine","Antipsychotique 2e G"]]},
+ {id:"e-iatro",item:"psy-74",q:"TTT : {k}",pairs:[["Sd malin des neuroleptiques","Bromocriptine"],["Dyskinésie aiguë","Tropatépine IM"],["Delirium tremens","USI / réa + vit B1 + B6 + PP + BZD IV","psy-76"],["Sevrage en OH","Vit B1 PO ± diazépam","psy-76"]]},
+ {id:"e-encep",item:"psy-76",q:"Alcool, {k} :",pairs:[["Gayet-Wernicke","Carence en B1"],["Encéphalopathie pellagreuse","Carence en B3 (PP)"],["Korsakoff","Amnésie antérograde, circuit de Papez"],["Marchiafava-Bignami","Mutisme akinétique, astasie-abasie"],["Encéphalopathie hépatique","Lactulose + néomycine"]]},
+ /* cardio */
+ {id:"e-inr",item:"cardio-153",q:"INR cible, valve mécanique, risque {k} :",pairs:[["faible, 0 FR","2,5"],["faible, ≥ 1 FR","3,0"],["moyen, 0 FR","3,0"],["moyen, ≥ 1 FR","3,5"],["élevé, 0 FR","3,5"],["élevé, ≥ 1 FR","4,0"]]},
+ {id:"e-lipid",item:"cardio-223",q:"Dyslipidémie, TTT de 1re ligne : {k}",pairs:[["Hypercholestérolémie pure","Statines"],["Hypertriglycéridémie pure","Fibrate"]]},
+ /* dig */
+ {id:"e-signapp",item:"dig-356",q:"Appendicite, {k} :",pairs:[["Signe de Blumberg","Douleur à la décompression de la FID"],["Signe de Rovsing","Douleur à la compression de la FIG"],["Signe de Lapinski (Meltzer)","Appui sur McBurney + lever de la jambe"]]},
+ {id:"e-perit",item:"dig-357",q:"Péritonite, TTT : {k}",pairs:[["Sur ISLA","C3G"],["Sur infection de KT de dialyse","Vancomycine + aminosides intrapéritonéaux"],["Communautaire","Augmentin + amikacine IV + chir"],["Nosocomiale, signes de gravité","Pipé-tazo + aminosides IV + chir"]]},
+ {id:"e-hamb",item:"dig-357",q:"Péritonite {k} :",pairs:[["primaire","Pneumocoque, ISLA, KT de dialyse, tuberculose, SN"],["secondaire","Infection / perforation d'un viscère"],["tertiaire","Persiste malgré le TTT"]]},
+ {id:"e-forrest",item:"dig-355",q:"UGD, Forrest {k} :",pairs:[["Ia–IIb","IPP IV 72 h puis IPP double dose PO"],["IIc–III","Relais IPP double dose PO"]]},
+ {id:"e-child",item:"dig-279",q:"Child-Pugh {k} : survie à 1 an",pairs:[["A (5–6 points)","100 %"],["B (7–9 points)","80 %"],["C (10–15 points)","45 %"]]},
+ /* dermato */
+ {id:"e-acne",item:"dermato-111",q:"Acné, {k} agit sur :",pairs:[["Rétinoïde","Rétentionnel"],["Peroxyde de benzoyle","Papules / pustules"],["Cyclines","Sébum + inflammation"]]},
+ {id:"e-breslow",item:"dermato-302",q:"Mélanome, marge pour Breslow {k} :",pairs:[["< 1 mm","1 cm"],["1–2 mm","1–2 cm"],["> 2 mm","2 cm"]]},
+ /* endoc */
+ {id:"e-kcal",item:"endoc-250",q:"1 g de {k} =",pairs:[["lipides","9 kcal"],["glucides","4 kcal"]]},
+ {id:"e-tsa",item:"psy-67",q:"Outil diagnostique : {k}",pairs:[["ADI-R","Entretien semi-structuré avec les parents (TSA)"],["ADOS","Observation semi-structurée des symptômes (TSA)"],["Conners","Diagnostic du TDAH"]]},
+ /* orl, lca, pharmaco */
+ {id:"e-tympa",item:"orl-89",q:"Tympanogramme type {k} :",pairs:[["A","Normal"],["B","Épanchement (otite séromuqueuse)"],["C","Dépression (dysfonction tubaire)"],["D","Hypercompliance (discontinuité osseuse)"]]},
+ {id:"e-lca",item:"lca-Se/Sp",q:"{k} =",pairs:[["Sensibilité","Proba test (+) quand malade"],["Spécificité","Proba test (−) quand pas malade"],["VPP","Proba d'être malade quand test (+)"],["VPN","Proba de ne pas être malade quand test (−)"]]},
+ {id:"e-aap",item:"pharmaco-330",q:"{k} :",pairs:[["Aspirine","Inhibiteur de COX 1, irréversible"],["Clopidogrel, prasugrel","Anti-P2Y12, irréversible"],["Ticagrélor","Anti-P2Y12, réversible"]]}
+];
+
+/* ---------- Tri ---------- */
+const TRIS = [
+ {id:"t-pp",item:"gyneco-24",title:"Placenta praevia ou HRP ?",cats:{"Placenta praevia":["Hémorragie abondante, sang rouge","Utérus souple et indolore","Présentation siège ou transverse","RCF ok","Placenta bas inséré < 50 mm de l'orifice interne"],"HRP":["Contexte vasculaire","Hémorragie noirâtre, incoagulable","Ventre de bois","Retentissement maternel sans rapport avec l'hémorragie","Anomalie du RCF"]}},
+ {id:"t-ang",item:"infectio-149",title:"Quel type d'angine ?",cats:{"Pseudomembraneuse":["EBV","Diphtérie","VIH"],"Vésiculeuse":["HSV1","Herpangine","VZV"],"Ulcéro-nécrotique":["Angine de Vincent","Chancre syphilitique","Agranulocytose"]}},
+ {id:"t-myc",item:"infectio-155",title:"Candidose ou dermatophytose ?",cats:{"Candidose":["Saprophyte muqueux","Intertrigo des grands plis","Onychomycose des mains","Perlèche, muguet","Fluconazole PO"],"Dermatophytose":["Respecte les muqueuses","Intertrigo des petits plis","Ongles des orteils","Teigne, kérion","Terbinafine / itraconazole PO"]}},
+ {id:"t-prec",item:"interne-4",title:"Quelle précaution d'hygiène ?",cats:{"Gouttelettes":["Grippe","Méningocoque","Coqueluche","Rubéole","Oreillons","Parvovirus B19"],"Air":["Rougeole","Tuberculose"],"Contact":["SARM, BLSE","C. difficile","Gale","Pédiculose"]}},
+ {id:"t-diar",item:"infectio-176",title:"Quel tableau de diarrhée ?",cats:{"Cholériforme":["Vibrio cholerae","E. coli entérotoxinogène","Rotavirus","Bacillus cereus"],"Dysentérique":["Shigella","E. coli entéro-invasif","Amoebose colique"],"Gastro-entéritique":["Campylobacter","Salmonella non typhi","Yersinia","E. coli entéropathogène"]}},
+ {id:"t-tabac",item:"pneumo-75",title:"Tabac : protecteur ou K indépendant ?",cats:{"Tabac protecteur":["Sarcoïdose","K de l'endomètre","PE","Parkinson","RCH"],"K indépendant du tabac":["K du testicule","K de la prostate","Cholangiocarcinome"]}},
+ {id:"t-shunt",item:"pneumo-208",title:"IRC : quel mécanisme ?",cats:{"Effet shunt":["HTP","ICD"],"Shunt vrai":["FOP","MAV","Atélectasie","SDRA"],"Hypoventilation / espace mort":["Opiacés","Insuffisance diaphragmatique","EP"]}},
+ {id:"t-dmard",item:"rhumato-196",title:"Quelle famille de DMARD ?",cats:{"csDMARD":["Méthotrexate","Sulfasalazine","Léflunomide","Hydroxychloroquine"],"bDMARD":["Adalimumab","Tocilizumab","Rituximab","Abatacept"],"tsDMARD":["Tofacitinib","Baricitinib","Upadacitinib"]}},
+ {id:"t-ira",item:"nephro-348",title:"IRA fonctionnelle ou NTA ?",cats:{"IRA fonctionnelle":["Urée/créat P > 100","Na U < 20 mmol/L","FE Na < 1 %","U/P urée > 10","U/P créat > 30"],"NTA":["Urée/créat P < 50","Na U > 40 mmol/L","FE urée > 35–40 %","Na/K urinaire > 1","U/P créat < 30"]}},
+ {id:"t-nta",item:"nephro-348",title:"NTA ou néphropathie interstitielle ?",cats:{"NTA":["Choc","Aminosides","PDC iodés","Cisplatine","Aciclovir","Rhabdomyolyse"],"Néphropathie interstitielle":["PNA","Leptospirose","Fièvre hémorragique","Fluindione","IPP"]}},
+ {id:"t-ap",item:"psy-74",title:"Antipsychotique 1re ou 2e génération ?",cats:{"1re génération":["Halopéridol","Loxapine","Cyamémazine (-mazine)"],"2e génération":["Amisulpride","Olanzapine","Clozapine","Quétiapine","Rispéridone","Aripiprazole"]}},
+ {id:"t-oh",item:"psy-76",title:"Alcool : aide au sevrage ou maintien de l'abstinence ?",cats:{"Aide au sevrage":["Nalméfène","Baclofène"],"Maintien de l'abstinence":["Acamprosate","Naltrexone","Disulfirame"]}},
+ {id:"t-lip",item:"cardio-223",title:"Quelle dyslipidémie secondaire ?",cats:{"Hypercholestérolémie pure":["Cholestase","Anorexie"],"Hypertriglycéridémie pure":["OH","Diabète","Acromégalie","Œstrogènes","Rétinoïdes","ARV","BB"],"Hyperlipidémie mixte":["SN","VIH","Grossesse","Diurétiques thiazidiques"]}},
+ {id:"t-goitre",item:"endoc-241",title:"Goitre : quelle fonction thyroïdienne ?",cats:{"Hyperthyroïdie":["Maladie de Basedow","GHMNT","Thyroïdite de De Quervain"],"Hypothyroïdie":["Carence iodée","Thyroïdite d'Hashimoto","Hypothyroïdie congénitale"],"Euthyroïdie":["Goitre simple","Cancers thyroïdiens","Amylose"]}},
+ {id:"t-denut",item:"endoc-250",title:"Dénutrition modérée ou sévère ?",cats:{"Modérée":["17 < IMC < 18,5","Perte ≥ 5 % en 1 mois","Perte ≥ 10 % en 6 mois","Albumine entre 30 et 35 g/L"],"Sévère":["IMC ≤ 17","Perte ≥ 10 % en 1 mois","Perte ≥ 15 % en 6 mois","Albumine ≤ 30 g/L"]}},
+ {id:"t-lca",item:"lca-Se/Sp",title:"Intrinsèque ou extrinsèque ?",cats:{"Intrinsèque (indépendant de la prévalence)":["Sensibilité","Spécificité","Rapport de vraisemblance"],"Extrinsèque (dépend de la prévalence)":["VPP","VPN"]}}
+];
+
+/* ---------- Ordre : [élément, précision révélée] ---------- */
+const ORDRES = [
+ {id:"o-sa",item:"gyneco-23",title:"Périodes de la grossesse",seq:[["Loi du tout ou rien","0–2 SA"],["Risque tératogène","3–8 SA"],["Risque fonctionnel","> 8 SA"]]},
+ {id:"o-fiv",item:"gyneco-39",title:"Étapes de la FIV",seq:[["Agoniste / antagoniste GnRH","blocage de l'axe HH"],["FSH","une fois le blocage obtenu"],["Analogue hCG / agonistes GnRH","follicules 16–20 mm"],["Ponction ovocytaire + sperme","36 h après"],["Fécondation","20–24 h"],["Transfert","2–3 j après la ponction"],["Test de grossesse","J14 de la ponction"]]},
+ {id:"o-ins",item:"gyneco-39",title:"Étapes de l'insémination",seq:[["Stimulation par FSH","ovulation"],["Analogue hCG","follicules matures"],["Insémination","36 h après"]]},
+ {id:"o-emm",item:"neuro-105",title:"État de mal épileptique",seq:[["CTCG > 5 min ou 2 crises sans retour à la conscience","état de mal"],["Rivotril 1 mg IV directe","1re ligne"],["Rivotril 1 mg IVD","après 5 min"],["Lévétiracétam, valproate, phénobarbital, fosphénytoïne + réa","après 5 min de plus"]]},
+ {id:"o-gnl",item:"interne-194",title:"GN lupique, classe I → VI",seq:[["MO normale, dépôts en IF","I"],["Épaississement mésangial","II"],["Prolifération ≤ 50 % des glomérules","III"],["Prolifération ≥ 50 % des glomérules","IV"],["Dépôts extramembraneux","V"],["> 90 % de glomérules scléreux","VI"]]},
+ {id:"o-gold",item:"pneumo-209",title:"GOLD, de 1 à 4",seq:[["VEMS ≥ 80 %","GOLD 1"],["VEMS 50–79 %","GOLD 2"],["VEMS 30–49 %","GOLD 3"],["VEMS < 30 %","GOLD 4"]]},
+ {id:"o-mmrc",item:"pneumo-203",title:"mMRC, de 0 à 4",seq:[["Effort important seulement","0"],["En se dépêchant ou en pente légère","1"],["Plus lent que les gens de son âge","2"],["S'arrête après 90 m","3"],["Rien qu'à s'habiller","4"]]},
+ {id:"o-ann",item:"hemato-319",title:"Ann Arbor, de I à IV",seq:[["Un seul groupe de ganglions","I"],["≥ 2 groupes du même côté","II"],["Poitrine et abdomen","III"],["Maladie généralisée","IV"]]},
+ {id:"o-sh",item:"ortho-361",title:"Salter et Harris, de I à V",seq:[["Glissement épiphysaire seul","I"],["Cartilage + triangle métaphysaire","II"],["À travers l'épiphyse","III"],["Épiphyse + métaphyse","IV"],["Écrasement du cartilage","V"]]},
+ {id:"o-kh",item:"onco-290",title:"Incidence des K chez l'homme",seq:[["Prostate","1er"],["Poumon","2e"],["CCR","3e"],["Vessie","4e"]]},
+ {id:"o-kf",item:"onco-290",title:"Incidence des K chez la femme",seq:[["Sein","1er"],["CCR","2e"],["Poumon","3e"]]},
+ {id:"o-kg",item:"onco-290",title:"Incidence des K, population générale",seq:[["Sein","1er"],["Prostate","2e"],["Poumon","3e"],["CCR","4e"]]},
+ {id:"o-mh",item:"onco-290",title:"Mortalité par K chez l'homme",seq:[["Poumon","1er"],["CCR","2e"],["Prostate","3e"]]},
+ {id:"o-mf",item:"onco-290",title:"Mortalité par K chez la femme",seq:[["Sein","1er"],["Poumon","2e"],["CCR","3e"]]},
+ {id:"o-fr",item:"onco-290",title:"Facteurs de risque de K, du plus au moins important",seq:[["Tabac","1er"],["OH","2e"],["Alimentation","20–25 %"],["Infectieux","4 %"],["Environnement","5–10 %"]]},
+ {id:"o-chol",item:"cardio-223",title:"Hypercholestérolémie pure : ordre des TTT",seq:[["Statines","1re"],["Ézétimibe","2e"],["Inhibiteur de PCSK9","3e"]]},
+ {id:"o-tb",item:"infectio-159",title:"Tuberculose : consultations de suivi",seq:[["J15","consult + ASAT/ALAT"],["M1","consult + radio + ASAT/ALAT"],["M2","consult + radio + ASAT/ALAT + ophtalmo"],["M4","consult + ASAT/ALAT"],["M6","consult + radio + ASAT/ALAT"],["M9","consult + radio"],["2 ans","consult + radio"]]},
+ {id:"o-pal",item:"infectio-170",title:"Paludisme : suivi",seq:[["J3","suivi"],["J7","suivi"],["J28","suivi"]]},
+ {id:"o-bres",item:"dermato-302",title:"Mélanome : marge selon Breslow",seq:[["Breslow < 1 mm","1 cm"],["Breslow 1–2 mm","1–2 cm"],["Breslow > 2 mm","2 cm"]]}
+];
+
+/* ---------- Flashcards supplémentaires [fiche, question, réponse] ---------- */
+const FLASH = [
+ ["gyneco-23","Combien de consultations prénatales obligatoires, et quand ?","7 : une avant 15 SA, puis une par mois"],
+ ["gyneco-23","Consultation postnatale obligatoire : quand ?","6–8 semaines post-partum"],
+ ["gyneco-24","Placenta praevia : seuil de distance à l'orifice interne du col ?","< 50 mm (ou placenta recouvrant le col)"],
+ ["gyneco-24","HRP : contexte ?","Vasculaire : > 35 ans, HTA, tabac, cocaïne, primipare, prééclampsie"],
+ ["gyneco-33","Composition du lait maternel ?","Eau, oligoéléments, lactose, α-lactoglobuline, lysozymes, Ig, lactoferrine, AGE (acides linoléique et α-linoléique), TG, pauvre en caséine"],
+ ["gyneco-33","Lait artificiel : dilution ?","1 cuillère-mesure pour 30 mL"],
+ ["gyneco-33","Vitamine K du nouveau-né : quand ?","H4 – J4 (– S4 si allaitement maternel exclusif)"],
+ ["gyneco-37","Consultation post-IVG ?","J14–J21, obligatoire"],
+ ["gyneco-39","Conditions pour une insémination ?","≥ 1 trompe perméable + ≥ 1 million de spz mobiles"],
+ ["gyneco-39","FIV : délai entre déclenchement et ponction ?","36 h"],
+ ["gyneco-39","Préservation de la fertilité : techniques ?","Oncofertilité, transposition ovarienne (RT), FIV avec vitrification, MIV ovocytes, conservation"],
+ ["gyneco-124","THS : voie de l'œstrogène ?","Transdermique"],
+ ["gyneco-124","THS : voies du progestatif ?","PO, vaginale, DIU (lévonorgestrel), > 12 j/mois"],
+ ["gyneco-344","Prééclampsie : définition ?","PAS > 140 et/ou PAD > 90 + protéinurie des 24 h > 0,3 g/L"],
+ ["infectio-149","TDR de l'angine : à quel âge ?","Pas < 3 ans, systématique 3–15 ans, si Mac Isaac ≥ 2 après 15 ans"],
+ ["infectio-149","Score de Mac Isaac : critères ?","T° > 38 °, absence de toux, ADP cervicales antérieures douloureuses, volume ou exsudat amygdalien, âge (15–44 ans : 0 ; > 45 ans : −1)"],
+ ["infectio-149","Sd de Lemierre ?","Thrombose de la veine jugulaire interne post angine de Vincent"],
+ ["infectio-149","SBHA / scarlatine : éviction ?","Éviction de collectivité 48 h"],
+ ["infectio-151","Méningite : pneumocoque ou méningocoque selon l'âge ?","1–25 ans : méningocoque ++ · < 1 an et > 25 ans : pneumocoque ++"],
+ ["infectio-151","IRM avant la PL si ?","Signe de focalisation, HTIC, GSC < 11, crise d'épilepsie"],
+ ["infectio-151","Contre-indications de la PL ?","TP < 50 %, TCA > 1,5, plaquettes < 50, coagulopathie, anticoag (pas les AAP), CIVD, instabilité, infection au point de ponction, processus extensif, engagement, crise convulsive persistante"],
+ ["infectio-151","Méningocoque : prophylaxie des cas contacts ?","< 10 j : rifampicine 2 j (ou FQ, C3G IV) + vaccin ACYW135"],
+ ["infectio-151","Haemophilus : prophylaxie des cas contacts ?","< 4 ans : rifampicine 4 j"],
+ ["infectio-151","Listeria : atteinte typique ?","Rhombencéphalite (atteinte du TC)"],
+ ["infectio-151","Méningite tuberculeuse : atteinte typique ?","Méningite basilaire (TC + dysautonomie)"],
+ ["infectio-151","LCS purulent : examen direct négatif, pourquoi ?","Méningite décapitée, bactérie fragile, faible inoculum"],
+ ["infectio-152","Critères de Duke : diagnostic certain ?","2 majeurs, ou 1 majeur + 3 mineurs, ou 5 mineurs"],
+ ["infectio-152","SEPHORA : complications de l'EI ?","SPM, Érythème de Janeway, Purpura vasculaire, Hémorragie sous-unguéale, faux panaris d'Osler, taches de Roth, Anévrisme mycotique"],
+ ["infectio-152","EI : hémocultures ?","Toujours : 3 paires, prévenir le labo pour une incubation de 14 j"],
+ ["infectio-152","EI : prévention chez le dentiste ?","Amox PO < 1 h avant"],
+ ["infectio-152","Cardiopathies à haut risque d'EI ?","Prothèses valvulaires, cardiopathies congénitales cyanogènes non opérées et dérivations, ATCD d'EI"],
+ ["infectio-154","PAC grave : TTT ?","C3G + macrolides ou lévofloxacine (FQ) 7 j"],
+ ["infectio-154","ATB efficaces contre la légionelle ?","MAQUIS : macrolides, quinolones"],
+ ["infectio-155","Impétigo, furonculose hors poussée : TTT ?","Mupirocine"],
+ ["infectio-155","Abcès cutané : TTT ?","Clindamycine, pristinamycine, oxacilline, cloxacilline"],
+ ["infectio-155","Teigne : TTT ?","Éviction scolaire + terbinafine (trichophytique) / itraconazole (microsporique)"],
+ ["infectio-159","TTT de la tuberculose maladie ?","RIEP 2 mois puis RI 4 mois, ou RIE 2 mois puis RI 7 mois"],
+ ["infectio-159","Précaution air : masques ?","FFP2 pour les soignants, masque chirurgical + chambre en pression (−) pour le patient"],
+ ["infectio-161","FR de BLSE ?","IU / colonisation, ATB ou voyage < 3 mois, IAS, anomalie de l'arbre urinaire"],
+ ["infectio-161","PNA à risque de complication ?","Anomalie urinaire, homme, grossesse, > 65 ans + ≥ 3 critères de Fried, > 75 ans, DFG < 30, ID"],
+ ["infectio-162","Syphilis : guérison ?","Négativation du VDRL : 1 an si précoce, 2 ans si tardive"],
+ ["infectio-162","Conjonctivite néonatale : gonocoque ou chlamydia ?","Gonocoque : purulente J2–J4 · Chlamydia : pseudomembraneuse J8"],
+ ["infectio-164","Érythrodermie : définition ?","Érythème > 90 % de la peau, > 6 sem, desquamative"],
+ ["infectio-169","VIH : objectifs du TTT ?","CV < 50 copies/mL, LTCD4 > 500"],
+ ["infectio-169","VIH : TTT de la toxoplasmose ?","Sulfadiazine + pyriméthamine + acide folinique + alcalinisation des urines"],
+ ["infectio-169","Pathologies classant SIDA ?","Infection opportuniste, PNP bactérienne, bactériémie à salmonella non typhi, LNH, Kaposi (HHV8), K du col"],
+ ["infectio-170","Palu grave : TTT ?","Artésunate IV H0–H12–H24, puis NFS hebdomadaire pendant 1 mois (anémie hémolytique retardée)"],
+ ["infectio-170","Palu simple : TTT ?","Artéméther-luméfantrine, arténimol-pipéraquine (ECG, CI au T1, quinine IV si vomissements)"],
+ ["infectio-171","Gale : TTT ?","Ivermectine PO J0–J7 + benzoate de benzyle J0–J8, patient + entourage"],
+ ["infectio-173","Lyme : stades ?","Localisée précoce (érythème migrant > 5 cm), disséminée précoce < 6 mois, disséminée tardive > 6 mois"],
+ ["infectio-173","Granulome : CROCS ?","Crohn, Rhumatoïde, Origine externe, Chat (bartonellose), Sarcoïdose"],
+ ["infectio-174","Migrant sous CTC / IS : que donner ?","Ivermectine (contre l'anguillulose)"],
+ ["infectio-175","Diarrhée du voyageur : TTT ?","ATB non recommandés, racécadotril (si besoin : azithromycine)"],
+ ["infectio-175","Fièvre typhoïde : signes ?","Pouls dissocié, fièvre en plateau, angine de Duguet, insomnie, tuphos, exanthème lenticulaire"],
+ ["infectio-176","Diarrhée : quand des ATB, lesquels ?","Dysentérique fébrile, cholériforme / gastro-entéritique sévère : azithromycine, FQ"],
+ ["infectio-177","Mécanismes de résistance ?","Bêta-lactamase, modification de cible (PLP / PLP2a), ↘ perméabilité, ↗ efflux"],
+ ["pneumo-75","Tabac : place dans la mortalité ?","Responsable de 25 % des K · K = 1re cause de mortalité liée au tabac · 1re cause de mortalité CV évitable · 1er FRCV de la femme non ménopausée"],
+ ["pneumo-154","Pneumonie grave : examens ?","Antigénurie pneumocoque + légionelle, ECBC, PCR"],
+ ["pneumo-188","Asthme aigu grave : TTT ?","O₂, CTC IV, BDCA en nébulisation"],
+ ["pneumo-188","Rhinite allergique persistante ?","> 4 sem"],
+ ["pneumo-204","Toux aiguë vs chronique ?","Aiguë < 3 sem / chronique > 8 sem"],
+ ["pneumo-205","Hémoptysie : examen de 1re intention ?","Angio-TDM thoracique au temps aortique"],
+ ["pneumo-205","Hémoptysie de grande abondance ?","> 100 mL en une fois, > 200 mL/24 h (> 50 mL si IRC), > 600 mL/48 h si récidivant"],
+ ["pneumo-206","Pleurésie purulente : critères (≥ 1) ?","Dépasse le hile, cloisonné, purulent, germe à l'examen direct, culture (+)"],
+ ["pneumo-208","IRC : définition (errata) ?","PaO₂ < 70 mmHg à 3 sem d'intervalle"],
+ ["pneumo-209","BPCO : examens de 1re intention ?","EFR, radio thorax, ECG, NFS, dosage de l'α1-antitrypsine, ETT"],
+ ["pneumo-360","PNO soupape = ?","PNO sous tension"],
+ ["interne-186","Prick tests : arrêts à prévoir ?","Antihistaminiques 5–7 j, omalizumab 6 sem, dermocorticoïdes 3 sem (CTC PO en cure courte ok)"],
+ ["interne-191","Neutropénie fébrile ambulatoire : TTT ?","Augmentin + ciprofloxacine"],
+ ["interne-194","Lupus : TTT ?","Photoprotection + contraception (CI œstrogènes) + hydroxychloroquine (fond) + CTC (poussée)"],
+ ["interne-194","SAPL : TTT ?","Sans ATCD de thrombose : aspirine · avec ATCD : héparine, AVK · récidive sous anticoag, grossesse : + aspirine"],
+ ["interne-195","ACG : examens ?","Biopsie et écho de l'artère temporale + TDM TAP injecté + TEP 18FDG"],
+ ["interne-195","ACG et PPR : liens ?","PPR 3× plus fréquente · 50 % des ACG = PPR, 20 % des PPR = ACG"],
+ ["interne-201","Mort encéphalique : 3 critères ?","Absence de conscience et de motricité spontanée, abolition des réflexes du TC, absence de ventilation (PaCO₂ > 60)"],
+ ["interne-211","Sd de Löfgren ?","Érythème noueux, ADP hilaires bilatérales, arthralgies, fièvre, fatigue"],
+ ["interne-220","Hémopathies sans ADP ?","SMD, myélome"],
+ ["ophtalmo-81","NORB vs NOIAA : papille ?","NORB : papille ok · NOIAA : papille atteinte"],
+ ["ophtalmo-83","Glaucome et mélanodermie ?","Risque × 3–4"],
+ ["ophtalmo-84","Collyres qui ↘ la sécrétion d'humeur aqueuse ?","BB, inhibiteurs de l'anhydrase carbonique, α2-adrénergiques (les prostaglandines ↗ l'élimination)"],
+ ["neuro-98","Myasthénie : médicaments contre-indiqués ?","Aminosides, cyclines IV / IM, macrolides, quinolones, succinylcholine"],
+ ["neuro-98","Myasthénie oculaire = ?","Atteinte localisée aux yeux > 2 ans"],
+ ["neuro-106","Triade parkinsonienne ?","Bradykinésie + rigidité plastique + tremblement de repos"],
+ ["neuro-108-132","Alzheimer : profil mnésique ?","Problème de stockage : rappel différé non aidé par l'indiçage (test des 5 mots)"],
+ ["neuro-131","Triade de Hakim ?","Troubles de la marche + troubles vésico-sphinctériens + troubles des fonctions supérieures"],
+ ["neuro-341","TTT du vasospasme post-HSA ?","Nimodipine"],
+ ["rhumato-128","Ostéoporose post-ménopausique vs sénile ?","Post-ménopausique : os trabéculaire · sénile : trabéculaire + cortical"],
+ ["rhumato-200","Liquide mécanique vs inflammatoire ?","Mécanique : GB < 2000, visqueux · inflammatoire : GB > 2000, trouble, fluide"],
+ ["nephro-259","Syndrome néphrotique : définition ?","ProtU > 3 g/j ou > 3 g/g + albuminémie < 30 g/L (enfant : > 2 g/g ou > 200 mg/mmol)"],
+ ["nephro-259","SN pur ?","Pas d'hématurie microscopique, pas d'HTA, pas d'IRA organique"],
+ ["nephro-261","Quand ne pas faire de PBR ?","1–10 ans, SN + Ac anti-PLA2R, rétinopathie diabétique sans hématurie, amylose sur BGSA, ATCD familial"],
+ ["nephro-261","GNA post-infectieuse ?","15 j d'intervalle libre, Sd néphritique, prolifération endocapillaire, dépôts C3 (ciel étoilé + humps)"],
+ ["nephro-263","PTT = ?","Sd de Moschowitz, déficit en ADAMTS-13, atteinte cérébrale"],
+ ["nephro-263","SHU post-diarrhéique < 15 ans ?","Déclaration obligatoire, PCR sur écouvillon rectal, pas de PBR"],
+ ["nephro-266","Polykystose : critère diagnostique ?","ATCD familial + > 10 kystes (< 5 kystes exclut)"],
+ ["nephro-267","Trou anionique : formule et normale ?","Na + K − (Cl + HCO₃) = 16 ± 4 mmol/L"],
+ ["nephro-267","Osmolarité ?","2 × Na + glycémie"],
+ ["hemato-213","Ferritine normale, bilan complémentaire ?","CRP + orosomucoïde + fer sérique + transferrine + CST + CTF, à jeun"],
+ ["hemato-296","Agranulocytose : médicaments en cause ?","Clozapine, antithyroïdiens, ATB, rituximab"],
+ ["hemato-319","Signes B ?","Fièvre > 38 pendant > 8 j, amaigrissement > 10 % en < 6 mois, sueurs"],
+ ["psy-66","TSPT : critères ?","1 évitement + 2 altérations de l'humeur + 2 altérations de la réactivité sur 1 mois · éviter les BZD"],
+ ["psy-66","TOC : TTT ?","ISRS à dose × 2 par rapport à l'EDC + BZD en crise"],
+ ["psy-67","TDAH : critères et TTT ?","2 contextes + début < 12 ans sur 6 mois → méthylphénidate dès 6 ans"],
+ ["psy-74","Surveillance sous clozapine ?","NFS 1×/sem puis 1×/mois"],
+ ["psy-74","Zolpidem : prescription ?","Ordonnance sécurisée, max 28 j"],
+ ["psy-74","Durée max des hypnotiques ?","4 semaines en incluant le sevrage"],
+ ["psy-76","Grammes d'alcool ?","Degré × volume (L) × 8"],
+ ["psy-76","Coma éthylique : que rechercher ?","Hypoglycémie, acidocétose, hyponatrémie"],
+ ["cardio-222","Formule de Friedewald ?","LDLc = CT − HDLc − TG/5, si TG < 3,5 g/L"],
+ ["cardio-222","SCORE-2 : variables ?","Âge, sexe, cholestérol non HDL, PAS, tabac (prévention primaire)"],
+ ["cardio-223","Statines et CPK ?","> 5N : arrêt · < 5N : baisser la dose, changer de statine, prise intermittente"],
+ ["cardio-235","Péricardite : diagnostic ?","≥ 2 critères : précordialgie typique, frottement, modifications ECG, épanchement"],
+ ["cardio-235","Péricardite : ECG ?","Sus-ST concave vers le haut, sous-décalage de PQ, tachycardie sinusale, microvoltage si tamponnade"],
+ ["ortho-361","Critères d'Ottawa : palpation ?","Pointe et 6 cm distaux des malléoles, base du Ve métatarsien, os naviculaire"],
+ ["onco-292","Prélèvement à l'état frais : indications ?","K pédiatrique, lymphome, ostéosarcome, extemporané, IFD"],
+ ["rea-332","Diagnostic d'état de choc ?","Signes d'hypoperfusion périphérique"],
+ ["rea-337","Paracétamol : quand donner la NAC d'emblée ?","Ingestion > 8 h ou heure inconnue (arrêt si paracétamolémie H4–H15 non toxique)"],
+ ["rea-345","Malaise grave du nourrisson ?","Modification du tonus + de la coloration ± perte de connaissance"],
+ ["rea-345","Mort inattendue du nourrisson ?","Mort brutale sans ATCD justifiable chez un enfant < 2 ans"],
+ ["dig-167","Hépatite aiguë ?","< 6 mois, ↗ ASAT/ALAT + nécrose hépatocytaire"],
+ ["dig-279","Score MELD ?","Bilirubine, INR, créat (liste de transplantation)"],
+ ["dig-304","Critères de Barcelone ?","Cirrhose, nodule > 1 cm, wash-in, wash-out"],
+ ["dig-355","Avant l'EOGD : quoi et quelle précaution ?","Érythromycine IV, faire un ECG avant"],
+ ["dig-355","Hémorragie digestive du cirrhotique : ATB ?","C3G / FQ 5–7 j (prévention de l'ISLA)"],
+ ["dig-356","Appendicite à l'écho ?","Diamètre > 6 mm, paroi > 3 mm, incompressible, infiltration de la graisse"],
+ ["dig-357","Péritonite : quand ajouter une échinocandine ?","Si < 3 parmi : choc / sus-mésocolique / femme / ATB > 48 h"],
+ ["dermato-111","Isotrétinoïne : surveillance ?","Contraception M-1 à M+1, délivrance < 7 j, ASAT/ALAT + EAL tous les 3 mois, βHCG tous les mois et 5 sem après"],
+ ["dermato-111","Isotrétinoïne : EI (L'ASH Fait Tout Lourdement) ?","Liver, Augmentation de l'acné, Sécheresse (CI lentilles), HTIC si cyclines, Fœtus, Troubles de l'humeur, Ligaments"],
+ ["endoc-49","Puberté précoce : bilan ?","Œstradiol / testostérone, inhibine B, FSH + LH avec stimulation, écho pelvienne, âge osseux"],
+ ["endoc-219","Hémochromatose : biologie ?","↗ ferritine + CST > 45 %"],
+ ["endoc-241","Nodule thyroïdien : bilan initial ?","Écho, TSH, calcitonine"],
+ ["endoc-241","Carcinome médullaire : marqueurs ?","Calcitonine + ACE (cellule C)"],
+ ["geria-123","Critères de Fried ?","Perte de poids > 4,5 kg ou > 5 %, fatigue, ↘ activité, vitesse de marche ↘ (0,8 m/s), force de préhension ↘"],
+ ["pharmaco-330","Bilan avant CTC prolongée ?","ECG, ECBU, IDR / quantiféron, radio thorax, ostéodensitométrie, NFS, iono, GAJ, phosphocalcique, vit D, EAL, BH, sérologies VIH + VHB + VHC"]
+];
+return {CONFIG, ITEMS, GROUPS, TRIS, ORDRES, FLASH};
+})();
 
 /* =========================================================
    APP
@@ -760,9 +1619,8 @@ const I = {
   cane: ic('<path d="M9 22V8a4 4 0 0 1 8 0v1"/><path d="M5 22h8"/>'),
   pill: ic('<rect x="2.5" y="8" width="19" height="8" rx="4" transform="rotate(-35 12 12)"/><path d="M9.5 8.5l5 7"/>')
 };
-const SPEC_ORDER = CONFIG.specs.map(s => s.id);
-const SPECS = {}; CONFIG.specs.forEach(s => SPECS[s.id] = {name:s.name, icon:I[s.icon] || I.cards, c:s.c});
-const ITEM_BY = {}; ITEMS.forEach(it => ITEM_BY[it.id] = it);
+/* Jeu de données actif (onglet) : réassigné par useDataset() */
+let CONFIG, ITEMS, GROUPS, TRIS, ORDRES, FLASH, SPEC_ORDER, SPECS, ITEM_BY, CARDS, SEARCH, KEY, S, DS_ID;
 const MODES = [
   {id:"flash",name:"Flashcards",desc:"Question au recto, réponse au verso. Ce que tu rates revient plus souvent.",icon:I.layers,unit:"%"},
   {id:"quiz",name:"QCM",desc:"10 questions, corrigées tout de suite avec la fiche d'origine.",icon:I.list,unit:"%"},
@@ -774,22 +1632,41 @@ const MODES = [
 
 /* ---------- cartes (flashcards) ---------- */
 function hash(s){ let h=5381; for(let i=0;i<s.length;i++) h=((h<<5)+h+s.charCodeAt(i))|0; return (h>>>0).toString(36); }
-const CARDS = [];
-GROUPS.forEach(g => g.pairs.forEach(p => CARDS.push({id:"g"+hash(g.id+p[0]), item:p[2]||g.item, q:g.q.replace("{k}",p[0]), a:p[1]})));
-FLASH.forEach(f => CARDS.push({id:"f"+hash(f[1]), item:f[0], q:f[1], a:f[2]}));
 
 /* ---------- état sauvegardé ---------- */
-const KEY = CONFIG.key;
-const S = (() => {
+function loadState(key){
   let d = {};
-  try { d = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e) {}
-  return Object.assign({mastered:{}, box:{}, best:{}, days:{}, exam:null, filter:"all"}, d);
-})();
+  try { d = JSON.parse(localStorage.getItem(key)) || {}; } catch(e) {}
+  return Object.assign({mastered:{}, box:{}, best:{}, days:{}, filter:"all"}, d);
+}
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} }
 function iso(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
 function today(){ return iso(new Date()); }
-if (!S.exam) { const d = new Date(); d.setDate(d.getDate()+7); S.exam = iso(d); save(); }
-function daysLeft(){ return Math.round((new Date(S.exam+"T00:00") - new Date(today()+"T00:00")) / 864e5); }
+
+/* Date du concours : commune aux deux onglets */
+const EXAM_KEY = "revision-manon-exam", DS_KEY = "revision-manon-onglet";
+let EXAM = null;
+try { EXAM = localStorage.getItem(EXAM_KEY) || (JSON.parse(localStorage.getItem("mur-de-manon-v1")) || {}).exam || null; } catch(e) {}
+if (!EXAM) { const d = new Date(); d.setDate(d.getDate()+7); EXAM = iso(d); }
+function setExam(v){ EXAM = v; try { localStorage.setItem(EXAM_KEY, v); } catch(e) {} }
+setExam(EXAM);
+function daysLeft(){ return Math.round((new Date(EXAM+"T00:00") - new Date(today()+"T00:00")) / 864e5); }
+
+/* ---------- changer d'onglet ---------- */
+function useDataset(id){
+  const d = DATASETS[id] || DATASETS[DS_ORDER[0]];
+  ({CONFIG, ITEMS, GROUPS, TRIS, ORDRES, FLASH} = d);
+  DS_ID = CONFIG.id;
+  SPEC_ORDER = CONFIG.specs.map(s => s.id);
+  SPECS = {}; CONFIG.specs.forEach(s => SPECS[s.id] = {name:s.name, icon:I[s.icon] || I.cards, c:s.c});
+  ITEM_BY = {}; ITEMS.forEach(it => ITEM_BY[it.id] = it);
+  CARDS = [];
+  GROUPS.forEach(g => g.pairs.forEach(p => CARDS.push({id:"g"+hash(g.id+p[0]), item:p[2]||g.item, q:g.q.replace("{k}",p[0]), a:p[1]})));
+  FLASH.forEach(f => CARDS.push({id:"f"+hash(f[1]), item:f[0], q:f[1], a:f[2]}));
+  SEARCH = {}; ITEMS.forEach(it => SEARCH[it.id] = itemText(it));
+  KEY = CONFIG.key; S = loadState(KEY);
+  try { localStorage.setItem(DS_KEY, DS_ID); } catch(e) {}
+}
 function tick(){ const t = today(); S.days[t] = (S.days[t]||0) + 1; save(); }
 function saveBest(mode, v){ if (!(S.best[mode] >= v)) S.best[mode] = v; save(); }
 function streak(){
@@ -825,7 +1702,6 @@ function itemText(it){
   it.cards.forEach(c => { out.push(c.h); if (c.l) walk(c.l); if (c.table) c.table.rows.forEach(r => out.push(r.join(" "))); });
   return norm(out.join(" "));
 }
-const SEARCH = {}; ITEMS.forEach(it => SEARCH[it.id] = itemText(it));
 function cardsOfSpec(spec){ return CARDS.filter(c => !spec || specOf(c.item) === spec); }
 function acquired(list){ return list.filter(c => (S.box[c.id]||0) >= 2).length; }
 
@@ -848,7 +1724,14 @@ function go(route){
   render();
   window.scrollTo(0, 0);
 }
+function tabsHtml(){
+  return DS_ORDER.map(id => {
+    const c = DATASETS[id].CONFIG, on = id === DS_ID;
+    return `<button role="tab" aria-selected="${on}" data-act="ds" data-ds="${id}">${esc(c.tab)}<span class="ds-n">${DATASETS[id].ITEMS.length}</span></button>`;
+  }).join("");
+}
 function render(){
+  $("#ds-tabs").innerHTML = tabsHtml();
   $("#nav-top").innerHTML = navHtml();
   $("#nav-bot").innerHTML = navHtml();
   const views = {home:vHome, fiches:vFiches, fiche:vFiche, jeux:vJeux, game:vGame, progres:vProgres};
@@ -885,7 +1768,7 @@ function vHome(){
     <div class="paper count tape">
       <div class="big">${big}</div>
       <div class="hand sub">${heroWords(dl)}</div>
-      <label for="exam-date">Date du concours <input type="date" id="exam-date" value="${S.exam}"></label>
+      <label for="exam-date">Date du concours <input type="date" id="exam-date" value="${EXAM}"></label>
     </div>
     <div class="plain plan">
       <div class="eyebrow">Programme du jour</div>
@@ -927,7 +1810,7 @@ function modesGrid(){
 }
 function bindDate(){
   const el = $("#exam-date"); if (!el) return;
-  el.addEventListener("change", () => { if (el.value) { S.exam = el.value; save(); render(); } });
+  el.addEventListener("change", () => { if (el.value) { setExam(el.value); render(); } });
 }
 
 /* ---------- FICHES ---------- */
@@ -1273,7 +2156,7 @@ function vProgres(){
       <div class="records">${MODES.map(m => `<div class="plain rec"><span>${m.name}</span><b>${S.best[m.id] != null ? S.best[m.id] + m.unit : "–"}</b></div>`).join("")}</div>
     </section>
     <section class="plain box stack" style="gap:12px">
-      <label class="row" for="exam-date" style="justify-content:space-between"><b>Date du concours</b><input type="date" id="exam-date" value="${S.exam}" style="border:1px solid var(--rule);background:var(--card);border-radius:8px;padding:6px 8px"></label>
+      <label class="row" for="exam-date" style="justify-content:space-between"><b>Date du concours</b><input type="date" id="exam-date" value="${EXAM}" style="border:1px solid var(--rule);background:var(--card);border-radius:8px;padding:6px 8px"></label>
       <div class="row" style="justify-content:space-between">
         <span class="muted" style="font-size:14px">La progression est enregistrée dans ce navigateur, sur cet appareil.</span>
         <button class="btn ghost small danger" data-act="reset">${R.confirmReset ? "Confirmer : tout effacer" : "Remettre à zéro"}</button>
@@ -1284,6 +2167,13 @@ function vProgres(){
 
 /* ---------- actions ---------- */
 const ACT = {
+  ds(d){
+    if (d.ds === DS_ID) return;
+    clearTimer(); G = null; useDataset(d.ds);
+    if (R.v === "fiche" || R.v === "game") R = {v:R.v === "fiche" ? "fiches" : "jeux"};
+    if (R.v === "fiches") R = {v:"fiches", spec:"all"};
+    render(); window.scrollTo(0, 0);
+  },
   randomFiche(){ const pool = ITEMS.filter(i => !S.mastered[i.id]); go("fiche:" + pick(pool.length ? pool : ITEMS).id); },
   fspec(d){ R.spec = d.spec; render(); },
   gspec(d){ S.filter = d.spec; save(); render(); },
@@ -1291,8 +2181,8 @@ const ACT = {
   master(){ S.mastered[R.id] = !S.mastered[R.id]; if (!S.mastered[R.id]) delete S.mastered[R.id]; else tick(); save(); render(); },
   reset(){
     if (!R.confirmReset) { R.confirmReset = true; render(); return; }
-    const exam = S.exam;
-    Object.assign(S, {mastered:{}, box:{}, best:{}, days:{}, exam, filter:"all"}); save();
+
+    Object.assign(S, {mastered:{}, box:{}, best:{}, days:{}, filter:"all"}); save();
     R.confirmReset = false; render();
   },
   flip(){ G.flipped = !G.flipped; render(); },
@@ -1380,6 +2270,7 @@ document.addEventListener("keydown", e => {
     if (e.key === "ArrowRight") ACT.vf({v:"1"});
   }
 });
-$("#brand-tag").textContent = CONFIG.brandTag; $("#brand-name").textContent = CONFIG.brandName;
+let savedDs = null; try { savedDs = localStorage.getItem(DS_KEY); } catch(e) {}
+useDataset(savedDs);
 render();
 </script>
