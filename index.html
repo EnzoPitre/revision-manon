@@ -1,0 +1,1385 @@
+<title>Le Mur de Manon</title>
+<meta name="theme-color" content="#F6F5FB">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Caveat:wght@500;700&display=swap">
+<style>
+:root{
+  /* Layout : une app-carnet. Fiches bristol épinglées sur papier quadrillé ; onglets en bas sur téléphone, en haut sur ordinateur. */
+  --paper:#F6F5FB; --paper-deep:#ECEAF6; --card:#FFFFFF;
+  --grid:rgba(98,88,190,.10); --card-grid:rgba(98,88,190,.085);
+  --ink:#1C1B2B; --ink-soft:#55536F; --ink-faint:#8A87A6; --rule:#DDDAEC;
+  --pen:#2D3E9F; --pen-green:#13755A; --pen-red:#C3283A;
+  --stabilo:rgba(205,112,232,.32); --veil:#D9C6EE;
+  --postit:#F5EF86; --postit-ink:#2E3410; --tape:rgba(214,206,170,.55);
+  --c-ophtalmo:#2F6BD6; --c-orl:#B9680B; --c-pneumo:#0E837F; --c-psy:#7B4AD0; --c-rea:#CF3346; --c-pink:#C2407A; --c-olive:#5F7F12;
+  --good:#1B8456; --good-bg:#DDF3E8; --bad:#C3283A; --bad-bg:#FBE1E4;
+  --shadow:0 1px 0 rgba(28,27,43,.05), 0 8px 20px -10px rgba(40,30,110,.28);
+  --f-display:"Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-hand:"Caveat", "Segoe Print", "Bradley Hand", cursive;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#13122A; --paper-deep:#1A1935; --card:#1F1E3C;
+    --grid:rgba(160,150,255,.07); --card-grid:rgba(160,150,255,.06);
+    --ink:#EDECFA; --ink-soft:#B0AED0; --ink-faint:#7F7CA3; --rule:#33315A;
+    --pen:#9DB0FF; --pen-green:#62D4A8; --pen-red:#FF7D88;
+    --stabilo:rgba(200,120,240,.30); --veil:#4B3C6E;
+    --postit:#4C4920; --postit-ink:#F6F0A6; --tape:rgba(120,115,90,.45);
+    --c-ophtalmo:#7EA8FF; --c-orl:#F2A54A; --c-pneumo:#4FD0C8; --c-psy:#B79BFF; --c-rea:#FF7F8E; --c-pink:#FF8DB8; --c-olive:#A9CF55;
+    --good:#5CD49A; --good-bg:#173B2E; --bad:#FF7D88; --bad-bg:#45202A;
+    --shadow:0 1px 0 rgba(0,0,0,.2), 0 10px 24px -12px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#13122A; --paper-deep:#1A1935; --card:#1F1E3C;
+  --grid:rgba(160,150,255,.07); --card-grid:rgba(160,150,255,.06);
+  --ink:#EDECFA; --ink-soft:#B0AED0; --ink-faint:#7F7CA3; --rule:#33315A;
+  --pen:#9DB0FF; --pen-green:#62D4A8; --pen-red:#FF7D88;
+  --stabilo:rgba(200,120,240,.30); --veil:#4B3C6E;
+  --postit:#4C4920; --postit-ink:#F6F0A6; --tape:rgba(120,115,90,.45);
+  --c-ophtalmo:#7EA8FF; --c-orl:#F2A54A; --c-pneumo:#4FD0C8; --c-psy:#B79BFF; --c-rea:#FF7F8E; --c-pink:#FF8DB8; --c-olive:#A9CF55;
+  --good:#5CD49A; --good-bg:#173B2E; --bad:#FF7D88; --bad-bg:#45202A;
+  --shadow:0 1px 0 rgba(0,0,0,.2), 0 10px 24px -12px rgba(0,0,0,.6);
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; font:16px/1.5 var(--f-body); color:var(--ink);
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;
+  min-height:100%;
+}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
+input{font:inherit;color:inherit}
+:focus-visible{outline:2.5px solid var(--pen);outline-offset:2px;border-radius:4px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+svg.i{width:22px;height:22px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---------- shell ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.top-in{max-width:1080px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:baseline;gap:8px}
+.brand-tag{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:15px;letter-spacing:.04em;background:var(--card);border:1px solid var(--rule);padding:3px 9px;transform:rotate(-2deg);display:inline-block;box-shadow:var(--shadow)}
+.brand-name{font-family:var(--f-hand);font-size:26px;font-weight:700;color:var(--pen-red);line-height:1}
+.nav-top{display:none;gap:4px}
+.nav-top button,.nav-bot button{display:flex;align-items:center;gap:8px;color:var(--ink-soft);font-weight:700;font-size:14px;border-radius:8px}
+.nav-top button{padding:8px 12px}
+.nav-top button[aria-current="page"]{color:var(--ink);background:var(--card);box-shadow:var(--shadow)}
+.nav-top button:hover{color:var(--ink)}
+.nav-bot{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--card);border-top:1px solid var(--rule);display:grid;grid-template-columns:repeat(4,1fr);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+.nav-bot button{flex-direction:column;gap:2px;padding:6px 0;font-size:11.5px;align-items:center}
+.nav-bot button[aria-current="page"]{color:var(--pen)}
+.nav-bot button[aria-current="page"] svg{stroke-width:2.2}
+main{max-width:1080px;margin:0 auto;padding:20px 16px calc(96px + env(safe-area-inset-bottom,0px))}
+@media (min-width:860px){
+  .nav-top{display:flex}
+  .nav-bot{display:none}
+  main{padding-bottom:64px;padding-top:28px}
+}
+.stack{display:flex;flex-direction:column;gap:20px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.muted{color:var(--ink-soft)}
+.hand{font-family:var(--f-hand);font-weight:700;color:var(--pen-red);line-height:1.1}
+.eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--ink-faint)}
+.sec-title{font-size:22px;font-weight:700;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.sec-title .hand{font-size:22px;font-weight:500}
+
+/* ---------- paper objects ---------- */
+.paper{
+  background-color:var(--card);
+  background-image:linear-gradient(var(--card-grid) 1px,transparent 1px),linear-gradient(90deg,var(--card-grid) 1px,transparent 1px);
+  background-size:18px 18px;background-position:-1px -1px;
+  border:1px solid var(--rule);border-radius:3px;box-shadow:var(--shadow);
+}
+.plain{background:var(--card);border:1px solid var(--rule);border-radius:12px}
+.tag{display:inline-flex;align-items:baseline;gap:10px;font-family:var(--f-display);font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:8px 16px;transform:rotate(-1.2deg);font-size:clamp(20px,4.6vw,30px);line-height:1.1}
+.tag .num{color:var(--spec,var(--ink))}
+.tape{position:relative}
+.tape::before{content:"";position:absolute;top:-10px;left:50%;width:84px;height:22px;transform:translateX(-50%) rotate(-3deg);background:var(--tape);border-radius:2px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;padding:11px 18px;border-radius:10px;background:var(--ink);color:var(--paper);font-size:15px;transition:transform .12s}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--rule)}
+.btn.small{padding:7px 12px;font-size:13.5px;border-radius:8px}
+.btn.on{background:var(--good-bg);color:var(--good);border-color:transparent}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--ink-soft);font-weight:700;font-size:14px}
+.back:hover{color:var(--ink)}
+
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:999px;border:1px solid var(--rule);background:var(--card);font-weight:700;font-size:14px;color:var(--ink-soft)}
+.chip svg.i{width:18px;height:18px;color:var(--spec,var(--ink-soft))}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chip[aria-pressed="true"] svg.i{color:var(--paper)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--paper-deep);color:var(--ink-soft)}
+.pill.ok{background:var(--good-bg);color:var(--good)}
+.pill svg.i{width:14px;height:14px}
+.bar{height:7px;border-radius:99px;background:var(--paper-deep);overflow:hidden}
+.bar>i{display:block;height:100%;border-radius:99px;background:var(--spec,var(--pen));transition:width .5s}
+
+/* ---------- home ---------- */
+.hero{display:grid;gap:20px}
+@media (min-width:860px){.hero{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:start}}
+.count{padding:30px 22px 22px;text-align:center;margin-top:10px}
+.count .big{font-family:var(--f-display);font-weight:800;font-size:clamp(84px,24vw,136px);line-height:.9;color:var(--pen-red);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.count .sub{font-size:28px;margin-top:6px}
+.count label{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:14px;font-size:14px;color:var(--ink-soft);flex-wrap:wrap}
+.count input{border:1px solid var(--rule);background:var(--card);border-radius:8px;padding:5px 8px}
+.plan{padding:20px}
+.plan ol{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:2px}
+.plan li button{width:100%;display:flex;align-items:center;gap:12px;padding:10px 8px;border-radius:8px}
+.plan li button:hover{background:var(--paper-deep)}
+.plan .n{font-family:var(--f-display);font-weight:800;min-width:46px;color:var(--spec);font-variant-numeric:tabular-nums}
+.plan .t{flex:1;font-weight:700}
+.specs{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
+.spec-tile{padding:16px;display:flex;flex-direction:column;gap:10px}
+.spec-tile:hover{transform:translateY(-2px)}
+.spec-tile{transition:transform .15s}
+.spec-tile .hd{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:700;font-size:18px}
+.spec-tile .hd svg.i{width:28px;height:28px;color:var(--spec)}
+.spec-tile small{color:var(--ink-soft);font-size:13px;font-variant-numeric:tabular-nums}
+.modes{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.mode{padding:16px;display:flex;gap:14px;align-items:flex-start;transition:transform .15s}
+.mode:hover{transform:translateY(-2px)}
+.mode .ic{width:44px;height:44px;border-radius:10px;display:grid;place-items:center;background:var(--paper-deep);color:var(--pen);flex:none}
+.mode h3{font-size:17px;font-weight:700}
+.mode p{margin:3px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.4}
+.mode .best{margin-top:8px}
+.foot{font-size:13px;color:var(--ink-faint);text-align:center;padding-top:8px}
+.foot a{color:var(--pen);font-weight:700}
+</style>
+<style>
+/* ---------- fiches list ---------- */
+.search{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:0 12px}
+.search input{flex:1;border:0;background:none;padding:11px 0;outline:none;min-width:0}
+.search svg.i{color:var(--ink-faint)}
+.flist{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.ftile{padding:14px 16px 14px;display:flex;flex-direction:column;gap:6px;min-height:118px;transition:transform .15s}
+.ftile:hover{transform:translateY(-2px) rotate(-.4deg)}
+.ftile .top-l{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ftile .num{font-family:var(--f-display);font-weight:800;font-size:30px;line-height:1;color:var(--spec)}
+.ftile .num svg.i{display:none}
+.ftile .ttl{font-family:var(--f-display);font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.02em;line-height:1.2}
+.ftile .meta{margin-top:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.empty{padding:28px;text-align:center;color:var(--ink-soft)}
+
+/* ---------- fiche ---------- */
+.fhead{display:flex;flex-direction:column;gap:14px}
+.factions{display:flex;gap:8px;flex-wrap:wrap}
+.hint{font-size:14px;color:var(--ink-soft);display:flex;gap:8px;align-items:center}
+.wall{columns:310px;column-gap:18px}
+.card{break-inside:avoid;display:inline-block;width:100%;margin:0 0 18px;padding:16px 18px 14px}
+.card h3{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.card .csub{font-size:13.5px;color:var(--ink-soft);font-style:italic}
+.card ul{list-style:none;margin:8px 0 0;padding:0;color:var(--pen);display:flex;flex-direction:column;gap:3px}
+.card ul ul{margin:3px 0 4px 16px;font-size:15px}
+.card li{position:relative;padding-left:16px;line-height:1.42}
+.card li::before{content:"–";position:absolute;left:0;color:var(--ink-faint)}
+.card li.sub{padding-left:0;color:var(--ink);font-weight:700;margin-top:6px}
+.card li.sub::before{content:none}
+.card li.sub:first-child{margin-top:0}
+.card.postit{background:var(--postit);background-image:none;border-color:transparent;transform:rotate(.6deg);border-radius:2px}
+.card.postit,.card.postit h3,.card.postit ul,.card.postit li.sub{color:var(--postit-ink)}
+.card.postit li::before{color:var(--postit-ink)}
+mark.k{background:linear-gradient(transparent 38%,var(--stabilo) 38%,var(--stabilo) 92%,transparent 92%);color:inherit;padding:0 2px;border-radius:2px}
+b.n{color:var(--pen-green);font-weight:700;font-variant-numeric:tabular-nums}
+.r{color:var(--pen-red);font-weight:700}
+.hide mark.k:not(.on),.hide b.n:not(.on){color:transparent;background:var(--veil);border-radius:4px;cursor:pointer;user-select:none;-webkit-user-select:none}
+.hide mark.k.on,.hide b.n.on{animation:pop .25s ease}
+@keyframes pop{from{background-color:var(--veil)}}
+.tbl{overflow-x:auto;margin-top:10px;-webkit-overflow-scrolling:touch}
+.tbl table{border-collapse:collapse;font-size:14px;min-width:100%;color:var(--pen)}
+.tbl th,.tbl td{border:1px solid var(--rule);padding:6px 8px;text-align:left;vertical-align:top}
+.tbl th{color:var(--ink);font-weight:700;background:var(--paper-deep);font-size:13px}
+.tbl td:first-child{color:var(--ink);font-weight:700}
+.wave{display:block;width:150px;max-width:100%;height:30px;color:var(--pen-red);margin:2px 0 4px}
+.fnav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px dashed var(--rule);padding-top:16px}
+
+/* ---------- jeux ---------- */
+.game{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.ghead{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ghead .prog{font-family:var(--f-display);font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink-soft)}
+.gtitle{font-size:24px;font-weight:800}
+.from{font-size:13px;color:var(--ink-soft);display:inline-flex;gap:6px;align-items:center;font-weight:700}
+.from i{width:9px;height:9px;border-radius:50%;background:var(--spec);display:inline-block}
+.flip{perspective:1400px;width:100%}
+.flip .inner{display:grid;transition:transform .5s cubic-bezier(.3,.7,.3,1);transform-style:preserve-3d}
+.flip.flipped .inner{transform:rotateY(180deg)}
+.flip .face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;padding:30px 24px;min-height:250px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:14px}
+.flip .back{transform:rotateY(180deg)}
+.flip .q{font-family:var(--f-display);font-weight:700;font-size:clamp(20px,5vw,26px);line-height:1.25}
+.flip .a{font-size:clamp(18px,4.4vw,21px);color:var(--pen);font-weight:700;line-height:1.4}
+.flip .lbl{font-size:12px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--ink-faint)}
+.twobtn{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bigbtn{padding:15px 12px;border-radius:12px;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid var(--rule);background:var(--card)}
+.bigbtn.ko{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 35%,transparent)}
+.bigbtn.okb{color:var(--good);border-color:color-mix(in srgb,var(--good) 35%,transparent)}
+.bigbtn:active{transform:scale(.98)}
+.qcard{padding:24px 20px}
+.qcard .q{font-family:var(--f-display);font-weight:700;font-size:clamp(19px,4.8vw,24px);line-height:1.3}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{padding:14px 16px;border-radius:12px;border:1.5px solid var(--rule);background:var(--card);font-weight:700;color:var(--pen);display:flex;gap:12px;align-items:center;transition:background .15s,border-color .15s}
+.opt .l{font-family:var(--f-display);color:var(--ink-faint);font-weight:800;width:18px;flex:none}
+.opt:not([disabled]):hover{border-color:var(--pen)}
+.opt.good{background:var(--good-bg);border-color:var(--good);color:var(--good)}
+.opt.bad{background:var(--bad-bg);border-color:var(--bad);color:var(--bad)}
+.opt[disabled]{cursor:default}
+.timer{height:8px;border-radius:99px;background:var(--paper-deep);overflow:hidden}
+.timer>i{display:block;height:100%;background:var(--pen-red);transition:width 1s linear}
+.vf{padding:28px 22px;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center;transition:box-shadow .2s}
+.vf .ctx{font-size:15px;color:var(--ink-soft);font-weight:700}
+.vf .prop{font-family:var(--f-display);font-weight:700;font-size:clamp(21px,5.4vw,28px);color:var(--pen);line-height:1.25}
+.vf.flash-ok{box-shadow:0 0 0 3px var(--good)}
+.vf.flash-ko{box-shadow:0 0 0 3px var(--bad)}
+.score-line{display:flex;justify-content:space-between;font-family:var(--f-display);font-weight:700;font-variant-numeric:tabular-nums}
+.assoc{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.assoc .col{display:flex;flex-direction:column;gap:8px}
+.as{padding:11px 10px;border-radius:10px;border:1.5px solid var(--rule);background:var(--card);font-weight:700;font-size:14px;line-height:1.3;min-height:52px;display:flex;align-items:center;transition:all .15s}
+.as.R{color:var(--pen)}
+.as.sel{border-color:var(--pen);background:color-mix(in srgb,var(--pen) 10%,var(--card))}
+.as.done{background:var(--good-bg);border-color:transparent;color:var(--good);opacity:.75}
+.as.wrong{animation:shake .35s;border-color:var(--bad)}
+@keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+.tri-item{padding:30px 22px;text-align:center;font-family:var(--f-display);font-weight:700;font-size:clamp(21px,5.4vw,27px);color:var(--pen);min-height:130px;display:grid;place-items:center}
+.cats{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.cat{padding:16px 12px;border-radius:12px;border:1.5px solid var(--rule);background:var(--card);font-weight:700;text-align:center}
+.cat.good{background:var(--good-bg);border-color:var(--good);color:var(--good)}
+.cat.bad{background:var(--bad-bg);border-color:var(--bad);color:var(--bad)}
+.ord{display:flex;flex-direction:column;gap:8px}
+.ordi{padding:13px 14px;border-radius:12px;border:1.5px solid var(--rule);background:var(--card);font-weight:700;display:flex;gap:12px;align-items:center;color:var(--pen)}
+.ordi .k{width:28px;height:28px;border-radius:50%;flex:none;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:14px;background:var(--paper-deep);color:var(--ink-faint)}
+.ordi.done{background:var(--good-bg);border-color:transparent;color:var(--good)}
+.ordi.done .k{background:var(--good);color:var(--card)}
+.ordi .det{margin-left:auto;font-size:13px;font-weight:700;color:var(--good);text-align:right}
+.ordi.wrong{animation:shake .35s;border-color:var(--bad)}
+.setlist{display:flex;flex-direction:column;gap:8px}
+.setb{padding:14px 16px;display:flex;align-items:center;gap:12px;justify-content:space-between;border-radius:12px}
+.setb .t{font-weight:700}
+.end{padding:30px 22px;text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
+.end .sc{font-family:var(--f-display);font-weight:800;font-size:clamp(64px,18vw,96px);line-height:1;color:var(--pen-red);font-variant-numeric:tabular-nums}
+.end .msg{font-size:30px}
+.wrongs{display:flex;flex-direction:column;gap:8px}
+.wr{padding:12px 14px;display:flex;flex-direction:column;gap:3px}
+.wr .q{font-weight:700;font-size:14.5px}
+.wr .a{color:var(--pen);font-weight:700}
+.wr button{align-self:flex-start}
+
+/* ---------- progrès ---------- */
+.kpis{display:grid;gap:12px;grid-template-columns:repeat(3,1fr)}
+@media (max-width:520px){.kpis{grid-template-columns:1fr 1fr}.kpis>:last-child{grid-column:1/-1}}
+.kpi{padding:16px}
+.kpi .v{font-family:var(--f-display);font-weight:800;font-size:34px;line-height:1.05;font-variant-numeric:tabular-nums}
+.kpi .l{font-size:13.5px;color:var(--ink-soft);font-weight:700}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;text-align:center}
+.week .d{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-soft);font-weight:700}
+.week .dot{width:100%;max-width:46px;aspect-ratio:1;border-radius:10px;background:var(--paper-deep);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;color:var(--card);font-size:14px;font-variant-numeric:tabular-nums}
+.ptable{display:flex;flex-direction:column}
+.prow{display:grid;grid-template-columns:120px 1fr 1fr;gap:14px;align-items:center;padding:12px 0;border-bottom:1px dashed var(--rule)}
+.prow:last-child{border-bottom:0}
+.prow .nm{display:flex;align-items:center;gap:8px;font-weight:700}
+.prow .nm svg.i{color:var(--spec)}
+.prow .cell{display:flex;flex-direction:column;gap:5px;font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+@media (max-width:520px){.prow{grid-template-columns:1fr 1fr}.prow .nm{grid-column:1/-1}}
+.records{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.rec{padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.rec b{font-family:var(--f-display);font-size:20px;font-variant-numeric:tabular-nums}
+.box{padding:18px}
+.danger{color:var(--bad)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+<header class="top"><div class="top-in">
+  <button class="brand" data-go="home" aria-label="Accueil"><span class="brand-tag" id="brand-tag"></span><span class="brand-name" id="brand-name"></span></button>
+  <nav class="nav-top" aria-label="Navigation principale" id="nav-top"></nav>
+</div></header>
+<main id="app"></main>
+<nav class="nav-bot" aria-label="Navigation" id="nav-bot"></nav>
+
+<script>
+/* =========================================================
+   CONTENU — transcrit uniquement depuis les fiches de Manon
+   ==x== surligné (mot-clé)  ++x++ chiffre (encre verte)  !!x!! encre rouge
+   "§Titre" = sous-titre dans une liste ; un tableau [] = sous-liste
+   ========================================================= */
+const ITEMS = [];
+function F(spec, num, title, cards){ ITEMS.push({id:spec+"-"+num, spec, num, title, cards}); }
+/* ---------- Configuration de l'appli ---------- */
+const CONFIG = {
+  key: "mur-de-manon-v1",
+  brandTag: "Le Mur", brandName: "de Manon",
+  fichesTag: "le mur, en version poche",
+  foot: "Tout le contenu vient des fiches de Manon : Ophtalmo, ORL, Pneumo, Psy et Réa.",
+  other: {url:"https://claude.ai/artifact/99xceCcrdyhyfG8yUdqLyR", label:"Ouvrir l’errata rang A"},
+  specs: [
+    {id:"ophtalmo", name:"Ophtalmo", icon:"eye",   c:"--c-ophtalmo"},
+    {id:"orl",      name:"ORL",      icon:"ear",   c:"--c-orl"},
+    {id:"pneumo",   name:"Pneumo",   icon:"lungs", c:"--c-pneumo"},
+    {id:"psy",      name:"Psy",      icon:"brain", c:"--c-psy"},
+    {id:"rea",      name:"Réa",      icon:"heart", c:"--c-rea"}
+  ]
+};
+
+/* ---------------- OPHTALMO ---------------- */
+F("ophtalmo","52","Strabisme",[
+ {h:"Strabismes horizontaux",l:["Convergent = ==ésotropie== · ==ésophorie==","Divergent = ==exotropie== · ==exophorie=="]},
+ {h:"Strabismes verticaux",l:["Vers le haut = ==hypertropie== · ==hyperphorie==","Vers le bas = ==hypotropie== · ==hypophorie=="]}
+]);
+F("ophtalmo","85","Troubles de la réfraction",[
+ {h:"Mesure de l'acuité visuelle",l:["§De loin",["Échelle de ==Monoyer== (x/10) · N = ++10/10++","Échelle E de ==Snellen==","Échelle des anneaux brisés de ==Landolt==","Échelle ==ETDRS== (logarithmique)"],"§De près",["Échelle de ==Parinaud== · N = ++1,5–2++","Échelle de ==Rossano-Weiss=="]]},
+ {h:"Optique de l'œil",l:["Convergence de l'œil : ++60 δ++",["Cornée : ++42 δ++","Cristallin : ++20 δ++"],"Punctum remotum : ==infini== → ∅ accommodation","Punctum proximum : ++7 cm++ → accommodation"]},
+ {h:"Myopie",l:["Myopie d'indice","Myopie de courbure","Myopie axile","Myopie accommodative","Myopie faible : < ++6 δ++","Myopie forte = ==myopie maladie== : ≥ ++6 δ++ ou longueur axiale ≥ ++26 mm++","TTT : verres ==sphériques concaves (−)=="]},
+ {h:"Hypermétropie",l:["= ==asthénopie accommodative==","TTT : verres ==sphériques convexes (+)=="]},
+ {h:"Astigmatisme",l:["TTT : verres ==cylindriques=="]},
+ {h:"Presbytie",l:["= perte d'accommodation > ++40 ans++","TTT : verres ==sphériques convexes=="]}
+]);
+F("ophtalmo","47","Suivi ophtalmo de l'enfant",[
+ {h:"Développement visuel",l:["Naissance : ==RPM==","2e – 4e semaine : ==réflexe de poursuite==","4e – 12e semaine : ==fixation + coordination binoculaire==","3 – 4 mois : ==fixe un objet immobile, convergence==","5 mois : ==coordination œil-tête-main==","2 – 3 ans : ==mesure de l'AV=="]},
+ {h:"Dépistage",l:["Examens : ++J8++ · ++M2++ · ++M4++ · ++M9++ · ++2 ans++ · ++3–6 ans++"]},
+ {h:"Premiers mois",l:["§Leucocorie",["==Rétinoblastome==","==Cataracte congénitale==","Fibres à myéline, toxoplasmose, toxocarose"],"§Larmoiement",["Purulent / sanguinolent → ==conjonctivite== : Staph, gonocoque, chlamydia","Clair → ==glaucome congénital==","Clair → ==sténose congénitale / imperforation des voies lacrymales=="],"§Malformation oculaire",["Malposition des paupières, microphtalmie, buphtalmie…"],"§Anomalies pupillaires",["==CBH congénital== (neuroblastome)","==Paralysie du III congénitale== (pb intracrâniens)","==Colobome irien== (défaut de fermeture du tube neural)"]]},
+ {h:"1 mois – 2 ans",l:["Malvoyance","Strabisme","Amétropie","Amblyopie"]},
+ {h:"Après 2 ans",l:["Amétropie","Strabisme","Amblyopie"]}
+]);
+
+/* ---------------- ORL ---------------- */
+F("orl","87","Épistaxis",[
+ {h:"Vascularisation du nez",l:["==Carotide interne== → A. ophtalmique",["A. ==ethmoïdale antérieure==","A. ==ethmoïdale postérieure=="],"==Carotide externe== → A. maxillaire interne",["A. ==sphénopalatine==","A. ==palatine supérieure=="],"==Carotide externe== → A. faciale",["A. ==labiale supérieure=="]]}
+]);
+F("orl","148","Sinusite",[
+ {h:"Sinusite maxillaire : critères",l:["≥ ++2/3++ critères majeurs",["Persistance malgré TTT ≥ ++48 h++","==Douleur unilatérale pulsatile==","↗ ==rhinorrhée / purulence=="],"± critères mineurs",["Fièvre > ++3 j++","Obstruction nasale, éternuements, toux ≥ ++10 j++"]]},
+ {h:"Durée d'amoxicilline",l:["Otite : amoxicilline ++5 j++","Angine : amoxicilline ++6 j++","Sinusite : amoxicilline ++7 j++"]},
+ {h:"Âge d'apparition des sinus",l:["Sinus ethmoïdal : ++1ers mois++","Sinus maxillaire : ++3–4 ans++","Sinus frontal : ++5–10 ans++","Sinus sphénoïdal : ++10–15 ans++"]},
+ {h:"ATB selon le sinus",l:["Sinusite maxillaire : ==amoxicilline PO== ++7 j++","Sinusite non maxillaire : ==Augmentin PO== ++7 j++"]},
+ {h:"ATB : 2e fiche",l:["Sinusite maxillaire : amoxicilline PO ++7 j++","Sinusite frontale : ==pristinamycine PO== ++4 j++","Sinusite ethmoïdale / sphénoïdale / frontale : ==lévofloxacine PO== ++8 j++"]}
+]);
+F("orl","335","Trauma",[
+ {h:"Fracture du rocher ⇒",l:["==Otorragie==","==Otoliquorrhée==","==PFP==","Sd cochléovestibulaire ==déficitaire total==","Sd cochléovestibulaire ==déficitaire partiel==",["Fistule périlymphatique","Commotion labyrinthique","Symptômes subjectifs des TC","Vertiges positionnels post-traumatiques","Surdité de transmission"],"==Brèche ostéoméningée=="]}
+]);
+F("orl","203","Dyspnée laryngée",[
+ {h:"Dyspnée laryngée ⊕",tone:"postit",l:["Nouveau-né = ==laryngomalacie==","< ++6 mois++ = ==angiome sous-glottique==","> ++6 mois++ = ==corps étranger, laryngite==","Adulte = ==cancer=="]}
+]);
+F("orl","90","Pathologies salivaires",[
+ {h:"Pathologies des glandes salivaires",l:["==Sialites== = infection / inflammation","==Sialoses== = hypertrophies","Tumeurs","==Sialadénite== = inflammation du parenchyme","==Sialodochite== = inflammation du conduit"]},
+ {h:"TTT de la lithiase salivaire",l:["§Submandibulaire",["Tiers antérieur : ==endobuccale sous AL==","Tiers moyen + postérieur :",["< ++4 mm++ : ==sialendoscopie==","≥ ++4 mm++ : ==endobuccale=="]],"§Parotide",["Tiers antérieur : ==endobuccale sous AG==","Tiers moyen + postérieur :",["≤ ++2 mm++ : ==sialendoscopie==","> ++3 mm++ : ==fragmentation du calcul=="]]]}
+]);
+F("orl","89","Surdité",[
+ {h:"Degré de surdité",sub:"perte auditive moyenne",l:["Normale : ++0–20 dB++","Légère : ++21–40 dB++","Moyenne : ++41–70 dB++","Sévère : ++71–90 dB++","Profonde : ++91–120 dB++","Cophose : ++> 120 dB++"]},
+ {h:"Types de surdité",l:["Transmission = ==CO normale, CA ↘==","Perception = ==CO ↘ autant que CA==","Mixte = ==CO ↘ mais CA plus ↘=="]},
+ {h:"Audiométrie",l:["§Tonale",["Transmission : CO ok + CA > ++20 dB++","Perception : CO + CA > ++20 dB++","Mixte : CO ↘, CA plus ↘, > ++20 dB++"],"§Vocale",["Maximum d'intelligibilité : % maximal de mots compris selon l'intensité","Seuil d'intelligibilité : intensité où ++50 %++ des mots sont compris et répétés"]]},
+ {h:"Acoumétrie",l:["§Test de Weber",["Latéralisé côté sourd = ==transmission==","Latéralisé côté sain = ==perception=="],"§Test de Rinne",["CA < CO = Rinne (−) = ==transmission ou mixte==","CA > CO = Rinne (+) = ==perception ou normal=="]]},
+ {h:"Tympanométrie",l:["Normal = ==pic centré sur 0==","Épanchement liquidien = ==courbe plate==","Trouble de ventilation de l'OM = ==pic vers les pressions négatives==","Problème ossiculaire = ==pic ample et pointu=="]},
+ {h:"Surdité et syndromes",l:["+ rétinite pigmentaire = ==Sd d'Usher==","+ trouble de pigmentation iris / cheveux = ==Sd de Waardenburg==","+ goitre euthyroïdien = ==Sd de Pendred==","+ néphropathie glomérulaire = ==Sd d'Alport==","+ QT long = ==Sd de Jervell-Lange-Nielsen=="]},
+ {h:"Médicaments ototoxiques",l:["==Aminosides== ⊕","Diurétiques","Sels de platine","Quinine","Rétinoïdes","CO, Hg, Pb"]},
+ {h:"Surdité de transmission",l:["Otospongiose","Otites","Bouchon de cérumen","Traumatisme","Aplasie d'oreille","Tumeur"]},
+ {h:"Surdité de perception",l:["Surdité unilatérale brusque","Fracture transversale du rocher","Commotion labyrinthique","Labyrinthites / neurolabyrinthites","Maladie de Ménière","Schwannome vestibulaire","Presbyacousie","Maladie évolutive du jeune","Traumatisme sonore","Ototoxiques","Congénitale","Traumatisme obstétrical","Anoxie néonatale","Prématurité","Incompatibilité rhésus"]}
+]);
+F("orl","298","Cancers des VADS",[
+ {h:"Histologie et facteurs de risque",l:["K pharynx + larynx = ==carcinome épidermoïde== → tabac, OH, HPV","K sinus = ==adénocarcinome== → poussières de bois, nickel","K cavum (= nasopharynx) = ==K indifférencié== → EBV"]}
+]);
+F("orl","103","Vertiges",[
+ {h:"Origine centrale · test HINTS",l:["HI : ==pas de saccade horizontale==","N : ==nystagmus atypique==","TS : ==saccade verticale=="]},
+ {h:"Origine périphérique",l:["Vertige ± signes végétatifs","Nystagmus typique","Test de Romberg","Test des bras tendus","Test de Fukuda","Test de la marche aveugle","= ==Sd harmonieux=="]},
+ {h:"Sd vestibulaire aigu",l:["Vertige","Signes neurovégétatifs","Nystagmus","Déviations posturales = ==ataxie vestibulaire=="]},
+ {h:"Vertiges selon la durée",l:["< ++1 min++ : ==VPPB==","Minutes – heures :",["==Maladie de Ménière== (répétitif + signes cochléaires)","==Migraine vestibulaire== (répétitif)","==Névrite vestibulaire== (unique)"],"Permanent : ==schwannome vestibulaire== = neurinome de l'acoustique"]},
+ {h:"Maladie de Ménière · triade",l:["Sd vestibulaire harmonieux",["!!Controlatéral car irritatif!!"],"Acouphènes de ==tonalité grave unilatéraux==","Sensation de ==plénitude d'oreille==","Due à un ==hydrops labyrinthique=="]}
+]);
+
+/* ---------------- PNEUMO ---------------- */
+F("pneumo","154","Pneumonie aiguë communautaire",[
+ {h:"Germes",l:["Adulte : ==pneumocoque, légionelle==","Enfant : ==pneumocoque, Mycoplasma pneumoniae=="]},
+ {h:"Pneumocoque",l:["==CGP en chaînettes==","∅ transmission interhumaine","PFLA = ==début brutal==","Opacité ==systématisée==","TTT : ==amoxicilline=="]},
+ {h:"Légionelle",l:["==BGN==, eau douce","Début ==progressif==","Opacité ==non systématisée==","TTT : ==macrolides=="]},
+ {h:"Score CRB65",l:["C : ==confusion==","R : FR ≥ ++30/min++","B : PAS < ++90 mmHg++ ou PAD ≤ ++60 mmHg++","65 : âge ≥ ++65 ans++"]},
+ {h:"Hospitalisation",sub:"≥ 2 facteurs, ou 1 si > 65 ans",l:["§Signes de gravité",["Altération des fonctions supérieures","FR > ++30/min++ · PAS < ++90 mmHg++ · PAD ≤ ++60 mmHg++ · FC > ++120++ · T° < ++35++ ou ≥ ++40 °C++"],"Signes associés : cyanose, tirage, marbrures","Incertitude diagnostique","Échec de prise en charge au domicile","Risque de décompensation des comorbidités","Difficulté de prise orale","CRB65 et + ≥ ++1++ critère"]},
+ {h:"Hospitalisation en USC ou réa",l:["§≥ 1 critère majeur",["==Choc septique==","==IRA nécessitant une IOT=="],"§≥ 3 critères mineurs",["FR ≥ ++30/min++","P/F ≤ ++250++, PaO₂ < ++60 mmHg++","Atteinte multilobaire, bilatérale, extension radiographique rapide","Confusion, désorientation","Hyperleucocytose > ++30 G/L++","Leucopénie < ++4000++, PNN < ++1000++","Thrombopénie < ++100 G/L++","Hypothermie < ++35 °C++","Hypotension nécessitant un RV"],"§La pneumo rajoute",["Oligurie, marbrures","IRA ou IH aiguë","Acidose pH < ++7,35++, hyperlactatémie","CIVD","Complications LR : empyème, excavation","Atteintes extra-pulmonaires ou systémiques","Échec ATB","Exposition AINS","PNP d'inhalation ou obstructive"]]},
+ {h:"Examens selon la prise en charge",table:{head:["","Ambulatoire","Conventionnel","USC / réa","Immunodépression"],rows:[
+   ["Hémocs","∅","X","X","X"],["ECBC","∅","X","X","X"],
+   ["PCR multiplex","∅","+/− (période épidémique)","X (période épidémique)","X"],
+   ["PCR simplex (bactéries atypiques)","∅","+/−","+/− (contexte épidémique, terrain à risque)","+/− (contexte épidémique, terrain à risque)"],
+   ["Ag pneumocoque","∅","+/−","X","X"],["Ag légionelle","∅","+/−","X","X"],
+   ["Liquide pleural","∅","X (si épanchement)","X (si épanchement)","X (si épanchement)"],
+   ["Autres","∅","","Aspiration endobronchique (si IOT)","+/− recherche pneumocystis, Ag β-D-glucane, +/− fibroscopie"]]}},
+ {h:"Examens complémentaires",l:["NFS + iono + créat + BH + CRP + coag","GDS","Radio de thorax","PFLA (pneumocoque) : ==sérologie VIH=="]},
+ {h:"ECBC valable si",l:["PNN > ++25/champ++","Cellules épithéliales < ++10/champ++","1 seul germe en ED ≥ ++10⁷++"]},
+ {h:"Épanchement pleural infectieux",l:["Protides > ++35 g/L++","Ou protides ++25–35 g/L++ + ≥ ++1++ critère de Light"]},
+ {h:"Critères de Light",l:["Protides pleural / sérique > ++0,5++","LDH pleural / sérique > ++0,6++","LDH pleural > ++2/3++ du sérique"]},
+ {h:"Bronchiolite",l:["Due au ==VRS==","= ==1er épisode== de gêne respiratoire chez un enfant < ++12 mois++",["Rhinite → signes respiratoires","± fièvre"]]},
+ {h:"Bronchiolite · gravité",sub:"toujours après désobstruction rhinopharyngée",table:{head:["","Légère","Modérée","Grave"],rows:[
+   ["État général altéré","Non","Non","Oui"],["FR","< 60/min","60–69/min","≥ 70/min, ou respiration superficielle, ou FR < 30/min, ou apnée"],["FC > 180 ou < 80","Non","Non","Oui"]]}},
+ {h:"Bronchiolite · critères de vulnérabilité",l:["Comorbidités : dysplasie bronchopulmonaire, VM néonatale prolongée, cardiopathie congénitale + shunt non opérée, DI, pathologie à risque de toux inefficace et fatigabilité musculaire","Prématurité < ++36 SA++","Âge < ++2 mois++ (âge corrigé = âge réel − semaines de grossesse manquantes)","Contextes sociaux ou économiques défavorables"]}
+]);
+F("pneumo","203","Dyspnée",[
+ {h:"HTAP",tone:"postit",l:["P pulmonaire précapillaire",["Repos : ≥ ++25 mmHg++","Effort : > ++30 mmHg++"],"P capillaire moyenne : ≤ ++15 mmHg++"]},
+ {h:"Vocabulaire",l:["Dyspnée chronique : ≥ ++8 semaines++","§Volume courant",["Hyperpnée","Hypopnée"],"§Fréquence respiratoire",["Tachypnée, polypnée","Bradypnée"]]},
+ {h:"Échelle mMRC",l:["++0++ : normal","++1++ : rapide à plat / en pente","++2++ : plus lent que le rythme normal → arrêt","++3++ : arrêts après ++90 m++ ou quelques minutes","++4++ : à l'habillage"]},
+ {h:"Échelle NYHA",l:["++1++ : normal","++2++ : > ++2++ étages","++3++ : ≤ ++2++ étages","++4++ : au repos"]},
+ {h:"EC de 1re intention",l:["Radio de thorax + ECG","NFS + iono + GAJ + BNP + D-dimères + GDS"]},
+ {h:"Dyspnée laryngée",l:["= ==bradypnée inspiratoire + stridor / cornage==","§Nouveau-né",["==Laryngomalacie== : régression à ++6 mois++ → TTT du RGO"],"§< 6 mois",["==Angiome sous-glottique== : régression à ++1 an++ → BB (propranolol)"],"§> 6 mois",["==Laryngite sous-glottique== : après une rhinopharyngite, la nuit → CTC PO","==Laryngite striduleuse== : brutale, la nuit, lors d'une rhinopharyngite","==Épiglottite== : Haemophilus b → IOT + C3G IV + CTC IV"],"§Adulte",["Cancer du larynx, du laryngopharynx","Laryngites sous-glottiques, épiglottite → ATB + CTC (Augmentin ; C3G + métronidazole)","Œdème de Quincke","Larynx post-radique","Traumatisme","Immobilité laryngée bilatérale","Pseudomyxome = ==œdème de Reinke==","Papillomatose : ==HPV non oncogène=="],"Aérosol de Bompard = ==CTC + adrénaline + sérum phy=="]}
+]);
+F("pneumo","208","Insuffisance respiratoire chronique",[
+ {h:"Définition",l:["= hypoxémie < ++70 mmHg++ ×2 à ++2 semaines++ d'intervalle","Grave : < ++60 mmHg++"]},
+ {h:"Mécanismes",l:["§Anomalie du rapport ventilation / perfusion",["==Effet shunt== : pb de ventilation → hypocapnie","==Shunt vrai== anatomique (D → G)","==Shunt vrai== fonctionnel (non ventilé)"],"§Hypoventilation alvéolaire → hypercapnie",["Hypoventilation pure","Espace mort = pb de perfusion"],"§Pb de diffusion alvéolo-capillaire → hypocapnie ou normocapnie"]},
+ {h:"HTAP",l:["PAP moyenne > ++20 mmHg++ + résistances > ++3 UW++","PAP systolique > ++35 mmHg++","Signe de ==Carvalho== (souffle systolique ↗ à l'inspiration)","Éclat de ==B2==","Souffle diastolique"]},
+ {h:"Oxygénothérapie de longue durée",l:["§IR obstructive",["PaO₂ < ++55 mmHg++","PaO₂ ++55–59 mmHg++ + signes d'hypoxie (Hte > ++55 %++, ICD, SpO₂ nocturne ≤ ++88 %++)"],"§IR restrictive",["PaO₂ < ++60 mmHg++"],"Durée ≥ ++15 h/j++"]}
+]);
+F("pneumo","359","Détresse respiratoire aiguë",[
+ {h:"Définitions",l:["DRA = signes respiratoires d'un trouble","IRA = retentissement gazométrique du DRA",["Hypoxémie : PaO₂ < ++60 mmHg++","Hypercapnie : PaCO₂ > ++45 mmHg++"],"SDRA = dû à un ==œdème lésionnel pulmonaire=="]},
+ {h:"Signes de lutte",l:["Tachypnée : FR > ++25++","Tirage","Stridor"]},
+ {h:"Signes de faillite",sub:"signes de gravité",l:["Balancement thoraco-abdominal","Cyanose","Astérixis = flapping tremor","Troubles de vigilance","ICD","Pouls paradoxal","Choc","Hypercapnie"]},
+ {h:"SDRA · 4 critères",l:["DRA < ++7 j++","Opacités alvéolaires ==diffuses, bilatérales==",["Non expliquées par épanchement / atélectasie / nodule"],"OAP à prédominance ==non hydrostatique== = exsudat","Hypoxémie : PaO₂/FiO₂ < ++300 mmHg++",["!!∅ défaillance cardiaque / surcharge volémique : PAPO < 15 mmHg!!"]]},
+ {h:"SDRA · sévérité",sub:"avec PEP / CPAP ≥ 5 cmH₂O",l:["Léger : P/F ++200–300 mmHg++","Modéré : P/F ++100–200 mmHg++","Sévère : P/F ≤ ++100 mmHg++"]},
+ {h:"TTT du SDRA",l:["Monoxyde d'azote inhalé","Décubitus ventral","O₂ haut débit via canules nasales","Curares","Albumine + diurétique"]}
+]);
+
+/* ---------------- PSY ---------------- */
+F("psy","63","Troubles schizophréniques",[
+ {h:"Sd positif",l:["§Idées délirantes",["Thèmes : persécution, mégalomanie, mystique, somatique, de référence","Mécanismes : interprétatif, hallucinatoire, intuitif, imaginatif","Systématisation = organisation + cohérence","Adhésion","Retentissement"],"§Hallucinations",["Psychosensorielles : auditives, visuelles, tactiles, gustatives, olfactives","Intrapsychiques"]]},
+ {h:"Sd négatif",l:["Émoussement des affects → ==anhédonie==","Pauvreté du discours, ==alogie==","==Apragmatisme== → clinophilie, incurie","==Aboulie==","Retrait social"]},
+ {h:"Sd de désorganisation",l:["Pb du cours de la pensée : discours hermétique / impénétrable, ==barrage, fading==","Illogisme : ambivalence, rationalisme morbide / paralogique, pb d'abstraction","Pb du langage : maniérisme, néologismes, paralogismes, jargonophasie","Ambivalence affective, ==discordance idéo-affective==","Pb du comportement : maniérisme, ambivalence, parakinésies"]},
+ {h:"Âge de début",l:["Normal : ++18–25 ans++","Précoce : < ++18 ans++","Très précoce : < ++13 ans++","Tardif : > ++35 ans++"]},
+ {h:"Diagnostic positif",l:["≥ ++2++ syndromes pendant ≥ ++1 mois++","Retentissement ≥ ++6 mois++","Répercussions sociales + professionnelles","∅ DD"]},
+ {h:"Selon la durée",l:["++1 j – 1 mois++ : ==trouble psychotique bref==","++1 – 6 mois++ : ==trouble schizophréniforme=="]},
+ {h:"Traitement",l:["§Crise",["Antipsychotiques : ==cyamémazine, lévomépromazine==","BZD : ==diazépam, oxazépam=="],"§Fond",["Antipsychotiques de 2e génération ou atypiques : amisulpride (Solian), aripiprazole (Abilify), quétiapine (Xeroquel), rispéridone","Épisode unique : ≥ ++2 ans++","Rechute : ≥ ++5 ans++","Résistance à 2 TTT : ==clozapine=="]]}
+]);
+F("psy","65","Trouble délirant persistant",[
+ {h:"≈ Sd positif de schizophrénie",l:["§Thèmes des idées délirantes",["Érotomanie","Mégalomanie","Jalousie","Persécution","Somatique"]]},
+ {h:"Diagnostic positif",l:["≥ ++1 mois++","Idées délirantes ==logiques==, ∅ Sd de désorganisation, ∅ Sd négatif","∅ altération du fonctionnement, ∅ bizarrerie du comportement","∅ symptôme thymique","∅ DD"]}
+]);
+F("psy","64","Trouble bipolaire",[
+ {h:"Sd maniaque",l:["≥ ++1 semaine++","Humeur maniaque : labilité, hyperactivité, hyperesthésie, hypersyntonie, ↗ estime de soi, mégalomanie, ↘ ou ∅ conscience du trouble","Excitation psychomotrice : tachypsychie, fuite des idées, coq-à-l'âne, jeux de mots, hypervigilance, distractibilité, ↗ activités dirigées vers un but, logorrhée, tachyphémie, hypermimie, désinhibition","Insomnie, ∅ fatigue, ↗/↘ appétit, amaigrissement, déshydratation, hypersexualité"]},
+ {h:"Sd hypomaniaque",l:["≥ ++4 jours++","Moins important"]},
+ {h:"Sd dépressif évocateur de bipolarité",l:["< ++25 ans++","Post-partum (++4 semaines++)","Début brutal","ATCD d'EDC ≥ ++3++, ATCD familial de trouble de l'humeur","Réponse inadéquate aux antidépresseurs"]},
+ {h:"Types",l:["Type I = ==(hypo)maniaque== : diagnostic même sans EDC","Type II = ==hypomaniaque + EDC==, ∅ épisode maniaque"]},
+ {h:"Formes",l:["++25 %++ saisonnier",["Régulier : rémission / virage à une période précise","∅ épisode non saisonnier","≥ ++2++ épisodes saisonniers pendant ++2 ans++"],"++25 %++ cycles rapides",["≥ ++4++ épisodes en ++1 an++"]]},
+ {h:"Diag + épisode maniaque",l:["≥ ++1 semaine++","≥ ++3++ parmi :",["↗ estime de soi, idées de grandeur","↘ besoin de sommeil","↗ communicabilité / désir de parler","Fuite des idées","Distractibilité","Agitation","Activités à risque"],"Retentissement, hospitalisation, symptômes psychotiques","∅ DD"]},
+ {h:"Diag + épisode hypomaniaque",l:["≥ ++4 jours++","Mêmes critères symptomatiques que l'épisode maniaque","Modification indiscutable","Changement observé par les proches","Modification du comportement","∅ DD"]},
+ {h:"Diag + EDC dans le trouble bipolaire",l:["≥ ++5++ parmi, pendant ≥ ++2 semaines++ :",["Humeur dépressive","↘ plaisir",["!!Obligatoire : 1 des 2!!"],"↘/↗ poids ou appétit","Insomnie / hypersomnie","Agitation / ralentissement psychomoteur","Fatigue, ↘ énergie","Dévalorisation, culpabilité","↘ concentration, indécision","IDS"],"Retentissement","∅ DD"]},
+ {h:"TTT de l'épisode maniaque",l:["§Crise",["Thymorégulateur : ==lithium== ⊕, valproate, carbamazépine","Antipsychotique 2e G : rispéridone, olanzapine, quétiapine, aripiprazole"],"§Fond",["Lithium, valproate, antipsychotique 2e G : ++4–6 mois++","Prophylaxie : ==thymorégulateur=="]]},
+ {h:"TTT de l'EDC (bipolaire)",l:["§Crise",["Thymorégulateur : ==lithium, lamotrigine==","Antipsychotique : ==quétiapine==","Échec : ISRS"],"§Fond",["Lithium, lamotrigine, quétiapine : ++4–6 mois++","Prophylaxie : ==thymorégulateur=="]]}
+]);
+F("psy","66a","Épisode dépressif caractérisé",[
+ {h:"Clinique",l:["§Psychoaffective",["Humeur dépressive","Anhédonie, anesthésie affective, anxiété","Pb du contenu de la pensée : culpabilité, dévalorisation, incurabilité","Pensées de mort, IDS"],"§Psychomotrice",["Ralentissement","Pb du cours de la pensée : bradypsychie, ruminations, monoïdéisme","Altération mémoire / concentration / attention, indécision","Bradykinésie, hypomimie, bradyphémie, aprosodie, incurie, clinophilie, aboulie"],"§Physiologique",["Insomnie, somnolence","Fatigue, ↘ énergie","Anorexie > hyperphagie","↘ libido"]]},
+ {h:"Évolution",l:["EDC isolé : ++1++ épisode","Trouble dépressif récurrent : ≥ ++2++ épisodes séparés de ≥ ++2 mois++"]},
+ {h:"Diagnostic positif",l:["≥ ++5++ parmi, pendant ≥ ++2 semaines++ :",["Humeur dépressive","↘ intérêt / plaisir",["!!Au moins 1 des 2 pour le diagnostic!!"],"↘/↗ poids (++5 %++) ou appétit","Insomnie / hypersomnie","Agitation / ralentissement psychomoteur","Fatigue, ↘ énergie","Dévalorisation, culpabilité","↘ concentration, indécision","IDS"],"Altération de la qualité de vie","∅ DD","∅ critères de trouble psychotique"]},
+ {h:"Traitement",l:["Antidépresseur ISRS (==fluoxétine==)",["Arrêt après ++6 mois – 1 an++"],"Selon la forme clinique : antipsychotique, BZD, hypnotique"]}
+]);
+F("psy","66b","Trouble anxieux généralisé",[
+ {h:"Diagnostic positif",l:["≥ ++6 mois++","Difficulté à contrôler la préoccupation","≥ ++3++ parmi (dont certains depuis ++6 mois++) :",["Agitation, survolté, à bout","Fatigabilité","Troubles de concentration / mémoire","Irritabilité","Tension musculaire","Perturbation du sommeil"],"Retentissement","∅ DD"]},
+ {h:"Traitement",l:["§Crise",["BZD : ++12 semaines++ max","Hydroxyzine = ==Atarax=="],"§Fond (≥ 6 mois)",["==ISRS==","==IRSNa=="]]}
+]);
+F("psy","351","Agitation",[
+ {h:"Traitement",l:["BZD PO : ==oxazépam==","Antipsychotiques : ==cyamémazine, loxapine=="]}
+]);
+F("psy","352","Crise d'angoisse",[
+ {h:"Symptômes",l:["==Dépersonnalisation==","==Déréalisation=="]},
+ {h:"TTT si attaque de panique prolongée",l:["BZD PO : ==lorazépam, alprazolam, oxazépam==","==Hydroxyzine== = antihistaminique"]}
+]);
+F("psy","353","Suicide",[
+ {h:"Épidémiologie",l:["TS : ⊕ ==ado + femme==","Suicide : ⊕ ==adulte + homme=="]},
+ {h:"Sd présuicidaire de Ringel",l:["Accalmie ⊕","= ==passage à l'acte imminent=="]},
+ {h:"Évaluation du risque suicidaire = RUD",l:["==Risque== = facteurs de risque + facteurs protecteurs","==Urgence== = projet suicidaire (scénario, délai)","==Dangerosité== = moyens à disposition"]},
+ {h:"Prévention primaire · HEAADSSSSS",sub:"guide d'entretien psychosocial",l:["H : ==habitat== = Home","E : ==école== = Education","A : ==alimentation==","A : ==activités== (camarades, internet)","D : ==drogues==","S : ==sexualité==","S : ==suicide==","S : ==sécurité, sévices subis==","S : ==symptômes flous==","S : ==suivis=="]},
+ {h:"Questionnaire BITS (enfant)",l:["§Brimades (harcèlement)",["+1 si à l'école","+2 si hors école (internet)"],"§Insomnies",["+1 si fréquentes","+2 si cauchemars"],"§Tabac",["+1 si irrégulier","+2 si quotidien"],"§Stress",["+1 si scolaire / travail","+2 si familial"],"→ ==approfondir si ≥ 3=="]}
+]);
+
+/* ---------------- RÉA ---------------- */
+F("rea","338","Anaphylaxie",[
+ {h:"Triade de l'anaphylaxie",l:["==Urticaire, angiœdème==","==Bronchospasme==","==HypoTA=="]},
+ {h:"Classification de Ring et Messmer",l:["Grade ++1++ : signes cutanéomuqueux","Grade ++2++ : multiviscéral modéré (≥ ++2++ atteintes)","Grade ++3++ : multiviscéral sévère","Grade ++4++ : ACR"]},
+ {h:"TTT de 1re intention",l:["==Adrénaline IM== ++0,3–0,5 mg++","Remplissage : NaCl 0,9 % puis cristalloïdes ++0,5–1 L++","O₂ haut débit au masque haute concentration ≥ ++10 L/min++","Surveillance ≥ ++6 h++","Après : ==méthylprednisolone IV + antihistaminique=="]}
+]);
+F("rea","332","Choc",[
+ {h:"Définition",l:["Choc = ==hypoTA + signes d'hypoperfusion=="]},
+ {h:"Profils hémodynamiques",table:{head:["","Q cardiaque","Précharge","Postcharge"],rows:[["Cardiogénique","↘","↗","Variable"],["Hypovolémique","↘","↘↘","↗"],["Distributif","Variable","↘","↘↘"],["Obstructif","↘","↗ sur cœur D","↗"]]}},
+ {h:"qSOFA (sepsis)",l:["FR ≥ ++22++","PAS ≤ ++100++","Trouble de conscience"]},
+ {h:"Choc distributif",l:["Choc septique","Choc anaphylactique","Choc inflammatoire","Choc cytokinique","Choc spinal"]},
+ {h:"PEC immédiate",l:["Scope","O₂","2 VVP + G5 %","NaCl 0,9 % ++500 mL++ !!sauf OAP!!","GDS + lactates + BH + NFS + TP + TCA + fibrinogène + iono + créat + ABO-Rh + RAI + hémocs + ECG + radio de thorax","Appel du réanimateur"]},
+ {h:"Amines · IVSE sur VVC",sub:"pour toutes, sauf l'adrénaline",table:{head:["","Récepteurs","Indications"],rows:[["Noradrénaline","α1 ± β1","Choc septique, cardiogénique, obstructif, hypovolémique"],["Adrénaline","β1 + β2 + α1","ACR + choc anaphylactique · 0,1 IV, 0,5 IM"],["Dobutamine","β1","Choc cardiogénique"],["Salbutamol","β2","Asthme + BPCO"]]}},
+ {h:"TA différentielle",l:["↗ TA différentielle = ==choc distributif==","↘ TA différentielle = ==choc hypovolémique / cardiogénique=="]},
+ {h:"Sepsis",l:["Infection : signes inflammatoires cliniques + suspicion d'agent infectieux","Sepsis : infection + ≥ ++1++ défaillance d'organe","Choc septique : sepsis réfractaire = hypoTA persistante malgré le RV nécessitant des vasopresseurs + lactates persistants > ++2 mmol/L++"]},
+ {h:"ATB d'urgence du sepsis",l:["Pneumo : ==C3G IV + macrolide / FQ IV==","Urinaire : ==C3G IV + amikacine IV==","Digestif : ==pipéracilline-tazobactam + gentamicine IV==","Tête / cou : ==Augmentin IV==","Périnée : ==pipéracilline-tazobactam==","Non identifié : ==C3G IV + gentamicine IV=="]},
+ {h:"Causes de choc cardiogénique",l:["IDM","Myocardite","TTT : BB, inhibiteurs calciques, stabilisants de membrane","Décompensation d'IC chronique","Sd de Tako-tsubo","BAV3","TV","Tachycardie supraventriculaire : FA, flutter","Dysfonction de prothèse aortique / mitrale","Insuffisance aortique : EI, dissection, RAA, traumatisme","Insuffisance mitrale : EI, pb de pilier / cordage, traumatisme","§Choc obstructif",["EP","Tamponnade","PNO compressif = tamponnade gazeuse","Hémopéricarde"]]}
+]);
+F("rea","337","Intoxications",[
+ {h:"Antidotes",l:["Morphiniques = ==naloxone== ♥","BZD = ==flumazénil== ♥","Paracétamol = ==N-acétylcystéine==","TTT stabilisant de membrane = ==bicarbonate de sodium molaire 8,4 %==","Digoxine : ==atropine, Ac anti-digoxine==","BB : ==catécholamines, glucagon==","CO : ==O₂ normobare + hyperbare==","Fumées d'incendie : ==hydroxocobalamine== = vit B12"]},
+ {h:"TTT toxicologique",l:["Charbon activé","Dialyse","Antidotes"]},
+ {h:"Toxiques à faible risque",l:["BZD","Neuroleptiques","IRS"]},
+ {h:"Naloxone",sub:"objectif : FR ≥ 15",l:["Antagoniste compétitif réversible","Titration : bolus ++0,04 mg++ IV",["++0,04–0,08 mg++ / ++2 min++","Max ++2 mg++"],"½ dose de titration en IVSE"]},
+ {h:"Flumazénil",sub:"réveil → protection des VAS",l:["Antagoniste compétitif réversible","Titration : bolus ++0,2 mg++ IV",["++0,1 mg++ / ++2 min++","Max ++2 mg++"],"½ dose de titration en IVSE","!!CI : ATCD d'épilepsie, co-intoxication avec un toxique pro-convulsivant (antidépresseurs, neuroleptiques), convulsions, poly-intoxication non claire!!"]},
+ {h:"Toxidrome opioïde",l:["§Toxiques",["Morphine palier 2 et 3","Héroïne","Opioïdes de synthèse"],"§Clinique : tout ralenti",["==Triade== : myosis serré bilatéral, bradypnée, coma calme","Hypotonie","Globe urinaire (RAU)"],"§Gravité",["Respiratoire : bradypnée (hypoxie, inhalation) ± ACR"],"§Antidote",["==Naloxone=="]]},
+ {h:"Toxidrome anticholinergique / atropinique",l:["§Toxiques",["Tricycliques (amitriptyline)","Antipsychotiques (chlorpromazine, olanzapine, quétiapine)","Antihistaminiques (hydroxyzine)","Autres : atropine, antiparkinsoniens, bronchodilatateurs, oxybutynine, scopolamine, amanite phalloïde"],"§Clinique : tout accéléré + mydriase",["Confusion + hallucinations","Puis coma agité, hyperréflexie ± convulsions (CTCG)","Mydriase bilatérale peu / pas réactive, tachycardie, iléus, RAU, sécheresse muqueuse, flush cutané"],"§Gravité",["!!Toujours rechercher un effet stabilisant de membrane = ECG!!","Hyperthermie"],"§Antidote",["==Aucun== : TTT symptomatique","Si effet stabilisant de membrane : bicarbonate de sodium molaire"],"§En plus",["Effet pro-convulsivant","CI du flumazénil si atypie du tableau myorelaxant (antagonise les BZD potentiellement associées → dévoile l'effet pro-convulsivant)"]]},
+ {h:"Toxidrome de myorelaxation",l:["§Toxiques",["BZD et apparentés","Alcool"],"§Clinique : tout ralenti",["Coma calme, somnolence","Myorelaxation = ==ROT abolis==","Dysarthrie, confusion","Pupilles sans particularité"],"§Gravité",["Risque asphyxique sur obstruction des VAS (sur coma et myorelaxation)"],"§Antidote",["==Flumazénil=="],"§En plus",["!!Si atypie du toxidrome → CI au flumazénil!!"]]},
+ {h:"Toxidrome sérotoninergique",l:["§Toxiques",["ISRS, amphétamines (MDMA)","Autres : tricycliques, IMAO, tramadol"],"§Clinique",["Confusion, hallucinations","Puis coma agité : myoclonies, hyperréflexie","Mydriase","Signes CV : tachycardie, hypo / hypertension","Diarrhées, hypersudation, hyperthermie"],"§Gravité",["Rhabdomyolyse, CIVD","Hyperthermie : risque de défaillance multiviscérale"],"§Antidote",["==Cyproheptadine=="]]},
+ {h:"Toxidrome adrénergique / sympathomimétique",l:["§Toxiques",["Salbutamol","Cocaïne","Amphétamines","LSD","Nouvelles drogues de synthèse","Xanthines (caféine, théophylline)"],"§Clinique",["Hyperstimulation CV initiale (HTA, hyperdébit cardiaque) puis épuisement avec évolution vers un choc cardiogénique (sidération myocardique)","Agitation, mydriase bilatérale, convulsions, tachycardie, HTA, hyperthermie"],"§Gravité",["Hyperglycémie, hypokaliémie, hyperlactatémie, hypophosphatémie","Choc cardiogénique"],"§Antidote",["Selon la présentation clinique à la PEC","==Aucun=="],"§En plus",["Grave","Hyperleucocytose possible"]]},
+ {h:"Toxidrome stabilisant de membrane",l:["§Toxiques",["Antiarythmiques de classe 1 de Vaughan-Williams (lidocaïne, flécaïnide, quinidine…)","Certains BB (propranolol, acébutolol, labétalol)","Tricycliques","Quinine, chloroquine","Cocaïne"],"§Clinique",["Blocage des canaux sodiques cardiaques : troubles de conduction intracardiaque avec ==élargissement des QRS== puis choc cardiogénique / ACR","Signe d'alerte : blocage des canaux potassiques (ralentissement de la repolarisation avec allongement modéré du QT)"],"§Gravité",["Choc cardiogénique","ACR"],"§Antidote",["==Bicarbonate de sodium molaire== (NaHCO₃ 8,4 %) !!uniquement si QRS élargis!!","± ECMO"]]}
+]);
+F("rea","336","Coma non traumatique",[
+ {h:"Score de Glasgow",l:["§Yeux",["++1++ : ∅ ouverture à la douleur","++2++ : ouverture à la douleur","++3++ : ouverture à la demande","++4++ : ouverture spontanée"],"§Verbal",["++1++ : ∅ réponse à la douleur","++2++ : incompréhensible","++3++ : inapproprié","++4++ : confus","++5++ : cohérent, orienté"],"§Moteur",["++1++ : ∅ à la douleur","++2++ : décérébration","++3++ : décortication","++4++ : non orienté à la douleur","++5++ : orienté à la douleur","++6++ : ordres simples"]]},
+ {h:"Réflexes du tronc cérébral",l:["RPM","Réflexe cornéen","Réflexe oculocéphalique","Réflexe oculovestibulaire","Réflexe oculocardiaque","Réflexe de toux","Ventilation"]},
+ {h:"Respirations pathologiques",resp:true,l:["Cheyne-Stokes","Hyperpnée","Apneustique","Kussmaul","Ataxique"]},
+ {h:"Examens devant un coma",l:["Glycémie capillaire","NFS, iono, urée, créat, Ca²⁺, BH, TP, TCA, fibrinogène","GDS avec HbCO","OH, ammoniémie, toxiques urinaires + sanguins","TDM cérébrale"]}
+]);
+
+/* =========================================================
+   JEUX — paires (QCM, vrai/faux, associations, flashcards)
+   pair = [question, réponse, (fiche si différente du groupe)]
+   ========================================================= */
+const GROUPS = [
+ {id:"strab",item:"ophtalmo-52",q:"Strabisme {k} = ?",pairs:[["convergent","Ésotropie"],["divergent","Exotropie"],["vers le haut","Hypertropie"],["vers le bas","Hypotropie"]]},
+ {id:"refr",item:"ophtalmo-85",q:"Correction optique : {k}",pairs:[["Myopie","Verres sphériques concaves (−)"],["Hypermétropie","Verres sphériques convexes (+)"],["Astigmatisme","Verres cylindriques"],["Presbytie","Verres sphériques convexes (+)"]]},
+ {id:"devvis",item:"ophtalmo-47",q:"À quel âge ? {k}",pairs:[["RPM","Dès la naissance"],["Réflexe de poursuite","2e – 4e semaine"],["Fixation + coordination binoculaire","4e – 12e semaine"],["Fixe un objet immobile, convergence","3 – 4 mois"],["Coordination œil-tête-main","5 mois"],["Mesure de l'AV","2 – 3 ans"]]},
+ {id:"nourr",item:"ophtalmo-47",q:"Nourrisson — {k} : penser à ?",pairs:[["CBH congénital","Neuroblastome"],["Paralysie du III congénitale","Problème intracrânien"],["Colobome irien","Défaut de fermeture du tube neural"],["Larmoiement purulent","Conjonctivite (Staph, gonocoque, chlamydia)"],["Larmoiement clair","Glaucome congénital ou sténose des voies lacrymales"]]},
+ {id:"sinus",item:"orl-148",q:"Âge d'apparition du sinus {k}",pairs:[["ethmoïdal","1ers mois"],["maxillaire","3 – 4 ans"],["frontal","5 – 10 ans"],["sphénoïdal","10 – 15 ans"]]},
+ {id:"amox",item:"orl-148",q:"Durée d'amoxicilline : {k}",pairs:[["Otite","5 jours"],["Angine","6 jours"],["Sinusite","7 jours"]]},
+ {id:"surdeg",item:"orl-89",q:"Perte auditive moyenne de {k}",pairs:[["0–20 dB","Audition normale"],["21–40 dB","Surdité légère"],["41–70 dB","Surdité moyenne"],["71–90 dB","Surdité sévère"],["91–120 dB","Surdité profonde"],["> 120 dB","Cophose"]]},
+ {id:"sursd",item:"orl-89",q:"Surdité + {k} = ?",pairs:[["rétinite pigmentaire","Sd d'Usher"],["trouble de pigmentation iris / cheveux","Sd de Waardenburg"],["goitre euthyroïdien","Sd de Pendred"],["néphropathie glomérulaire","Sd d'Alport"],["QT long","Sd de Jervell-Lange-Nielsen"]]},
+ {id:"tympa",item:"orl-89",q:"Tympanométrie : {k}",pairs:[["Pic centré sur 0","Normal"],["Courbe plate","Épanchement liquidien"],["Pic vers les pressions négatives","Trouble de ventilation de l'OM"],["Pic ample et pointu","Problème ossiculaire"]]},
+ {id:"acou",item:"orl-89",q:"Acoumétrie : {k}",pairs:[["Weber latéralisé côté sourd","Surdité de transmission"],["Weber latéralisé côté sain","Surdité de perception"],["Rinne négatif (CA < CO)","Transmission ou mixte"],["Rinne positif (CA > CO)","Perception ou normal"]]},
+ {id:"kvads",item:"orl-298",q:"Histologie : {k}",pairs:[["Cancer du pharynx / larynx","Carcinome épidermoïde"],["Cancer des sinus","Adénocarcinome"],["Cancer du cavum","Carcinome indifférencié"]]},
+ {id:"kvadsfr",item:"orl-298",q:"Facteur de risque : {k}",pairs:[["Cancer du pharynx / larynx","Tabac, OH, HPV"],["Cancer des sinus","Poussières de bois, nickel"],["Cancer du cavum","EBV"]]},
+ {id:"vert",item:"orl-103",q:"Vertige — {k} : diagnostic ?",pairs:[["< 1 minute","VPPB"],["minutes – heures, répétitif + signes cochléaires","Maladie de Ménière"],["minutes – heures, répétitif","Migraine vestibulaire"],["minutes – heures, épisode unique","Névrite vestibulaire"],["permanent","Schwannome vestibulaire"]]},
+ {id:"hints",item:"orl-103",q:"HINTS en faveur d'une origine centrale — {k} :",pairs:[["HI","Pas de saccade horizontale"],["N","Nystagmus atypique"],["TS","Saccade verticale"]]},
+ {id:"salive",item:"orl-90",q:"{k} = ?",pairs:[["Sialite","Infection / inflammation"],["Sialose","Hypertrophie"],["Sialadénite","Inflammation du parenchyme"],["Sialodochite","Inflammation du conduit"]]},
+ {id:"lith",item:"orl-90",q:"Lithiase {k} : TTT ?",pairs:[["submandibulaire, tiers antérieur","Endobuccale sous AL"],["submandibulaire, tiers moyen/post < 4 mm","Sialendoscopie"],["parotidienne, tiers antérieur","Endobuccale sous AG"],["parotidienne, tiers moyen/post > 3 mm","Fragmentation du calcul"]]},
+ {id:"dysplar",item:"pneumo-203",q:"Dyspnée laryngée — {k} : cause ?",pairs:[["nouveau-né","Laryngomalacie"],["< 6 mois","Angiome sous-glottique"],["> 6 mois","Corps étranger, laryngite"],["adulte","Cancer"]]},
+ {id:"dysptt",item:"pneumo-203",q:"TTT : {k}",pairs:[["Laryngomalacie","TTT du RGO (régression à 6 mois)"],["Angiome sous-glottique","BB : propranolol (régression à 1 an)"],["Laryngite sous-glottique","CTC PO"],["Épiglottite à Haemophilus b","IOT + C3G IV + CTC IV"],["Aérosol de Bompard","CTC + adrénaline + sérum phy"]]},
+ {id:"crb",item:"pneumo-154",q:"Score CRB65 : « {k} » =",pairs:[["C","Confusion"],["R","FR ≥ 30/min"],["B","PAS < 90 ou PAD ≤ 60 mmHg"],["65","Âge ≥ 65 ans"]]},
+ {id:"nyha",item:"pneumo-203",q:"NYHA {k}",pairs:[["1","Normal"],["2","Dyspnée > 2 étages"],["3","Dyspnée ≤ 2 étages"],["4","Dyspnée au repos"]]},
+ {id:"mmrc",item:"pneumo-203",q:"mMRC {k}",pairs:[["0","Normal"],["1","Rapide à plat / en pente"],["2","Plus lent que le rythme normal → arrêt"],["3","Arrêts après 90 m ou quelques minutes"],["4","À l'habillage"]]},
+ {id:"sdra",item:"pneumo-359",q:"SDRA avec P/F {k}",pairs:[["200–300 mmHg","Léger"],["100–200 mmHg","Modéré"],["≤ 100 mmHg","Sévère"]]},
+ {id:"seuilsra",item:"pneumo-359",q:"Seuil : {k}",pairs:[["Hypoxémie de l'IRA","PaO₂ < 60 mmHg"],["Hypercapnie","PaCO₂ > 45 mmHg"],["Tachypnée (signe de lutte)","FR > 25"],["Hypoxémie du SDRA","PaO₂/FiO₂ < 300 mmHg"]]},
+ {id:"old",item:"pneumo-208",q:"Seuil : {k}",pairs:[["Hypoxémie définissant l'IRC","< 70 mmHg ×2 à 2 sem d'intervalle"],["IRC grave","PaO₂ < 60 mmHg"],["OLD dans l'IR obstructive","PaO₂ < 55 mmHg"],["OLD dans l'IR restrictive","PaO₂ < 60 mmHg"],["Durée quotidienne de l'OLD","≥ 15 h/j"]]},
+ {id:"psydur",item:"psy-64",q:"Durée minimale : {k}",pairs:[["Épisode maniaque","≥ 1 semaine"],["Épisode hypomaniaque","≥ 4 jours"],["EDC","≥ 2 semaines","psy-66a"],["TAG","≥ 6 mois","psy-66b"],["Trouble délirant persistant","≥ 1 mois","psy-65"]]},
+ {id:"schizoage",item:"psy-63",q:"Schizophrénie : début {k}",pairs:[["normal","18–25 ans"],["précoce","< 18 ans"],["très précoce","< 13 ans"],["tardif","> 35 ans"]]},
+ {id:"psybref",item:"psy-63",q:"Symptômes psychotiques : {k}",pairs:[["1 jour – 1 mois","Trouble psychotique bref"],["1 – 6 mois","Trouble schizophréniforme"],["retentissement ≥ 6 mois","Schizophrénie"]]},
+ {id:"psymol",item:"psy-63",q:"Classe de : {k}",pairs:[["Cyamémazine","Antipsychotique"],["Alprazolam","BZD","psy-352"],["Lamotrigine","Thymorégulateur","psy-64"],["Fluoxétine","Antidépresseur ISRS","psy-66a"],["Hydroxyzine","Antihistaminique","psy-352"],["Loxapine","Antipsychotique","psy-351"],["Valproate","Thymorégulateur","psy-64"]]},
+ {id:"rud",item:"psy-353",q:"RUD — {k} :",pairs:[["Risque","Facteurs de risque + facteurs protecteurs"],["Urgence","Projet suicidaire (scénario, délai)"],["Dangerosité","Moyens à disposition"]]},
+ {id:"bits",item:"psy-353",q:"Questionnaire BITS : « {k} » =",pairs:[["B","Brimades"],["I","Insomnies"],["T","Tabac"],["S","Stress"]]},
+ {id:"ring",item:"rea-338",q:"Ring et Messmer : grade {k}",pairs:[["1","Signes cutanéomuqueux"],["2","Multiviscéral modéré"],["3","Multiviscéral sévère"],["4","ACR"]]},
+ {id:"amines",item:"rea-332",q:"Récepteurs : {k}",pairs:[["Noradrénaline","α1 ± β1"],["Adrénaline","β1 + β2 + α1"],["Dobutamine","β1"],["Salbutamol","β2"]]},
+ {id:"aminesind",item:"rea-332",q:"Indication : {k}",pairs:[["Noradrénaline","Choc septique, cardiogénique, obstructif, hypovolémique"],["Adrénaline","ACR + choc anaphylactique"],["Dobutamine","Choc cardiogénique"],["Salbutamol","Asthme + BPCO"]]},
+ {id:"atbseps",item:"rea-332",q:"ATB d'urgence du sepsis, foyer {k}",pairs:[["pulmonaire","C3G IV + macrolide / FQ IV"],["urinaire","C3G IV + amikacine IV"],["digestif","Pipéracilline-tazobactam + gentamicine IV"],["périnéal","Pipéracilline-tazobactam"],["non identifié","C3G IV + gentamicine IV"]]},
+ {id:"antid",item:"rea-337",q:"Antidote : {k}",pairs:[["Morphiniques","Naloxone"],["BZD","Flumazénil"],["Paracétamol","N-acétylcystéine"],["Stabilisants de membrane","Bicarbonate de sodium molaire 8,4 %"],["Digoxine","Atropine, Ac anti-digoxine"],["Bêtabloquants","Catécholamines, glucagon"],["Monoxyde de carbone","O₂ normobare + hyperbare"],["Fumées d'incendie","Hydroxocobalamine (vit B12)"],["Toxidrome sérotoninergique","Cyproheptadine"]]},
+ {id:"toxcli",item:"rea-337",q:"Quel toxidrome ? {k}",pairs:[["Myosis serré, bradypnée, coma calme","Opioïde"],["Mydriase, tachycardie, RAU, sécheresse muqueuse, flush","Anticholinergique"],["Coma calme, ROT abolis, pupilles normales","Myorelaxation"],["Myoclonies, hyperréflexie, diarrhées, hypersudation","Sérotoninergique"],["HTA puis choc cardiogénique, hyperglycémie, hypokaliémie","Adrénergique"],["Élargissement des QRS","Stabilisant de membrane"]]},
+ {id:"toxag",item:"rea-337",q:"Toxidrome de : {k}",pairs:[["Héroïne","Opioïde"],["Scopolamine","Anticholinergique"],["Hydroxyzine","Anticholinergique"],["Alcool","Myorelaxation"],["Tramadol","Sérotoninergique"],["Théophylline","Adrénergique"],["LSD","Adrénergique"],["Flécaïnide","Stabilisant de membrane"],["Chloroquine","Stabilisant de membrane"]]},
+ {id:"gcs",item:"rea-336",q:"Glasgow {k}",pairs:[["Y2","Ouverture des yeux à la douleur"],["Y3","Ouverture des yeux à la demande"],["V2","Incompréhensible"],["V3","Inapproprié"],["V4","Confus"],["M2","Décérébration"],["M3","Décortication"],["M4","Non orienté à la douleur"],["M5","Orienté à la douleur"],["M6","Ordres simples"]]}
+];
+
+/* ---------- Tri : ranger dans la bonne catégorie ---------- */
+const TRIS = [
+ {id:"t-surd",item:"orl-89",title:"Surdité de transmission ou de perception ?",cats:{"Transmission":["Otospongiose","Otites","Bouchon de cérumen","Aplasie d'oreille"],"Perception":["Presbyacousie","Maladie de Ménière","Schwannome vestibulaire","Fracture transversale du rocher","Ototoxiques","Anoxie néonatale","Incompatibilité rhésus","Commotion labyrinthique"]}},
+ {id:"t-vasc",item:"orl-87",title:"Épistaxis : carotide interne ou externe ?",cats:{"Carotide interne":["A. ethmoïdale antérieure","A. ethmoïdale postérieure","A. ophtalmique"],"Carotide externe":["A. sphénopalatine","A. palatine supérieure","A. labiale supérieure","A. maxillaire interne","A. faciale"]}},
+ {id:"t-vert",item:"orl-103",title:"Vertige : origine centrale ou périphérique ?",cats:{"Périphérique":["Nystagmus typique","Sd harmonieux","Vertige ± signes végétatifs"],"Centrale (HINTS)":["HI sans saccade horizontale","Nystagmus atypique","TS : saccade verticale"]}},
+ {id:"t-av",item:"ophtalmo-85",title:"Acuité visuelle : de loin ou de près ?",cats:{"De loin":["Monoyer","Snellen","Landolt","ETDRS"],"De près":["Parinaud","Rossano-Weiss"]}},
+ {id:"t-germe",item:"pneumo-154",title:"Pneumocoque ou légionelle ?",cats:{"Pneumocoque":["CGP en chaînettes","Début brutal","Opacité systématisée","Amoxicilline"],"Légionelle":["BGN","Eau douce","Début progressif","Opacité non systématisée","Macrolides"]}},
+ {id:"t-pac",item:"pneumo-154",title:"PAC en USC / réa : critère majeur ou mineur ?",cats:{"Majeur":["Choc septique","IRA nécessitant une IOT"],"Mineur":["FR ≥ 30/min","P/F ≤ 250","Confusion, désorientation","Hyperleucocytose > 30 G/L","Thrombopénie < 100 G/L","Hypothermie < 35 °C","Hypotension nécessitant un RV"]}},
+ {id:"t-dra",item:"pneumo-359",title:"DRA : signe de lutte ou de faillite ?",cats:{"Lutte":["Tachypnée","Tirage","Stridor"],"Faillite":["Balancement thoraco-abdominal","Cyanose","Astérixis","Troubles de vigilance","Pouls paradoxal","Hypercapnie"]}},
+ {id:"t-schizo",item:"psy-63",title:"Schizophrénie : quel syndrome ?",cats:{"Positif":["Idées délirantes","Hallucinations auditives","Hallucinations intrapsychiques","Mécanisme interprétatif"],"Négatif":["Alogie","Aboulie","Apragmatisme","Émoussement des affects","Retrait social"],"Désorganisation":["Barrage","Fading","Néologismes","Discordance idéo-affective","Rationalisme morbide"]}},
+ {id:"t-psymol",item:"psy-63",title:"Psychotropes : quelle classe ?",cats:{"BZD":["Diazépam","Oxazépam","Lorazépam","Alprazolam"],"Antipsychotique":["Cyamémazine","Lévomépromazine","Loxapine","Amisulpride","Aripiprazole","Rispéridone","Clozapine"],"Thymorégulateur":["Lithium","Valproate","Carbamazépine","Lamotrigine"]}},
+ {id:"t-edc",item:"psy-66a",title:"EDC : quelle dimension clinique ?",cats:{"Psychoaffective":["Humeur dépressive","Anhédonie","Culpabilité","Incurabilité"],"Psychomotrice":["Bradypsychie","Ruminations","Hypomimie","Aprosodie","Clinophilie"],"Physiologique":["Insomnie","Anorexie","↘ libido","Fatigue"]}},
+ {id:"t-choc",item:"rea-332",title:"Choc : distributif, obstructif ou cardiogénique ?",cats:{"Distributif":["Choc septique","Choc anaphylactique","Choc spinal","Choc cytokinique"],"Obstructif":["EP","Tamponnade","PNO compressif","Hémopéricarde"],"Cardiogénique":["IDM","Myocardite","BAV3","Sd de Tako-tsubo","TV"]}}
+];
+
+/* ---------- Ordre : [élément, précision révélée] ---------- */
+const ORDRES = [
+ {id:"o-surd",item:"orl-89",title:"Degrés de surdité, du plus léger au plus sévère",seq:[["Normale","0–20 dB"],["Légère","21–40 dB"],["Moyenne","41–70 dB"],["Sévère","71–90 dB"],["Profonde","91–120 dB"],["Cophose","> 120 dB"]]},
+ {id:"o-sinus",item:"orl-148",title:"Apparition des sinus",seq:[["Ethmoïdal","1ers mois"],["Maxillaire","3–4 ans"],["Frontal","5–10 ans"],["Sphénoïdal","10–15 ans"]]},
+ {id:"o-amox",item:"orl-148",title:"Amoxicilline, de la durée la plus courte à la plus longue",seq:[["Otite","5 j"],["Angine","6 j"],["Sinusite","7 j"]]},
+ {id:"o-vis",item:"ophtalmo-47",title:"Développement visuel de l'enfant",seq:[["RPM","naissance"],["Réflexe de poursuite","2e–4e sem"],["Fixation + coordination binoculaire","4e–12e sem"],["Fixe un objet immobile, convergence","3–4 mois"],["Coordination œil-tête-main","5 mois"],["Mesure de l'AV","2–3 ans"]]},
+ {id:"o-dysp",item:"pneumo-203",title:"Dyspnée laryngée selon l'âge",seq:[["Laryngomalacie","nouveau-né"],["Angiome sous-glottique","< 6 mois"],["Corps étranger, laryngite","> 6 mois"],["Cancer","adulte"]]},
+ {id:"o-nyha",item:"pneumo-203",title:"NYHA, de 1 à 4",seq:[["Normal","1"],["> 2 étages","2"],["≤ 2 étages","3"],["Au repos","4"]]},
+ {id:"o-mmrc",item:"pneumo-203",title:"mMRC, de 0 à 4",seq:[["Normal","0"],["Rapide à plat / en pente","1"],["Plus lent → arrêt","2"],["Arrêts après 90 m","3"],["À l'habillage","4"]]},
+ {id:"o-sdra",item:"pneumo-359",title:"SDRA, du moins au plus sévère",seq:[["P/F 200–300 mmHg","léger"],["P/F 100–200 mmHg","modéré"],["P/F ≤ 100 mmHg","sévère"]]},
+ {id:"o-psy",item:"psy-63",title:"Durée des symptômes psychotiques",seq:[["Trouble psychotique bref","1 j – 1 mois"],["Trouble schizophréniforme","1 – 6 mois"],["Schizophrénie","≥ 6 mois"]]},
+ {id:"o-ring",item:"rea-338",title:"Ring et Messmer, grade 1 → 4",seq:[["Signes cutanéomuqueux","1"],["Multiviscéral modéré","2"],["Multiviscéral sévère","3"],["ACR","4"]]},
+ {id:"o-gcsm",item:"rea-336",title:"Glasgow moteur, de 1 à 6",seq:[["∅ à la douleur","M1"],["Décérébration","M2"],["Décortication","M3"],["Non orienté à la douleur","M4"],["Orienté à la douleur","M5"],["Ordres simples","M6"]]},
+ {id:"o-gcsv",item:"rea-336",title:"Glasgow verbal, de 1 à 5",seq:[["∅ réponse à la douleur","V1"],["Incompréhensible","V2"],["Inapproprié","V3"],["Confus","V4"],["Cohérent, orienté","V5"]]},
+ {id:"o-gcsy",item:"rea-336",title:"Glasgow yeux, de 1 à 4",seq:[["∅ ouverture à la douleur","Y1"],["Ouverture à la douleur","Y2"],["Ouverture à la demande","Y3"],["Ouverture spontanée","Y4"]]}
+];
+
+/* ---------- Flashcards supplémentaires [fiche, question, réponse] ---------- */
+const FLASH = [
+ ["ophtalmo-85","Normale de l'AV de loin (Monoyer) ?","10/10"],
+ ["ophtalmo-85","Normale de l'AV de près (Parinaud) ?","1,5 – 2"],
+ ["ophtalmo-85","Les 4 échelles d'AV de loin ?","Monoyer, E de Snellen, anneaux brisés de Landolt, ETDRS (logarithmique)"],
+ ["ophtalmo-85","Échelles d'AV de près ?","Parinaud, Rossano-Weiss"],
+ ["ophtalmo-85","Puissance de convergence de l'œil ?","60 δ : cornée 42 δ + cristallin 20 δ"],
+ ["ophtalmo-85","Punctum remotum et punctum proximum ?","Remotum : infini, sans accommodation · Proximum : 7 cm, avec accommodation"],
+ ["ophtalmo-85","Les 4 types de myopie ?","D'indice, de courbure, axile, accommodative"],
+ ["ophtalmo-85","Myopie forte (myopie maladie) : seuils ?","≥ 6 δ ou longueur axiale ≥ 26 mm"],
+ ["ophtalmo-85","Hypermétropie = ?","Asthénopie accommodative · verres sphériques convexes (+)"],
+ ["ophtalmo-85","Presbytie = ?","Perte d'accommodation > 40 ans · verres sphériques convexes"],
+ ["ophtalmo-47","Causes de leucocorie ?","Rétinoblastome, cataracte congénitale, fibres à myéline, toxoplasmose, toxocarose"],
+ ["ophtalmo-47","À dépister entre 1 mois et 2 ans ?","Malvoyance, strabisme, amétropie, amblyopie"],
+ ["ophtalmo-47","À dépister après 2 ans ?","Amétropie, strabisme, amblyopie"],
+ ["ophtalmo-47","Âges des examens de dépistage visuel ?","J8, M2, M4, M9, 2 ans, 3–6 ans"],
+ ["orl-87","Carotide interne : artères du nez ?","A. ophtalmique → A. ethmoïdales antérieure et postérieure"],
+ ["orl-87","Carotide externe : artères du nez ?","A. maxillaire interne → A. sphénopalatine, A. palatine sup · A. faciale → A. labiale sup"],
+ ["orl-148","Sinusite maxillaire : critères majeurs (≥ 2/3) ?","Persistance malgré TTT ≥ 48 h · douleur unilatérale pulsatile · ↗ rhinorrhée / purulence"],
+ ["orl-148","Sinusite maxillaire : critères mineurs ?","Fièvre > 3 j · obstruction nasale, éternuements, toux ≥ 10 j"],
+ ["orl-148","ATB d'une sinusite non maxillaire ?","Augmentin PO 7 j"],
+ ["orl-335","Fracture du rocher : signes ?","Otorragie, otoliquorrhée, PFP, Sd cochléovestibulaire déficitaire total ou partiel, brèche ostéoméningée"],
+ ["orl-335","Sd cochléovestibulaire déficitaire partiel post-trauma : causes ?","Fistule périlymphatique, commotion labyrinthique, symptômes subjectifs des TC, vertiges positionnels post-traumatiques, surdité de transmission"],
+ ["orl-90","Lithiase parotidienne, tiers moyen / postérieur ≤ 2 mm ?","Sialendoscopie"],
+ ["orl-90","Lithiase submandibulaire, tiers moyen / postérieur ≥ 4 mm ?","Voie endobuccale"],
+ ["orl-89","Médicaments ototoxiques ?","Aminosides (⊕), diurétiques, sels de platine, quinine, rétinoïdes · CO, Hg, Pb"],
+ ["orl-89","Causes de surdité de transmission ?","Otospongiose, otites, bouchon de cérumen, traumatisme, aplasie d'oreille, tumeur"],
+ ["orl-89","Seuil d'intelligibilité ?","Intensité à laquelle 50 % des mots sont compris et répétés"],
+ ["orl-103","Signes d'un Sd vestibulaire périphérique ?","Vertige ± signes végétatifs, nystagmus typique, Romberg, bras tendus, Fukuda, marche aveugle → Sd harmonieux"],
+ ["orl-103","Sd vestibulaire aigu : 4 éléments ?","Vertige, signes neurovégétatifs, nystagmus, déviations posturales (ataxie vestibulaire)"],
+ ["orl-103","Triade de Ménière ?","Sd vestibulaire harmonieux · acouphènes graves unilatéraux · plénitude d'oreille (hydrops labyrinthique)"],
+ ["orl-103","Ménière : pourquoi le Sd vestibulaire est-il controlatéral ?","Car il est irritatif"],
+ ["orl-103","Schwannome vestibulaire = ?","Neurinome de l'acoustique · vertige permanent"],
+ ["pneumo-154","Germes de PAC chez l'adulte et l'enfant ?","Adulte : pneumocoque, légionelle · Enfant : pneumocoque, Mycoplasma pneumoniae"],
+ ["pneumo-154","PAC en USC / réa : critères majeurs ?","Choc septique · IRA nécessitant une IOT (1 seul suffit)"],
+ ["pneumo-154","PAC : combien de critères mineurs pour l'USC / réa ?","≥ 3"],
+ ["pneumo-154","Quand hospitaliser une PAC ?","≥ 2 facteurs, ou 1 seul si > 65 ans"],
+ ["pneumo-154","PFLA à pneumocoque : sérologie à demander ?","Sérologie VIH"],
+ ["pneumo-154","ECBC valable si ?","PNN > 25/champ, cellules épithéliales < 10/champ, 1 seul germe en ED ≥ 10⁷"],
+ ["pneumo-154","Critères de Light ?","Protides pleural/sérique > 0,5 · LDH pleural/sérique > 0,6 · LDH pleural > 2/3 du sérique"],
+ ["pneumo-154","Épanchement pleural infectieux : protides ?","> 35 g/L, ou 25–35 g/L + ≥ 1 critère de Light"],
+ ["pneumo-154","Bronchiolite : définition ?","1er épisode de gêne respiratoire chez un enfant < 12 mois, due au VRS"],
+ ["pneumo-154","Bronchiolite grave : FR ?","≥ 70/min, ou respiration superficielle, ou FR < 30/min, ou apnée"],
+ ["pneumo-154","Bronchiolite : âge et terme de vulnérabilité ?","Âge < 2 mois (âge corrigé) · prématurité < 36 SA"],
+ ["pneumo-203","HTAP (post-it) : définition hémodynamique ?","P pulmonaire précapillaire ≥ 25 mmHg au repos, > 30 mmHg à l'effort · P capillaire moyenne ≤ 15 mmHg"],
+ ["pneumo-203","Dyspnée chronique : durée ?","≥ 8 semaines"],
+ ["pneumo-203","Dyspnée laryngée = ?","Bradypnée inspiratoire + stridor / cornage"],
+ ["pneumo-203","Bilan de 1re intention devant une dyspnée ?","Radio de thorax + ECG · NFS, iono, GAJ, BNP, D-dimères, GDS"],
+ ["pneumo-203","Laryngite striduleuse ?","Brutale, la nuit, lors d'une rhinopharyngite"],
+ ["pneumo-203","Pseudomyxome = ?","Œdème de Reinke"],
+ ["pneumo-203","Papillomatose laryngée : cause ?","HPV non oncogène"],
+ ["pneumo-208","Insuffisance respiratoire chronique : définition ?","Hypoxémie < 70 mmHg à 2 reprises à 2 semaines d'intervalle · grave si < 60 mmHg"],
+ ["pneumo-208","HTAP (fiche 208) : critères ?","PAP moyenne > 20 mmHg + résistances > 3 UW · PAP systolique > 35 mmHg"],
+ ["pneumo-208","Signes cliniques d'HTAP ?","Signe de Carvalho (souffle systolique ↗ à l'inspiration), éclat de B2, souffle diastolique"],
+ ["pneumo-208","OLD si PaO₂ entre 55 et 59 mmHg : à quelle condition ?","Signes d'hypoxie : Hte > 55 %, ICD, SpO₂ nocturne ≤ 88 %"],
+ ["pneumo-208","Hypoventilation alvéolaire : gaz du sang ?","Hypercapnie"],
+ ["pneumo-208","Effet shunt vs shunt vrai ?","Effet shunt : pb de ventilation · Shunt vrai : anatomique (D → G) ou fonctionnel (non ventilé)"],
+ ["pneumo-359","IRA : définition ?","Retentissement gazométrique du DRA : PaO₂ < 60 mmHg, PaCO₂ > 45 mmHg"],
+ ["pneumo-359","SDRA : les 4 critères ?","DRA < 7 j · opacités alvéolaires diffuses bilatérales · OAP non hydrostatique (exsudat) · PaO₂/FiO₂ < 300 mmHg"],
+ ["pneumo-359","SDRA : critère qui écarte une cause cardiaque ?","∅ défaillance cardiaque / surcharge volémique : PAPO < 15 mmHg"],
+ ["pneumo-359","TTT du SDRA ?","NO inhalé, décubitus ventral, O₂ haut débit nasal, curares, albumine + diurétique"],
+ ["psy-63","Schizophrénie : diagnostic positif ?","≥ 2 syndromes pendant ≥ 1 mois, retentissement ≥ 6 mois, répercussions sociales + pro, ∅ DD"],
+ ["psy-63","Sd négatif : 5 éléments ?","Émoussement des affects (anhédonie), alogie, apragmatisme (clinophilie, incurie), aboulie, retrait social"],
+ ["psy-63","Mécanismes des idées délirantes ?","Interprétatif, hallucinatoire, intuitif, imaginatif"],
+ ["psy-63","Schizophrénie : TTT de crise ?","Antipsychotiques : cyamémazine, lévomépromazine · BZD : diazépam, oxazépam"],
+ ["psy-63","Schizophrénie : durée du TTT de fond ?","≥ 2 ans si épisode unique · ≥ 5 ans si rechute"],
+ ["psy-63","Schizophrénie résistante à 2 TTT ?","Clozapine"],
+ ["psy-65","Trouble délirant persistant : thèmes ?","Érotomanie, mégalomanie, jalousie, persécution, somatique"],
+ ["psy-65","Trouble délirant persistant : ce qui est absent ?","∅ Sd de désorganisation, ∅ Sd négatif, ∅ altération du fonctionnement, ∅ bizarrerie, ∅ symptôme thymique"],
+ ["psy-64","Bipolaire type I vs type II ?","Type I : épisode (hypo)maniaque, diagnostic même sans EDC · Type II : hypomanie + EDC, ∅ épisode maniaque"],
+ ["psy-64","Cycles rapides = ?","≥ 4 épisodes en 1 an (25 %)"],
+ ["psy-64","Forme saisonnière = ?","≥ 2 épisodes saisonniers en 2 ans, ∅ épisode non saisonnier (25 %)"],
+ ["psy-64","Sd dépressif évocateur de bipolarité ?","< 25 ans, post-partum, début brutal, ≥ 3 EDC, ATCD familial, réponse inadéquate aux antidépresseurs"],
+ ["psy-64","Épisode maniaque : les critères (≥ 3 parmi) ?","↗ estime de soi, ↘ besoin de sommeil, ↗ désir de parler, fuite des idées, distractibilité, agitation, activités à risque"],
+ ["psy-64","Épisode maniaque : TTT de crise ?","Thymorégulateur (lithium, valproate, carbamazépine) · antipsychotique 2e G (rispéridone, olanzapine, quétiapine, aripiprazole)"],
+ ["psy-64","EDC bipolaire : TTT de crise ?","Lithium, lamotrigine · quétiapine · si échec : ISRS"],
+ ["psy-64","Durée du TTT de fond (manie ou EDC bipolaire) ?","4–6 mois, puis prophylaxie par thymorégulateur"],
+ ["psy-66a","Trouble dépressif récurrent = ?","≥ 2 épisodes séparés de ≥ 2 mois"],
+ ["psy-66a","EDC : critère obligatoire ?","Au moins 1 des 2 : humeur dépressive ou ↘ intérêt / plaisir"],
+ ["psy-66a","EDC : arrêt de l'antidépresseur ?","Après 6 mois – 1 an"],
+ ["psy-66b","TAG : TTT de fond ?","ISRS ou IRSNa, ≥ 6 mois"],
+ ["psy-66b","TAG : BZD combien de temps au maximum ?","12 semaines"],
+ ["psy-351","TTT de l'agitation ?","BZD PO : oxazépam · antipsychotiques : cyamémazine, loxapine"],
+ ["psy-352","TTT d'une attaque de panique prolongée ?","BZD PO (lorazépam, alprazolam, oxazépam) · hydroxyzine"],
+ ["psy-352","Crise d'angoisse : 2 symptômes de la fiche ?","Dépersonnalisation, déréalisation"],
+ ["psy-353","TS vs suicide : profil ?","TS : ado + femme · Suicide : adulte + homme"],
+ ["psy-353","Sd présuicidaire de Ringel ?","Accalmie = passage à l'acte imminent"],
+ ["psy-353","HEAADSSSSS : les 10 thèmes ?","Habitat, École, Alimentation, Activités, Drogues, Sexualité, Suicide, Sécurité / sévices, Symptômes flous, Suivis"],
+ ["psy-353","BITS : à partir de quel score approfondir ?","≥ 3"],
+ ["rea-338","Triade de l'anaphylaxie ?","Urticaire / angiœdème · bronchospasme · hypoTA"],
+ ["rea-338","Anaphylaxie : dose d'adrénaline IM ?","0,3 – 0,5 mg"],
+ ["rea-338","Anaphylaxie : durée de surveillance ?","≥ 6 h"],
+ ["rea-338","Anaphylaxie : TTT après la phase aiguë ?","Méthylprednisolone IV + antihistaminique"],
+ ["rea-332","Choc = ?","HypoTA + signes d'hypoperfusion"],
+ ["rea-332","qSOFA ?","FR ≥ 22 · PAS ≤ 100 · trouble de conscience"],
+ ["rea-332","Sepsis = ?","Infection + ≥ 1 défaillance d'organe"],
+ ["rea-332","Choc septique = ?","HypoTA persistante malgré le RV nécessitant des vasopresseurs + lactates > 2 mmol/L"],
+ ["rea-332","TA différentielle ↗ ?","Choc distributif"],
+ ["rea-332","TA différentielle ↘ ?","Choc hypovolémique ou cardiogénique"],
+ ["rea-332","Remplissage initial du choc : sauf quand ?","NaCl 0,9 % 500 mL, sauf OAP"],
+ ["rea-332","Quelle amine ne passe pas en IVSE sur VVC ?","Adrénaline (0,1 IV, 0,5 IM)"],
+ ["rea-332","Causes de choc obstructif ?","EP, tamponnade, PNO compressif (tamponnade gazeuse), hémopéricarde"],
+ ["rea-332","Choc cardiogénique : profil hémodynamique ?","Q ↘, précharge ↗, postcharge variable"],
+ ["rea-332","Choc hypovolémique : profil hémodynamique ?","Q ↘, précharge ↘↘, postcharge ↗"],
+ ["rea-332","Choc distributif : profil hémodynamique ?","Q variable, précharge ↘, postcharge ↘↘"],
+ ["rea-337","Naloxone : titration ?","Bolus 0,04 mg IV, puis 0,04–0,08 mg / 2 min, max 2 mg · objectif FR ≥ 15"],
+ ["rea-337","Flumazénil : titration ?","Bolus 0,2 mg IV, puis 0,1 mg / 2 min, max 2 mg"],
+ ["rea-337","Flumazénil : contre-indications ?","ATCD d'épilepsie, co-intoxication pro-convulsivante (antidépresseurs, neuroleptiques), convulsions, poly-intoxication non claire"],
+ ["rea-337","Relais après titration de naloxone ou flumazénil ?","½ dose de titration en IVSE"],
+ ["rea-337","Toxiques à faible risque ?","BZD, neuroleptiques, IRS"],
+ ["rea-337","Triade du toxidrome opioïde ?","Myosis serré bilatéral, bradypnée, coma calme"],
+ ["rea-337","Toxidrome anticholinergique : examen à toujours faire ?","ECG : rechercher un effet stabilisant de membrane"],
+ ["rea-337","Bicarbonate molaire (stabilisant de membrane) : quand ?","Uniquement si QRS élargis"],
+ ["rea-336","Réflexes du tronc cérébral ?","RPM, cornéen, oculocéphalique, oculovestibulaire, oculocardiaque, toux, ventilation"],
+ ["rea-336","Respirations pathologiques du coma ?","Cheyne-Stokes, hyperpnée, apneustique, Kussmaul, ataxique"],
+ ["rea-336","Examens devant un coma ?","Glycémie capillaire · NFS, iono, urée, créat, Ca²⁺, BH, TP, TCA, fibrinogène · GDS + HbCO · OH, ammoniémie, toxiques · TDM cérébrale"]
+];
+
+/* =========================================================
+   APP
+   ========================================================= */
+const ic = p => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${p}</svg>`;
+const I = {
+  eye: ic('<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),
+  ear: ic('<path d="M6 8.5a6 6 0 0 1 12 0c0 3.5-3 4.5-3 7.5a3.5 3.5 0 0 1-6.5 1.8"/><path d="M9.2 9a2.8 2.8 0 0 1 5.6 0c0 1.7-2 2-2 3.5"/>'),
+  lungs: ic('<path d="M12 3v8"/><path d="M12 9l-2.5 2.5M12 9l2.5 2.5"/><path d="M8.5 6.5C5 7 3 12 3 17c0 2 1.5 3 3 2.5l3.5-1.5V8a1.5 1.5 0 0 0-1-1.5z"/><path d="M15.5 6.5C19 7 21 12 21 17c0 2-1.5 3-3 2.5l-3.5-1.5V8a1.5 1.5 0 0 1 1-1.5z"/>'),
+  brain: ic('<path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 3 3 2 2 0 0 0 3-1.5V5.5A2 2 0 0 0 9 4z"/><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-3 3 2 2 0 0 1-3-1.5V5.5A2 2 0 0 1 15 4z"/>'),
+  heart: ic('<path d="M20.8 5.6a5 5 0 0 0-7.1 0L12 7.3l-1.7-1.7a5 5 0 0 0-7.1 7.1L12 21.5l8.8-8.8a5 5 0 0 0 0-7.1z"/><path d="M3.5 12h4l2-3 3 6 2-3h6"/>'),
+  home: ic('<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>'),
+  cards: ic('<rect x="3" y="6" width="14" height="14" rx="1.5"/><path d="M7 3h12.5A1.5 1.5 0 0 1 21 4.5V17"/><path d="M6.5 11h7M6.5 14.5h5"/>'),
+  play: ic('<rect x="2.5" y="6" width="19" height="12" rx="4"/><path d="M7 10v4M5 12h4"/><circle cx="15.5" cy="11" r=".6"/><circle cx="17.5" cy="13" r=".6"/>'),
+  chart: ic('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'),
+  left: ic('<path d="M15 18l-6-6 6-6"/>'),
+  right: ic('<path d="M9 18l6-6-6-6"/>'),
+  check: ic('<path d="M5 12.5l4.5 4.5L19 7.5"/>'),
+  x: ic('<path d="M6 6l12 12M18 6L6 18"/>'),
+  hide: ic('<path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3 3.7M6.6 6.6C3.9 8.3 2 12 2 12s3.6 7 10 7a9.6 9.6 0 0 0 4.2-.9"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>'),
+  search: ic('<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>'),
+  layers: ic('<rect x="4" y="7" width="13" height="13" rx="1.5"/><path d="M8 4h11a1 1 0 0 1 1 1v11"/>'),
+  list: ic('<path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6l1 1 2-2M3.5 12l1 1 2-2M3.5 18l1 1 2-2"/>'),
+  clock: ic('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9.5 2.5h5"/>'),
+  link: ic('<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'),
+  sort: ic('<rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/><path d="M6.5 8v4M17.5 8v6"/>'),
+  steps: ic('<path d="M4 18h5v-4h5v-4h6"/><path d="M4 6h3"/>'),
+  dice: ic('<rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r=".9"/><circle cx="15" cy="15" r=".9"/><circle cx="15" cy="9" r=".9"/><circle cx="9" cy="15" r=".9"/>'),
+  female: ic('<circle cx="12" cy="9" r="5.5"/><path d="M12 14.5V22M8.5 18.5h7"/>'),
+  virus: ic('<circle cx="12" cy="12" r="5"/><path d="M12 2.5v4M12 17.5v4M2.5 12h4M17.5 12h4M5.3 5.3l2.8 2.8M15.9 15.9l2.8 2.8M5.3 18.7l2.8-2.8M15.9 8.1l2.8-2.8"/>'),
+  steth: ic('<path d="M5 3v6a5 5 0 0 0 10 0V3"/><path d="M10 14v2a5 5 0 0 0 10 0v-2"/><circle cx="20" cy="12" r="2"/>'),
+  bolt: ic('<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>'),
+  bone: ic('<path d="M7.5 4.5a2.5 2.5 0 0 0-3.5 3.5l1.5 1.5-1.5 1.5a2.5 2.5 0 1 0 3.5 3.5L9 13l2 2-1.5 1.5a2.5 2.5 0 1 0 3.5 3.5l1.5-1.5 1.5 1.5a2.5 2.5 0 0 0 3.5-3.5L18 15l1.5-1.5a2.5 2.5 0 1 0-3.5-3.5L14.5 11l-2-2L14 7.5A2.5 2.5 0 1 0 10.5 4L9 5.5z"/>'),
+  kidney: ic('<path d="M10 4C6 4 4 8 4 12s2 8 6 8c2.5 0 3.5-2 3.5-4s-1.5-2.5-1.5-4 1.5-2 1.5-4-1-4-3.5-4z"/><path d="M13.5 12H19M19 12v8"/>'),
+  drop: ic('<path d="M12 3s7 7.5 7 12a7 7 0 0 1-14 0c0-4.5 7-12 7-12z"/>'),
+  ribbon: ic('<path d="M12 3a4 4 0 0 0-4 4c0 3 4 7 4 7s4-4 4-7a4 4 0 0 0-4-4z"/><path d="M10 12l-5 9 3-1 1.5 2.5L14 14M14 12l5 9-3-1-1.5 2.5"/>'),
+  stomach: ic('<path d="M9 2v4c0 2-3 2-3 6a6 6 0 0 0 6 6h2a6 6 0 0 0 6-6c0-3-2-4-4-4s-3 2-5 2-2-2-2-4V2"/><path d="M9 18l-2 4"/>'),
+  skin: ic('<path d="M3 10h18M3 15h18"/><path d="M8 10c0-3 1-6 3-7"/><rect x="3" y="5" width="18" height="15" rx="2"/>'),
+  gland: ic('<path d="M12 6c-2-3-8-3-8 3 0 4 2 8 5 8 2 0 3-2 3-4 0 2 1 4 3 4 3 0 5-4 5-8 0-6-6-6-8-3z"/><path d="M12 6v7"/>'),
+  cane: ic('<path d="M9 22V8a4 4 0 0 1 8 0v1"/><path d="M5 22h8"/>'),
+  pill: ic('<rect x="2.5" y="8" width="19" height="8" rx="4" transform="rotate(-35 12 12)"/><path d="M9.5 8.5l5 7"/>')
+};
+const SPEC_ORDER = CONFIG.specs.map(s => s.id);
+const SPECS = {}; CONFIG.specs.forEach(s => SPECS[s.id] = {name:s.name, icon:I[s.icon] || I.cards, c:s.c});
+const ITEM_BY = {}; ITEMS.forEach(it => ITEM_BY[it.id] = it);
+const MODES = [
+  {id:"flash",name:"Flashcards",desc:"Question au recto, réponse au verso. Ce que tu rates revient plus souvent.",icon:I.layers,unit:"%"},
+  {id:"quiz",name:"QCM",desc:"10 questions, corrigées tout de suite avec la fiche d'origine.",icon:I.list,unit:"%"},
+  {id:"vf",name:"Vrai ou faux chrono",desc:"60 secondes pour enchaîner un maximum de bonnes réponses.",icon:I.clock,unit:" pts"},
+  {id:"assoc",name:"Associations",desc:"Relie chaque élément à sa paire. 3 manches.",icon:I.link,unit:"%"},
+  {id:"tri",name:"Tri",desc:"Range chaque élément dans la bonne catégorie.",icon:I.sort,unit:"%"},
+  {id:"ordre",name:"Remets dans l'ordre",desc:"Échelles, scores, âges : touche les éléments dans le bon ordre.",icon:I.steps,unit:"%"}
+];
+
+/* ---------- cartes (flashcards) ---------- */
+function hash(s){ let h=5381; for(let i=0;i<s.length;i++) h=((h<<5)+h+s.charCodeAt(i))|0; return (h>>>0).toString(36); }
+const CARDS = [];
+GROUPS.forEach(g => g.pairs.forEach(p => CARDS.push({id:"g"+hash(g.id+p[0]), item:p[2]||g.item, q:g.q.replace("{k}",p[0]), a:p[1]})));
+FLASH.forEach(f => CARDS.push({id:"f"+hash(f[1]), item:f[0], q:f[1], a:f[2]}));
+
+/* ---------- état sauvegardé ---------- */
+const KEY = CONFIG.key;
+const S = (() => {
+  let d = {};
+  try { d = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e) {}
+  return Object.assign({mastered:{}, box:{}, best:{}, days:{}, exam:null, filter:"all"}, d);
+})();
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} }
+function iso(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function today(){ return iso(new Date()); }
+if (!S.exam) { const d = new Date(); d.setDate(d.getDate()+7); S.exam = iso(d); save(); }
+function daysLeft(){ return Math.round((new Date(S.exam+"T00:00") - new Date(today()+"T00:00")) / 864e5); }
+function tick(){ const t = today(); S.days[t] = (S.days[t]||0) + 1; save(); }
+function saveBest(mode, v){ if (!(S.best[mode] >= v)) S.best[mode] = v; save(); }
+function streak(){
+  let n = 0; const d = new Date();
+  if (!S.days[iso(d)]) d.setDate(d.getDate()-1);
+  while (S.days[iso(d)]) { n++; d.setDate(d.getDate()-1); }
+  return n;
+}
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const app = $("#app");
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function fmt(s){
+  return esc(s).replace(/==(.+?)==/g,'<mark class="k">$1</mark>')
+    .replace(/\+\+(.+?)\+\+/g,'<b class="n">$1</b>')
+    .replace(/!!(.+?)!!/g,'<span class="r">$1</span>');
+}
+function plain(s){ return String(s).replace(/==|\+\+|!!|§/g,""); }
+function norm(s){ return plain(s).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase(); }
+function shuffle(a){ a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+function specOf(itemId){ return ITEM_BY[itemId] ? ITEM_BY[itemId].spec : "rea"; }
+function specVar(spec){ return `--spec:var(${SPECS[spec] ? SPECS[spec].c : "--pen"})`; }
+function pass(itemId, only){ if (only) return itemId === only; return S.filter === "all" || specOf(itemId) === S.filter; }
+function fromLabel(itemId){
+  const it = ITEM_BY[itemId]; if (!it) return "";
+  return `<button class="from" style="${specVar(it.spec)}" data-go="fiche:${it.id}"><i></i>Fiche ${esc(it.num)} · ${esc(it.title)}</button>`;
+}
+function itemText(it){
+  const out = [it.title];
+  const walk = a => a.forEach(x => Array.isArray(x) ? walk(x) : out.push(x));
+  it.cards.forEach(c => { out.push(c.h); if (c.l) walk(c.l); if (c.table) c.table.rows.forEach(r => out.push(r.join(" "))); });
+  return norm(out.join(" "));
+}
+const SEARCH = {}; ITEMS.forEach(it => SEARCH[it.id] = itemText(it));
+function cardsOfSpec(spec){ return CARDS.filter(c => !spec || specOf(c.item) === spec); }
+function acquired(list){ return list.filter(c => (S.box[c.id]||0) >= 2).length; }
+
+/* ---------- navigation ---------- */
+let R = {v:"home"};
+let G = null;
+const NAV = [["home","Accueil",I.home],["fiches","Fiches",I.cards],["jeux","Jeux",I.play],["progres","Progrès",I.chart]];
+function navHtml(){
+  const cur = R.v === "fiche" ? "fiches" : R.v === "game" ? "jeux" : R.v;
+  return NAV.map(([v,l,icn]) => `<button data-go="${v}" ${cur===v?'aria-current="page"':""}>${icn}<span>${l}</span></button>`).join("");
+}
+function clearTimer(){ if (G && G.timer) { clearInterval(G.timer); G.timer = null; } }
+function go(route){
+  clearTimer();
+  const [v, a, b] = route.split(":");
+  if (v === "fiche") R = {v, id:a};
+  else if (v === "fiches") R = {v, spec:a || R.spec || "all"};
+  else if (v === "play") { R = {v:"game"}; startGame(a, b || null); }
+  else R = {v};
+  render();
+  window.scrollTo(0, 0);
+}
+function render(){
+  $("#nav-top").innerHTML = navHtml();
+  $("#nav-bot").innerHTML = navHtml();
+  const views = {home:vHome, fiches:vFiches, fiche:vFiche, jeux:vJeux, game:vGame, progres:vProgres};
+  app.innerHTML = (views[R.v] || vHome)();
+  if (R.v === "fiches") bindSearch();
+  if (R.v === "home" || R.v === "progres") bindDate();
+}
+
+/* ---------- ACCUEIL ---------- */
+function plan(){
+  const left = ITEMS.filter(it => !S.mastered[it.id]);
+  const dl = Math.max(1, daysLeft());
+  const per = Math.ceil(left.length / dl);
+  return {left, per, list:left.slice(0, per)};
+}
+function heroWords(dl){
+  if (dl > 1) return "avant le concours";
+  if (dl === 1) return "demain, c'est le grand jour";
+  if (dl === 0) return "c'est aujourd'hui. Tu es prête.";
+  return "le concours est passé";
+}
+function vHome(){
+  const dl = daysLeft();
+  const big = dl > 0 ? "J-" + dl : dl === 0 ? "Jour J" : "Fini";
+  const p = plan();
+  const due = CARDS.filter(c => (S.box[c.id]||0) < 2).length;
+  const planList = p.list.length ? `<ol>${p.list.map(it => `
+      <li><button data-go="fiche:${it.id}" style="${specVar(it.spec)}">
+        <span class="n">${esc(it.num)}</span><span class="t">${esc(it.title)}</span>
+        <span class="pill">${SPECS[it.spec].name}</span>${I.right}</button></li>`).join("")}</ol>`
+    : `<p class="muted">Les ${ITEMS.length} fiches sont maîtrisées. Les jeux servent maintenant à entretenir.</p>`;
+  return `<div class="stack">
+  <section class="hero">
+    <div class="paper count tape">
+      <div class="big">${big}</div>
+      <div class="hand sub">${heroWords(dl)}</div>
+      <label for="exam-date">Date du concours <input type="date" id="exam-date" value="${S.exam}"></label>
+    </div>
+    <div class="plain plan">
+      <div class="eyebrow">Programme du jour</div>
+      <h2 class="sec-title" style="margin-top:4px">${p.left.length ? `${p.list.length} fiche${p.list.length>1?"s":""} à apprendre` : "Tout est maîtrisé"}
+        <span class="hand">${p.left.length ? `${p.left.length} restantes` : ""}</span></h2>
+      ${planList}
+      <div class="row" style="margin-top:14px">
+        <button class="btn" data-go="play:flash">${I.layers} ${due} flashcards à revoir</button>
+        <button class="btn ghost" data-act="randomFiche">${I.dice} Fiche au hasard</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="stack" style="gap:12px">
+    <h2 class="sec-title">Spécialités <span class="hand">${ITEMS.length} fiches</span></h2>
+    <div class="specs">${SPEC_ORDER.map(sp => {
+      const its = ITEMS.filter(i => i.spec === sp), m = its.filter(i => S.mastered[i.id]).length;
+      return `<button class="paper spec-tile" style="${specVar(sp)}" data-go="fiches:${sp}">
+        <span class="hd">${SPECS[sp].icon}${SPECS[sp].name}</span>
+        <div class="bar"><i style="width:${its.length ? m/its.length*100 : 0}%"></i></div>
+        <small>${m} / ${its.length} fiches maîtrisées</small></button>`;
+    }).join("")}</div>
+  </section>
+
+  <section class="stack" style="gap:12px">
+    <h2 class="sec-title">Réviser en jouant</h2>
+    ${modesGrid()}
+  </section>
+  <p class="foot">${CONFIG.foot} La progression reste enregistrée sur cet appareil.${CONFIG.other ? ` · <a href="${CONFIG.other.url}" target="_blank" rel="noopener">${CONFIG.other.label}</a>` : ""}</p>
+  </div>`;
+}
+function modesGrid(){
+  return `<div class="modes">${MODES.map(m => `
+    <button class="plain mode" data-go="play:${m.id}">
+      <span class="ic">${m.icon}</span>
+      <span><h3>${m.name}</h3><p>${m.desc}</p>
+      ${S.best[m.id] != null ? `<span class="pill ok best">Record : ${S.best[m.id]}${m.unit}</span>` : ""}</span>
+    </button>`).join("")}</div>`;
+}
+function bindDate(){
+  const el = $("#exam-date"); if (!el) return;
+  el.addEventListener("change", () => { if (el.value) { S.exam = el.value; save(); render(); } });
+}
+
+/* ---------- FICHES ---------- */
+function specChips(cur, act){
+  const all = [["all","Toutes",""]].concat(SPEC_ORDER.map(s => [s, SPECS[s].name, SPECS[s].icon]));
+  return `<div class="chips" role="group" aria-label="Spécialité">${all.map(([s,n,icn]) =>
+    `<button class="chip" style="${s!=="all"?specVar(s):""}" aria-pressed="${cur===s}" data-act="${act}" data-spec="${s}">${icn}${n}</button>`).join("")}</div>`;
+}
+function vFiches(){
+  const sp = R.spec || "all";
+  return `<div class="stack">
+    <div class="row" style="justify-content:space-between">
+      <h1 class="sec-title" style="font-size:28px">Les fiches <span class="hand">${CONFIG.fichesTag}</span></h1>
+    </div>
+    ${specChips(sp, "fspec")}
+    <label class="search" for="q">${I.search}<input id="q" type="search" placeholder="Chercher : flumazénil, Light, Ménière…" autocomplete="off" value="${esc(R.q||"")}"></label>
+    <div class="flist" id="flist">${ficheTiles()}</div>
+  </div>`;
+}
+function ficheTiles(){
+  const sp = R.spec || "all", q = norm(R.q || "");
+  const list = ITEMS.filter(it => (sp === "all" || it.spec === sp) && (!q || SEARCH[it.id].includes(q)));
+  if (!list.length) return `<div class="plain empty">Aucune fiche ne contient « ${esc(R.q)} ».</div>`;
+  return list.map(it => `
+    <button class="paper ftile" style="${specVar(it.spec)}" data-go="fiche:${it.id}">
+      <span class="top-l"><span class="num">${esc(it.num)}</span>${S.mastered[it.id] ? `<span class="pill ok">${I.check}Maîtrisée</span>` : ""}</span>
+      <span class="ttl">${esc(it.title)}</span>
+      <span class="meta"><span class="pill">${SPECS[it.spec].name}</span><span class="pill">${it.cards.length} carte${it.cards.length>1?"s":""}</span></span>
+    </button>`).join("");
+}
+function bindSearch(){
+  const el = $("#q"); if (!el) return;
+  el.addEventListener("input", () => { R.q = el.value; $("#flist").innerHTML = ficheTiles(); });
+}
+
+/* ---------- FICHE ---------- */
+function renderList(arr){
+  let out = "<ul>";
+  for (let i = 0; i < arr.length; i++) {
+    const x = arr[i]; if (Array.isArray(x)) continue;
+    const next = arr[i+1], sub = x.startsWith("§");
+    out += `<li${sub?' class="sub"':""}>${fmt(sub ? x.slice(1) : x)}${Array.isArray(next) ? renderList(next) : ""}</li>`;
+  }
+  return out + "</ul>";
+}
+function respSvg(name){
+  const W = 150, pts = [];
+  for (let x = 0; x <= W; x++) {
+    let y = 0;
+    if (name === "Cheyne-Stokes") { const c = x % 75; const env = c < 55 ? Math.sin(Math.PI*c/55) : 0; y = env*11*Math.sin(x*.75); }
+    else if (name === "Hyperpnée") y = 10*Math.sin(x*.55);
+    else if (name === "Apneustique") { const s = Math.sin(x*.12); y = s > 0 ? 11*Math.min(1, s*2.4) : 11*s; }
+    else if (name === "Kussmaul") y = 12*Math.sin(x*.2);
+    else [8,22,27,51,70,77,104,128,135].forEach(s => { const d = Math.abs(x-s); if (d < 3) y += (3-d)/3*(s%2 ? 9 : 12); });
+    pts.push(x + "," + (15 - y).toFixed(1));
+  }
+  return `<svg class="wave" viewBox="0 0 150 30" aria-hidden="true"><polyline points="${pts.join(" ")}" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+}
+function cardHtml(c){
+  let body = "";
+  if (c.resp) body = `<ul>${c.l.map(n => `<li>${esc(n)}${respSvg(n)}</li>`).join("")}</ul>`;
+  else if (c.l) body = renderList(c.l);
+  if (c.table) body += `<div class="tbl"><table><thead><tr>${c.table.head.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead>
+    <tbody>${c.table.rows.map(r => `<tr>${r.map(x => `<td>${esc(x)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  return `<article class="card ${c.tone === "postit" ? "postit" : "paper"}">
+    <h3>${esc(c.h)}</h3>${c.sub ? `<div class="csub">${esc(c.sub)}</div>` : ""}${body}</article>`;
+}
+function vFiche(){
+  const it = ITEM_BY[R.id]; if (!it) return vFiches();
+  const sib = ITEMS, idx = sib.indexOf(it), prev = sib[idx-1], next = sib[idx+1];
+  const m = !!S.mastered[it.id];
+  const nCards = CARDS.filter(c => c.item === it.id).length;
+  return `<div class="stack" style="${specVar(it.spec)}">
+    <div class="fhead">
+      <div class="row" style="justify-content:space-between">
+        <button class="back" data-go="fiches:${it.spec}">${I.left} ${SPECS[it.spec].name}</button>
+        <span class="pill">${SPECS[it.spec].name}</span>
+      </div>
+      <div><h1 class="paper tag"><span class="num">${esc(it.num)}</span><span>– ${esc(it.title)}</span></h1></div>
+      <div class="factions">
+        <button class="btn ghost small" data-act="hide" aria-pressed="${!!R.hide}">${I.hide} ${R.hide ? "Tout afficher" : "Cacher les mots-clés"}</button>
+        <button class="btn small ${m ? "on" : "ghost"}" data-act="master">${I.check} ${m ? "Maîtrisée" : "Je la maîtrise"}</button>
+        ${nCards ? `<button class="btn small" data-go="play:flash:${it.id}">${I.layers} ${nCards} flashcards</button>` : ""}
+      </div>
+      ${R.hide ? `<p class="hint">Récite, puis touche une case pour vérifier.</p>` : ""}
+    </div>
+    <div class="wall ${R.hide ? "hide" : ""}">${it.cards.map(cardHtml).join("")}</div>
+    <nav class="fnav" aria-label="Fiches voisines">
+      ${prev ? `<button class="back" data-go="fiche:${prev.id}">${I.left} ${esc(prev.num)} · ${esc(prev.title)}</button>` : "<span></span>"}
+      ${next ? `<button class="back" data-go="fiche:${next.id}">${esc(next.num)} · ${esc(next.title)} ${I.right}</button>` : ""}
+    </nav>
+  </div>`;
+}
+
+/* ---------- JEUX : hub ---------- */
+function vJeux(){
+  return `<div class="stack">
+    <h1 class="sec-title" style="font-size:28px">Jeux <span class="hand">pour que ça rentre</span></h1>
+    ${specChips(S.filter, "gspec")}
+    ${modesGrid()}
+  </div>`;
+}
+
+/* ---------- moteur des jeux ---------- */
+function groupVals(g, only){
+  const ps = g.pairs.filter(p => pass(p[2]||g.item, only));
+  return {ps, vals:[...new Set(g.pairs.map(p => p[1]))]};
+}
+function startGame(mode, only){
+  G = {mode, only, ok:0, err:0, wrong:[], over:false};
+  if (mode === "flash") {
+    const pool = CARDS.filter(c => pass(c.item, only));
+    G.q = shuffle(pool).sort((a,b) => (S.box[a.id]||0) - (S.box[b.id]||0)).slice(0, 20).map(c => ({c, r:0}));
+    G.total = G.q.length; G.i = 0; G.flipped = false;
+  }
+  else if (mode === "quiz") {
+    const pool = [];
+    GROUPS.forEach(g => { const {ps, vals} = groupVals(g, only); if (vals.length >= 3) ps.forEach(p => pool.push({g, p, vals})); });
+    G.qs = shuffle(pool).slice(0, 10).map(({g,p,vals}) => ({
+      q:g.q.replace("{k}", p[0]), a:p[1], item:p[2]||g.item,
+      opts:shuffle([p[1], ...shuffle(vals.filter(v => v !== p[1])).slice(0,3)])
+    }));
+    G.i = 0; G.pick = null;
+  }
+  else if (mode === "vf") {
+    G.pool = [];
+    GROUPS.forEach(g => { const {ps, vals} = groupVals(g, only); if (vals.length >= 2) ps.forEach(p => G.pool.push({g, p, vals})); });
+    G.t = 60; G.streak = 0; G.bestStreak = 0; G.deck = [];
+    if (G.pool.length) { vfNext(); G.timer = setInterval(vfTick, 1000); }
+  }
+  else if (mode === "assoc") { G.round = 0; G.used = []; assocRound(); }
+  else if (mode === "tri" || mode === "ordre") G.stage = "pick";
+}
+function setsFor(list){ return list.filter(s => pass(s.item, G.only) || (!G.only && S.filter === "all")); }
+
+/* VF */
+function vfNext(){
+  if (!G.deck.length) G.deck = shuffle(G.pool);
+  const e = G.deck.pop(), truth = Math.random() < .5;
+  const others = e.vals.filter(v => v !== e.p[1]);
+  G.cur = {ctx:e.g.q.replace("{k}", e.p[0]), shown: truth || !others.length ? e.p[1] : pick(others), truth: truth || !others.length, a:e.p[1], item:e.p[2]||e.g.item};
+}
+function vfTick(){
+  G.t--;
+  const t = $("#vf-t"), b = $("#vf-bar");
+  if (t) t.textContent = G.t;
+  if (b) b.style.width = (G.t/60*100) + "%";
+  if (G.t <= 0) { clearTimer(); G.over = true; saveBest("vf", G.ok); render(); }
+}
+
+/* Associations */
+function assocRound(){
+  const ok = GROUPS.filter(g => {
+    const {ps} = groupVals(g, G.only);
+    return new Set(ps.map(p => p[1])).size >= 4 && ps.every(p => p[0].length <= 60 && p[1].length <= 60);
+  });
+  let pool = ok.filter(g => !G.used.includes(g.id)); if (!pool.length) pool = ok;
+  if (!pool.length) { G.none = true; return; }
+  const g = pick(pool); G.used.push(g.id);
+  const seen = new Set();
+  G.g = g;
+  G.ps = shuffle(groupVals(g, G.only).ps).filter(p => !seen.has(p[1]) && seen.add(p[1])).slice(0, 5);
+  G.L = shuffle(G.ps.map((_, i) => i)); G.Rr = shuffle(G.ps.map((_, i) => i));
+  G.done = []; G.sel = null; G.bad = null;
+}
+
+/* ---------- vues de jeu ---------- */
+function gHead(title, prog){
+  return `<div class="ghead"><button class="back" data-go="jeux">${I.left} Jeux</button>${prog ? `<span class="prog">${prog}</span>` : ""}</div>
+    <h1 class="gtitle">${title}</h1>`;
+}
+function emptyGame(title){
+  return `<div class="game">${gHead(title)}<div class="plain empty">Pas assez de contenu pour ce filtre. Choisis « Toutes » dans les jeux ou une autre spécialité.</div></div>`;
+}
+function verdict(p){
+  if (p >= 90) return "Parfait, rien à redire.";
+  if (p >= 70) return "Très solide.";
+  if (p >= 50) return "Ça rentre. Encore un tour ?";
+  return "On relit la fiche et on recommence.";
+}
+function vEnd(title, big, pct, extra){
+  const replay = `play:${G.mode}${G.only ? ":" + G.only : ""}`;
+  return `<div class="game">${gHead(title)}
+    <div class="paper end tape"><div class="sc">${big}</div><div class="hand msg">${verdict(pct)}</div>${extra || ""}
+      <div class="row" style="justify-content:center;margin-top:8px">
+        <button class="btn" data-go="${replay}">Rejouer</button>
+        <button class="btn ghost" data-go="jeux">Autre jeu</button></div></div>
+    ${G.wrong.length ? `<h2 class="sec-title">À revoir <span class="hand">${G.wrong.length}</span></h2>
+      <div class="wrongs">${G.wrong.map(w => `<div class="plain wr"><span class="q">${esc(w.q)}</span><span class="a">${esc(w.a)}</span>${fromLabel(w.item)}</div>`).join("")}</div>` : ""}
+  </div>`;
+}
+function vGame(){
+  if (!G) return vJeux();
+  const m = MODES.find(x => x.id === G.mode);
+  const title = m.name + (G.only ? ` · fiche ${ITEM_BY[G.only].num}` : S.filter !== "all" ? ` · ${SPECS[S.filter].name}` : "");
+  return ({flash:gFlash, quiz:gQuiz, vf:gVf, assoc:gAssoc, tri:gTri, ordre:gOrdre})[G.mode](title);
+}
+function gFlash(title){
+  if (!G.total) return emptyGame(title);
+  if (G.i >= G.q.length) {
+    const pct = Math.round(G.ok / Math.max(1, G.ok + G.err) * 100);
+    saveBest("flash", pct);
+    return vEnd(title, `${G.ok}<small style="font-size:.4em"> / ${G.ok + G.err}</small>`, pct, `<p class="muted">Bonnes réponses du premier coup ou après révision dans cette session.</p>`);
+  }
+  const {c} = G.q[G.i], box = S.box[c.id] || 0;
+  return `<div class="game">${gHead(title, `${G.i+1} / ${G.q.length}`)}
+    ${fromLabel(c.item)}
+    <button class="flip ${G.flipped ? "flipped" : ""}" data-act="flip" aria-label="Retourner la carte">
+      <div class="inner">
+        <div class="face paper"><span class="lbl">Question · boîte ${box}</span><div class="q">${esc(c.q)}</div><span class="muted" style="font-size:14px">Touche pour voir la réponse</span></div>
+        <div class="face back paper"><span class="lbl">Réponse</span><div class="a">${esc(c.a)}</div></div>
+      </div>
+    </button>
+    ${G.flipped ? `<div class="twobtn">
+      <button class="bigbtn ko" data-act="fc" data-v="0">${I.x} À revoir</button>
+      <button class="bigbtn okb" data-act="fc" data-v="1">${I.check} Je savais</button></div>`
+      : `<p class="muted" style="text-align:center;font-size:14px;margin:0">Réponds dans ta tête, puis retourne la carte.</p>`}
+  </div>`;
+}
+function gQuiz(title){
+  if (!G.qs.length) return emptyGame(title);
+  if (G.i >= G.qs.length) {
+    const pct = Math.round(G.ok / G.qs.length * 100); saveBest("quiz", pct);
+    return vEnd(title, `${G.ok}<small style="font-size:.4em"> / ${G.qs.length}</small>`, pct);
+  }
+  const q = G.qs[G.i], L = "ABCD";
+  return `<div class="game">${gHead(title, `${G.i+1} / ${G.qs.length}`)}
+    <div class="paper qcard"><div class="q">${esc(q.q)}</div></div>
+    <div class="opts">${q.opts.map((o, i) => {
+      let cls = "";
+      if (G.pick != null) { if (o === q.a) cls = "good"; else if (i === G.pick) cls = "bad"; }
+      return `<button class="opt ${cls}" data-act="qo" data-i="${i}" ${G.pick != null ? "disabled" : ""}><span class="l">${L[i]}</span>${esc(o)}</button>`;
+    }).join("")}</div>
+    ${G.pick != null ? `<div class="row" style="justify-content:space-between">${fromLabel(q.item)}<button class="btn" data-act="qnext">${G.i+1 < G.qs.length ? "Suivante" : "Voir le score"} ${I.right}</button></div>` : ""}
+  </div>`;
+}
+function gVf(title){
+  if (!G.pool.length) return emptyGame(title);
+  if (G.over) return vEnd(title, `${G.ok}<small style="font-size:.4em"> pts</small>`, Math.round(G.ok / Math.max(1, G.ok + G.err) * 100),
+    `<p class="muted">${G.ok} bonnes, ${G.err} erreurs · meilleure série : ${G.bestStreak}</p>`);
+  const c = G.cur;
+  return `<div class="game">${gHead(title, `<span id="vf-t">${G.t}</span> s`)}
+    <div class="timer"><i id="vf-bar" style="width:${G.t/60*100}%"></i></div>
+    <div class="score-line"><span>${G.ok} pts</span><span class="muted">série ${G.streak}</span></div>
+    <div class="paper vf ${G.fb ? "flash-" + G.fb : ""}">
+      <div class="ctx">${esc(c.ctx)}</div>
+      <div class="prop">${esc(c.shown)}</div>
+    </div>
+    <div class="twobtn">
+      <button class="bigbtn ko" data-act="vf" data-v="0">${I.x} Faux</button>
+      <button class="bigbtn okb" data-act="vf" data-v="1">${I.check} Vrai</button>
+    </div>
+  </div>`;
+}
+function gAssoc(title){
+  if (G.none) return emptyGame(title);
+  if (G.over) { const pct = Math.round(G.ok / Math.max(1, G.ok + G.err) * 100); saveBest("assoc", pct);
+    return vEnd(title, pct + "<small style='font-size:.4em'> %</small>", pct, `<p class="muted">${G.ok} paires trouvées, ${G.err} erreurs</p>`); }
+  const cell = (side, i, txt) => {
+    const done = G.done.includes(i), sel = G.sel && G.sel.s === side && G.sel.i === i, bad = G.bad && G.bad[side] === i;
+    return `<button class="as ${side} ${done ? "done" : ""} ${sel ? "sel" : ""} ${bad ? "wrong" : ""}" data-act="as" data-s="${side}" data-i="${i}" ${done ? "disabled" : ""}>${esc(txt)}</button>`;
+  };
+  return `<div class="game">${gHead(title, `Manche ${G.round+1} / 3`)}
+    <div class="row" style="justify-content:space-between"><span class="muted" style="font-weight:700">${esc(G.g.q.replace("{k}", "…"))}</span>${fromLabel(G.g.item)}</div>
+    <div class="assoc">
+      <div class="col">${G.L.map(i => cell("L", i, G.ps[i][0])).join("")}</div>
+      <div class="col">${G.Rr.map(i => cell("R", i, G.ps[i][1])).join("")}</div>
+    </div>
+  </div>`;
+}
+function setPicker(title, list, kind){
+  const sets = setsFor(list);
+  if (!sets.length) return emptyGame(title);
+  return `<div class="game">${gHead(title)}
+    <p class="muted" style="margin:0">Choisis une série.</p>
+    <div class="setlist">${sets.map(s => `<button class="plain setb" style="${specVar(specOf(s.item))}" data-act="pickset" data-id="${s.id}">
+      <span class="t">${esc(s.title)}</span><span class="pill">${SPECS[specOf(s.item)].name}</span></button>`).join("")}
+      <button class="plain setb" data-act="pickset" data-id="*"><span class="t">Au hasard</span>${I.dice}</button></div>
+  </div>`;
+}
+function gTri(title){
+  if (G.stage === "pick") return setPicker(title, TRIS);
+  if (G.i >= G.items.length) { const pct = Math.round(G.ok / G.items.length * 100); saveBest("tri", pct);
+    return vEnd(title, `${G.ok}<small style="font-size:.4em"> / ${G.items.length}</small>`, pct); }
+  const cur = G.items[G.i], cats = Object.keys(G.set.cats);
+  return `<div class="game">${gHead(esc(G.set.title), `${G.i+1} / ${G.items.length}`)}
+    ${fromLabel(G.set.item)}
+    <div class="paper tri-item">${esc(cur.t)}</div>
+    <div class="cats">${cats.map(c => {
+      let cls = ""; if (G.fb) { if (c === cur.c) cls = "good"; else if (c === G.fb) cls = "bad"; }
+      return `<button class="cat ${cls}" data-act="tri" data-c="${esc(c)}">${esc(c)}</button>`; }).join("")}</div>
+  </div>`;
+}
+function gOrdre(title){
+  if (G.stage === "pick") return setPicker(title, ORDRES);
+  const seq = G.set.seq, finished = G.next >= seq.length;
+  if (finished && G.over) { const pct = Math.round(seq.length / (seq.length + G.err) * 100); saveBest("ordre", pct);
+    return vEnd(title, pct + "<small style='font-size:.4em'> %</small>", pct, `<p class="muted">${G.err} erreur${G.err>1?"s":""} sur « ${esc(G.set.title)} »</p>`); }
+  return `<div class="game">${gHead(esc(G.set.title), `${G.next} / ${seq.length}`)}
+    ${fromLabel(G.set.item)}
+    <p class="muted" style="margin:0">Touche les éléments dans l'ordre.</p>
+    <div class="ord">${G.order.map(i => {
+      const pos = G.placed.indexOf(i), done = pos >= 0;
+      return `<button class="ordi ${done ? "done" : ""} ${G.bad === i ? "wrong" : ""}" data-act="ord" data-i="${i}" ${done ? "disabled" : ""}>
+        <span class="k">${done ? pos + 1 : ""}</span><span>${esc(seq[i][0])}</span>${done ? `<span class="det">${esc(seq[i][1])}</span>` : ""}</button>`;
+    }).join("")}</div>
+    ${finished ? `<button class="btn" data-act="ordend">Voir le score ${I.right}</button>` : ""}
+  </div>`;
+}
+
+/* ---------- PROGRÈS ---------- */
+function vProgres(){
+  const mastered = ITEMS.filter(i => S.mastered[i.id]).length;
+  const acq = acquired(CARDS), pctCards = Math.round(acq / CARDS.length * 100);
+  const st = streak();
+  const days = [...Array(7)].map((_, k) => { const d = new Date(); d.setDate(d.getDate() - 6 + k); return d; });
+  const maxN = Math.max(1, ...days.map(d => S.days[iso(d)] || 0));
+  const wd = ["dim","lun","mar","mer","jeu","ven","sam"];
+  return `<div class="stack">
+    <h1 class="sec-title" style="font-size:28px">Progrès <span class="hand">${st > 1 ? `${st} jours d'affilée` : "chaque jour compte"}</span></h1>
+    <div class="kpis">
+      <div class="plain kpi"><div class="v">${mastered}<small style="font-size:.5em;color:var(--ink-faint)"> / ${ITEMS.length}</small></div><div class="l">fiches maîtrisées</div></div>
+      <div class="plain kpi"><div class="v">${pctCards} %</div><div class="l">flashcards acquises (${acq} / ${CARDS.length})</div></div>
+      <div class="plain kpi"><div class="v">${st}</div><div class="l">jour${st>1?"s":""} de suite</div></div>
+    </div>
+    <section class="plain box stack" style="gap:12px">
+      <div class="eyebrow">7 derniers jours · réponses données</div>
+      <div class="week">${days.map(d => { const n = S.days[iso(d)] || 0;
+        return `<div class="d"><div class="dot" style="${n ? `background:color-mix(in srgb,var(--pen) ${30 + Math.round(n/maxN*70)}%,var(--paper-deep))` : ""}">${n || ""}</div>${wd[d.getDay()]}</div>`; }).join("")}</div>
+    </section>
+    <section class="plain box">
+      <div class="eyebrow" style="margin-bottom:4px">Par spécialité</div>
+      <div class="ptable">${SPEC_ORDER.map(sp => {
+        const its = ITEMS.filter(i => i.spec === sp), m = its.filter(i => S.mastered[i.id]).length;
+        const cs = cardsOfSpec(sp), a = acquired(cs);
+        return `<div class="prow" style="${specVar(sp)}"><span class="nm">${SPECS[sp].icon}${SPECS[sp].name}</span>
+          <span class="cell">Fiches ${m} / ${its.length}<span class="bar"><i style="width:${m/its.length*100}%"></i></span></span>
+          <span class="cell">Flashcards ${a} / ${cs.length}<span class="bar"><i style="width:${cs.length ? a/cs.length*100 : 0}%"></i></span></span></div>`;
+      }).join("")}</div>
+    </section>
+    <section class="stack" style="gap:10px">
+      <h2 class="sec-title">Records</h2>
+      <div class="records">${MODES.map(m => `<div class="plain rec"><span>${m.name}</span><b>${S.best[m.id] != null ? S.best[m.id] + m.unit : "–"}</b></div>`).join("")}</div>
+    </section>
+    <section class="plain box stack" style="gap:12px">
+      <label class="row" for="exam-date" style="justify-content:space-between"><b>Date du concours</b><input type="date" id="exam-date" value="${S.exam}" style="border:1px solid var(--rule);background:var(--card);border-radius:8px;padding:6px 8px"></label>
+      <div class="row" style="justify-content:space-between">
+        <span class="muted" style="font-size:14px">La progression est enregistrée dans ce navigateur, sur cet appareil.</span>
+        <button class="btn ghost small danger" data-act="reset">${R.confirmReset ? "Confirmer : tout effacer" : "Remettre à zéro"}</button>
+      </div>
+    </section>
+  </div>`;
+}
+
+/* ---------- actions ---------- */
+const ACT = {
+  randomFiche(){ const pool = ITEMS.filter(i => !S.mastered[i.id]); go("fiche:" + pick(pool.length ? pool : ITEMS).id); },
+  fspec(d){ R.spec = d.spec; render(); },
+  gspec(d){ S.filter = d.spec; save(); render(); },
+  hide(){ R.hide = !R.hide; render(); },
+  master(){ S.mastered[R.id] = !S.mastered[R.id]; if (!S.mastered[R.id]) delete S.mastered[R.id]; else tick(); save(); render(); },
+  reset(){
+    if (!R.confirmReset) { R.confirmReset = true; render(); return; }
+    const exam = S.exam;
+    Object.assign(S, {mastered:{}, box:{}, best:{}, days:{}, exam, filter:"all"}); save();
+    R.confirmReset = false; render();
+  },
+  flip(){ G.flipped = !G.flipped; render(); },
+  fc(d){
+    const e = G.q[G.i], id = e.c.id, known = d.v === "1";
+    if (known) { S.box[id] = Math.min((S.box[id]||0) + 1, 5); if (!e.r) G.ok++; }
+    else { S.box[id] = 0; if (!e.r) { G.err++; G.wrong.push({q:e.c.q, a:e.c.a, item:e.c.item}); } if (e.r < 2) G.q.push({c:e.c, r:e.r + 1}); }
+    tick(); save(); G.i++; G.flipped = false; render();
+  },
+  qo(d){
+    if (G.pick != null) return;
+    G.pick = +d.i; const q = G.qs[G.i];
+    if (q.opts[G.pick] === q.a) G.ok++; else { G.err++; G.wrong.push({q:q.q, a:q.a, item:q.item}); }
+    tick(); render();
+  },
+  qnext(){ G.i++; G.pick = null; render(); },
+  vf(d){
+    if (G.over) return;
+    const good = (d.v === "1") === G.cur.truth;
+    if (good) { G.ok++; G.streak++; G.bestStreak = Math.max(G.bestStreak, G.streak); }
+    else { G.err++; G.streak = 0; G.wrong.push({q:G.cur.ctx, a:G.cur.a, item:G.cur.item}); }
+    G.fb = good ? "ok" : "ko"; tick(); vfNext(); render();
+    setTimeout(() => { if (G && G.mode === "vf" && !G.over) { G.fb = null; const el = document.querySelector(".vf"); if (el) el.classList.remove("flash-ok","flash-ko"); } }, 260);
+  },
+  as(d){
+    const side = d.s, i = +d.i; G.bad = null;
+    if (!G.sel || G.sel.s === side) { G.sel = {s:side, i}; render(); return; }
+    if (G.sel.i === i) { G.done.push(i); G.ok++; }
+    else {
+      G.err++;
+      const li = side === "L" ? i : G.sel.i, ri = side === "R" ? i : G.sel.i;
+      G.bad = {L:li, R:ri};
+      G.wrong.push({q:G.g.q.replace("{k}", G.ps[li][0]), a:G.ps[li][1], item:G.ps[li][2]||G.g.item});
+    }
+    G.sel = null; tick();
+    if (G.done.length === G.ps.length) {
+      G.round++;
+      if (G.round >= 3) G.over = true; else assocRound();
+    }
+    render();
+  },
+  pickset(d){
+    const list = G.mode === "tri" ? TRIS : ORDRES;
+    const sets = setsFor(list);
+    G.set = d.id === "*" ? pick(sets) : list.find(s => s.id === d.id);
+    G.stage = "play";
+    if (G.mode === "tri") { G.items = shuffle(Object.entries(G.set.cats).flatMap(([c, xs]) => xs.map(t => ({t, c})))); G.i = 0; G.fb = null; }
+    else { G.order = shuffle(G.set.seq.map((_, i) => i)); G.placed = []; G.next = 0; G.bad = null; }
+    render();
+  },
+  tri(d){
+    if (G.fb) return;
+    const cur = G.items[G.i];
+    G.fb = d.c;
+    if (d.c === cur.c) G.ok++; else { G.err++; G.wrong.push({q:cur.t, a:cur.c, item:G.set.item}); }
+    tick(); render();
+    setTimeout(() => { if (G && G.mode === "tri") { G.i++; G.fb = null; render(); } }, d.c === cur.c ? 550 : 1100);
+  },
+  ord(d){
+    const i = +d.i; G.bad = null;
+    if (i === G.next) { G.placed.push(i); G.next++; }
+    else { G.err++; G.bad = i; }
+    tick(); render();
+  },
+  ordend(){ G.over = true; G.wrong = []; render(); }
+};
+
+document.addEventListener("click", e => {
+  const m = e.target.closest(".hide mark.k, .hide b.n");
+  if (m) { m.classList.toggle("on"); return; }
+  const el = e.target.closest("[data-go],[data-act]");
+  if (!el || el.disabled) return;
+  if (el.dataset.go) { go(el.dataset.go); return; }
+  const fn = ACT[el.dataset.act]; if (fn) fn(el.dataset, el);
+});
+document.addEventListener("keydown", e => {
+  if (R.v !== "game" || !G || e.target.matches("input")) return;
+  if (G.mode === "flash" && G.i < G.q.length) {
+    if (e.key === " " || e.key === "Enter") { e.preventDefault(); ACT.flip(); }
+    else if (G.flipped && e.key === "1") ACT.fc({v:"0"});
+    else if (G.flipped && e.key === "2") ACT.fc({v:"1"});
+  }
+  if (G.mode === "vf" && !G.over) {
+    if (e.key === "ArrowLeft") ACT.vf({v:"0"});
+    if (e.key === "ArrowRight") ACT.vf({v:"1"});
+  }
+});
+$("#brand-tag").textContent = CONFIG.brandTag; $("#brand-name").textContent = CONFIG.brandName;
+render();
+</script>

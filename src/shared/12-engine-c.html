@@ -1,0 +1,146 @@
+
+/* ---------- PROGRÈS ---------- */
+function vProgres(){
+  const mastered = ITEMS.filter(i => S.mastered[i.id]).length;
+  const acq = acquired(CARDS), pctCards = Math.round(acq / CARDS.length * 100);
+  const st = streak();
+  const days = [...Array(7)].map((_, k) => { const d = new Date(); d.setDate(d.getDate() - 6 + k); return d; });
+  const maxN = Math.max(1, ...days.map(d => S.days[iso(d)] || 0));
+  const wd = ["dim","lun","mar","mer","jeu","ven","sam"];
+  return `<div class="stack">
+    <h1 class="sec-title" style="font-size:28px">Progrès <span class="hand">${st > 1 ? `${st} jours d'affilée` : "chaque jour compte"}</span></h1>
+    <div class="kpis">
+      <div class="plain kpi"><div class="v">${mastered}<small style="font-size:.5em;color:var(--ink-faint)"> / ${ITEMS.length}</small></div><div class="l">fiches maîtrisées</div></div>
+      <div class="plain kpi"><div class="v">${pctCards} %</div><div class="l">flashcards acquises (${acq} / ${CARDS.length})</div></div>
+      <div class="plain kpi"><div class="v">${st}</div><div class="l">jour${st>1?"s":""} de suite</div></div>
+    </div>
+    <section class="plain box stack" style="gap:12px">
+      <div class="eyebrow">7 derniers jours · réponses données</div>
+      <div class="week">${days.map(d => { const n = S.days[iso(d)] || 0;
+        return `<div class="d"><div class="dot" style="${n ? `background:color-mix(in srgb,var(--pen) ${30 + Math.round(n/maxN*70)}%,var(--paper-deep))` : ""}">${n || ""}</div>${wd[d.getDay()]}</div>`; }).join("")}</div>
+    </section>
+    <section class="plain box">
+      <div class="eyebrow" style="margin-bottom:4px">Par spécialité</div>
+      <div class="ptable">${SPEC_ORDER.map(sp => {
+        const its = ITEMS.filter(i => i.spec === sp), m = its.filter(i => S.mastered[i.id]).length;
+        const cs = cardsOfSpec(sp), a = acquired(cs);
+        return `<div class="prow" style="${specVar(sp)}"><span class="nm">${SPECS[sp].icon}${SPECS[sp].name}</span>
+          <span class="cell">Fiches ${m} / ${its.length}<span class="bar"><i style="width:${m/its.length*100}%"></i></span></span>
+          <span class="cell">Flashcards ${a} / ${cs.length}<span class="bar"><i style="width:${cs.length ? a/cs.length*100 : 0}%"></i></span></span></div>`;
+      }).join("")}</div>
+    </section>
+    <section class="stack" style="gap:10px">
+      <h2 class="sec-title">Records</h2>
+      <div class="records">${MODES.map(m => `<div class="plain rec"><span>${m.name}</span><b>${S.best[m.id] != null ? S.best[m.id] + m.unit : "–"}</b></div>`).join("")}</div>
+    </section>
+    <section class="plain box stack" style="gap:12px">
+      <label class="row" for="exam-date" style="justify-content:space-between"><b>Date du concours</b><input type="date" id="exam-date" value="${S.exam}" style="border:1px solid var(--rule);background:var(--card);border-radius:8px;padding:6px 8px"></label>
+      <div class="row" style="justify-content:space-between">
+        <span class="muted" style="font-size:14px">La progression est enregistrée dans ce navigateur, sur cet appareil.</span>
+        <button class="btn ghost small danger" data-act="reset">${R.confirmReset ? "Confirmer : tout effacer" : "Remettre à zéro"}</button>
+      </div>
+    </section>
+  </div>`;
+}
+
+/* ---------- actions ---------- */
+const ACT = {
+  randomFiche(){ const pool = ITEMS.filter(i => !S.mastered[i.id]); go("fiche:" + pick(pool.length ? pool : ITEMS).id); },
+  fspec(d){ R.spec = d.spec; render(); },
+  gspec(d){ S.filter = d.spec; save(); render(); },
+  hide(){ R.hide = !R.hide; render(); },
+  master(){ S.mastered[R.id] = !S.mastered[R.id]; if (!S.mastered[R.id]) delete S.mastered[R.id]; else tick(); save(); render(); },
+  reset(){
+    if (!R.confirmReset) { R.confirmReset = true; render(); return; }
+    const exam = S.exam;
+    Object.assign(S, {mastered:{}, box:{}, best:{}, days:{}, exam, filter:"all"}); save();
+    R.confirmReset = false; render();
+  },
+  flip(){ G.flipped = !G.flipped; render(); },
+  fc(d){
+    const e = G.q[G.i], id = e.c.id, known = d.v === "1";
+    if (known) { S.box[id] = Math.min((S.box[id]||0) + 1, 5); if (!e.r) G.ok++; }
+    else { S.box[id] = 0; if (!e.r) { G.err++; G.wrong.push({q:e.c.q, a:e.c.a, item:e.c.item}); } if (e.r < 2) G.q.push({c:e.c, r:e.r + 1}); }
+    tick(); save(); G.i++; G.flipped = false; render();
+  },
+  qo(d){
+    if (G.pick != null) return;
+    G.pick = +d.i; const q = G.qs[G.i];
+    if (q.opts[G.pick] === q.a) G.ok++; else { G.err++; G.wrong.push({q:q.q, a:q.a, item:q.item}); }
+    tick(); render();
+  },
+  qnext(){ G.i++; G.pick = null; render(); },
+  vf(d){
+    if (G.over) return;
+    const good = (d.v === "1") === G.cur.truth;
+    if (good) { G.ok++; G.streak++; G.bestStreak = Math.max(G.bestStreak, G.streak); }
+    else { G.err++; G.streak = 0; G.wrong.push({q:G.cur.ctx, a:G.cur.a, item:G.cur.item}); }
+    G.fb = good ? "ok" : "ko"; tick(); vfNext(); render();
+    setTimeout(() => { if (G && G.mode === "vf" && !G.over) { G.fb = null; const el = document.querySelector(".vf"); if (el) el.classList.remove("flash-ok","flash-ko"); } }, 260);
+  },
+  as(d){
+    const side = d.s, i = +d.i; G.bad = null;
+    if (!G.sel || G.sel.s === side) { G.sel = {s:side, i}; render(); return; }
+    if (G.sel.i === i) { G.done.push(i); G.ok++; }
+    else {
+      G.err++;
+      const li = side === "L" ? i : G.sel.i, ri = side === "R" ? i : G.sel.i;
+      G.bad = {L:li, R:ri};
+      G.wrong.push({q:G.g.q.replace("{k}", G.ps[li][0]), a:G.ps[li][1], item:G.ps[li][2]||G.g.item});
+    }
+    G.sel = null; tick();
+    if (G.done.length === G.ps.length) {
+      G.round++;
+      if (G.round >= 3) G.over = true; else assocRound();
+    }
+    render();
+  },
+  pickset(d){
+    const list = G.mode === "tri" ? TRIS : ORDRES;
+    const sets = setsFor(list);
+    G.set = d.id === "*" ? pick(sets) : list.find(s => s.id === d.id);
+    G.stage = "play";
+    if (G.mode === "tri") { G.items = shuffle(Object.entries(G.set.cats).flatMap(([c, xs]) => xs.map(t => ({t, c})))); G.i = 0; G.fb = null; }
+    else { G.order = shuffle(G.set.seq.map((_, i) => i)); G.placed = []; G.next = 0; G.bad = null; }
+    render();
+  },
+  tri(d){
+    if (G.fb) return;
+    const cur = G.items[G.i];
+    G.fb = d.c;
+    if (d.c === cur.c) G.ok++; else { G.err++; G.wrong.push({q:cur.t, a:cur.c, item:G.set.item}); }
+    tick(); render();
+    setTimeout(() => { if (G && G.mode === "tri") { G.i++; G.fb = null; render(); } }, d.c === cur.c ? 550 : 1100);
+  },
+  ord(d){
+    const i = +d.i; G.bad = null;
+    if (i === G.next) { G.placed.push(i); G.next++; }
+    else { G.err++; G.bad = i; }
+    tick(); render();
+  },
+  ordend(){ G.over = true; G.wrong = []; render(); }
+};
+
+document.addEventListener("click", e => {
+  const m = e.target.closest(".hide mark.k, .hide b.n");
+  if (m) { m.classList.toggle("on"); return; }
+  const el = e.target.closest("[data-go],[data-act]");
+  if (!el || el.disabled) return;
+  if (el.dataset.go) { go(el.dataset.go); return; }
+  const fn = ACT[el.dataset.act]; if (fn) fn(el.dataset, el);
+});
+document.addEventListener("keydown", e => {
+  if (R.v !== "game" || !G || e.target.matches("input")) return;
+  if (G.mode === "flash" && G.i < G.q.length) {
+    if (e.key === " " || e.key === "Enter") { e.preventDefault(); ACT.flip(); }
+    else if (G.flipped && e.key === "1") ACT.fc({v:"0"});
+    else if (G.flipped && e.key === "2") ACT.fc({v:"1"});
+  }
+  if (G.mode === "vf" && !G.over) {
+    if (e.key === "ArrowLeft") ACT.vf({v:"0"});
+    if (e.key === "ArrowRight") ACT.vf({v:"1"});
+  }
+});
+$("#brand-tag").textContent = CONFIG.brandTag; $("#brand-name").textContent = CONFIG.brandName;
+render();
+</script>

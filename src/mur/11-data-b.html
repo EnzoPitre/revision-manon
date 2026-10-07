@@ -1,0 +1,98 @@
+
+/* ---------------- PNEUMO ---------------- */
+F("pneumo","154","Pneumonie aiguë communautaire",[
+ {h:"Germes",l:["Adulte : ==pneumocoque, légionelle==","Enfant : ==pneumocoque, Mycoplasma pneumoniae=="]},
+ {h:"Pneumocoque",l:["==CGP en chaînettes==","∅ transmission interhumaine","PFLA = ==début brutal==","Opacité ==systématisée==","TTT : ==amoxicilline=="]},
+ {h:"Légionelle",l:["==BGN==, eau douce","Début ==progressif==","Opacité ==non systématisée==","TTT : ==macrolides=="]},
+ {h:"Score CRB65",l:["C : ==confusion==","R : FR ≥ ++30/min++","B : PAS < ++90 mmHg++ ou PAD ≤ ++60 mmHg++","65 : âge ≥ ++65 ans++"]},
+ {h:"Hospitalisation",sub:"≥ 2 facteurs, ou 1 si > 65 ans",l:["§Signes de gravité",["Altération des fonctions supérieures","FR > ++30/min++ · PAS < ++90 mmHg++ · PAD ≤ ++60 mmHg++ · FC > ++120++ · T° < ++35++ ou ≥ ++40 °C++"],"Signes associés : cyanose, tirage, marbrures","Incertitude diagnostique","Échec de prise en charge au domicile","Risque de décompensation des comorbidités","Difficulté de prise orale","CRB65 et + ≥ ++1++ critère"]},
+ {h:"Hospitalisation en USC ou réa",l:["§≥ 1 critère majeur",["==Choc septique==","==IRA nécessitant une IOT=="],"§≥ 3 critères mineurs",["FR ≥ ++30/min++","P/F ≤ ++250++, PaO₂ < ++60 mmHg++","Atteinte multilobaire, bilatérale, extension radiographique rapide","Confusion, désorientation","Hyperleucocytose > ++30 G/L++","Leucopénie < ++4000++, PNN < ++1000++","Thrombopénie < ++100 G/L++","Hypothermie < ++35 °C++","Hypotension nécessitant un RV"],"§La pneumo rajoute",["Oligurie, marbrures","IRA ou IH aiguë","Acidose pH < ++7,35++, hyperlactatémie","CIVD","Complications LR : empyème, excavation","Atteintes extra-pulmonaires ou systémiques","Échec ATB","Exposition AINS","PNP d'inhalation ou obstructive"]]},
+ {h:"Examens selon la prise en charge",table:{head:["","Ambulatoire","Conventionnel","USC / réa","Immunodépression"],rows:[
+   ["Hémocs","∅","X","X","X"],["ECBC","∅","X","X","X"],
+   ["PCR multiplex","∅","+/− (période épidémique)","X (période épidémique)","X"],
+   ["PCR simplex (bactéries atypiques)","∅","+/−","+/− (contexte épidémique, terrain à risque)","+/− (contexte épidémique, terrain à risque)"],
+   ["Ag pneumocoque","∅","+/−","X","X"],["Ag légionelle","∅","+/−","X","X"],
+   ["Liquide pleural","∅","X (si épanchement)","X (si épanchement)","X (si épanchement)"],
+   ["Autres","∅","","Aspiration endobronchique (si IOT)","+/− recherche pneumocystis, Ag β-D-glucane, +/− fibroscopie"]]}},
+ {h:"Examens complémentaires",l:["NFS + iono + créat + BH + CRP + coag","GDS","Radio de thorax","PFLA (pneumocoque) : ==sérologie VIH=="]},
+ {h:"ECBC valable si",l:["PNN > ++25/champ++","Cellules épithéliales < ++10/champ++","1 seul germe en ED ≥ ++10⁷++"]},
+ {h:"Épanchement pleural infectieux",l:["Protides > ++35 g/L++","Ou protides ++25–35 g/L++ + ≥ ++1++ critère de Light"]},
+ {h:"Critères de Light",l:["Protides pleural / sérique > ++0,5++","LDH pleural / sérique > ++0,6++","LDH pleural > ++2/3++ du sérique"]},
+ {h:"Bronchiolite",l:["Due au ==VRS==","= ==1er épisode== de gêne respiratoire chez un enfant < ++12 mois++",["Rhinite → signes respiratoires","± fièvre"]]},
+ {h:"Bronchiolite · gravité",sub:"toujours après désobstruction rhinopharyngée",table:{head:["","Légère","Modérée","Grave"],rows:[
+   ["État général altéré","Non","Non","Oui"],["FR","< 60/min","60–69/min","≥ 70/min, ou respiration superficielle, ou FR < 30/min, ou apnée"],["FC > 180 ou < 80","Non","Non","Oui"]]}},
+ {h:"Bronchiolite · critères de vulnérabilité",l:["Comorbidités : dysplasie bronchopulmonaire, VM néonatale prolongée, cardiopathie congénitale + shunt non opérée, DI, pathologie à risque de toux inefficace et fatigabilité musculaire","Prématurité < ++36 SA++","Âge < ++2 mois++ (âge corrigé = âge réel − semaines de grossesse manquantes)","Contextes sociaux ou économiques défavorables"]}
+]);
+F("pneumo","203","Dyspnée",[
+ {h:"HTAP",tone:"postit",l:["P pulmonaire précapillaire",["Repos : ≥ ++25 mmHg++","Effort : > ++30 mmHg++"],"P capillaire moyenne : ≤ ++15 mmHg++"]},
+ {h:"Vocabulaire",l:["Dyspnée chronique : ≥ ++8 semaines++","§Volume courant",["Hyperpnée","Hypopnée"],"§Fréquence respiratoire",["Tachypnée, polypnée","Bradypnée"]]},
+ {h:"Échelle mMRC",l:["++0++ : normal","++1++ : rapide à plat / en pente","++2++ : plus lent que le rythme normal → arrêt","++3++ : arrêts après ++90 m++ ou quelques minutes","++4++ : à l'habillage"]},
+ {h:"Échelle NYHA",l:["++1++ : normal","++2++ : > ++2++ étages","++3++ : ≤ ++2++ étages","++4++ : au repos"]},
+ {h:"EC de 1re intention",l:["Radio de thorax + ECG","NFS + iono + GAJ + BNP + D-dimères + GDS"]},
+ {h:"Dyspnée laryngée",l:["= ==bradypnée inspiratoire + stridor / cornage==","§Nouveau-né",["==Laryngomalacie== : régression à ++6 mois++ → TTT du RGO"],"§< 6 mois",["==Angiome sous-glottique== : régression à ++1 an++ → BB (propranolol)"],"§> 6 mois",["==Laryngite sous-glottique== : après une rhinopharyngite, la nuit → CTC PO","==Laryngite striduleuse== : brutale, la nuit, lors d'une rhinopharyngite","==Épiglottite== : Haemophilus b → IOT + C3G IV + CTC IV"],"§Adulte",["Cancer du larynx, du laryngopharynx","Laryngites sous-glottiques, épiglottite → ATB + CTC (Augmentin ; C3G + métronidazole)","Œdème de Quincke","Larynx post-radique","Traumatisme","Immobilité laryngée bilatérale","Pseudomyxome = ==œdème de Reinke==","Papillomatose : ==HPV non oncogène=="],"Aérosol de Bompard = ==CTC + adrénaline + sérum phy=="]}
+]);
+F("pneumo","208","Insuffisance respiratoire chronique",[
+ {h:"Définition",l:["= hypoxémie < ++70 mmHg++ ×2 à ++2 semaines++ d'intervalle","Grave : < ++60 mmHg++"]},
+ {h:"Mécanismes",l:["§Anomalie du rapport ventilation / perfusion",["==Effet shunt== : pb de ventilation → hypocapnie","==Shunt vrai== anatomique (D → G)","==Shunt vrai== fonctionnel (non ventilé)"],"§Hypoventilation alvéolaire → hypercapnie",["Hypoventilation pure","Espace mort = pb de perfusion"],"§Pb de diffusion alvéolo-capillaire → hypocapnie ou normocapnie"]},
+ {h:"HTAP",l:["PAP moyenne > ++20 mmHg++ + résistances > ++3 UW++","PAP systolique > ++35 mmHg++","Signe de ==Carvalho== (souffle systolique ↗ à l'inspiration)","Éclat de ==B2==","Souffle diastolique"]},
+ {h:"Oxygénothérapie de longue durée",l:["§IR obstructive",["PaO₂ < ++55 mmHg++","PaO₂ ++55–59 mmHg++ + signes d'hypoxie (Hte > ++55 %++, ICD, SpO₂ nocturne ≤ ++88 %++)"],"§IR restrictive",["PaO₂ < ++60 mmHg++"],"Durée ≥ ++15 h/j++"]}
+]);
+F("pneumo","359","Détresse respiratoire aiguë",[
+ {h:"Définitions",l:["DRA = signes respiratoires d'un trouble","IRA = retentissement gazométrique du DRA",["Hypoxémie : PaO₂ < ++60 mmHg++","Hypercapnie : PaCO₂ > ++45 mmHg++"],"SDRA = dû à un ==œdème lésionnel pulmonaire=="]},
+ {h:"Signes de lutte",l:["Tachypnée : FR > ++25++","Tirage","Stridor"]},
+ {h:"Signes de faillite",sub:"signes de gravité",l:["Balancement thoraco-abdominal","Cyanose","Astérixis = flapping tremor","Troubles de vigilance","ICD","Pouls paradoxal","Choc","Hypercapnie"]},
+ {h:"SDRA · 4 critères",l:["DRA < ++7 j++","Opacités alvéolaires ==diffuses, bilatérales==",["Non expliquées par épanchement / atélectasie / nodule"],"OAP à prédominance ==non hydrostatique== = exsudat","Hypoxémie : PaO₂/FiO₂ < ++300 mmHg++",["!!∅ défaillance cardiaque / surcharge volémique : PAPO < 15 mmHg!!"]]},
+ {h:"SDRA · sévérité",sub:"avec PEP / CPAP ≥ 5 cmH₂O",l:["Léger : P/F ++200–300 mmHg++","Modéré : P/F ++100–200 mmHg++","Sévère : P/F ≤ ++100 mmHg++"]},
+ {h:"TTT du SDRA",l:["Monoxyde d'azote inhalé","Décubitus ventral","O₂ haut débit via canules nasales","Curares","Albumine + diurétique"]}
+]);
+
+/* ---------------- PSY ---------------- */
+F("psy","63","Troubles schizophréniques",[
+ {h:"Sd positif",l:["§Idées délirantes",["Thèmes : persécution, mégalomanie, mystique, somatique, de référence","Mécanismes : interprétatif, hallucinatoire, intuitif, imaginatif","Systématisation = organisation + cohérence","Adhésion","Retentissement"],"§Hallucinations",["Psychosensorielles : auditives, visuelles, tactiles, gustatives, olfactives","Intrapsychiques"]]},
+ {h:"Sd négatif",l:["Émoussement des affects → ==anhédonie==","Pauvreté du discours, ==alogie==","==Apragmatisme== → clinophilie, incurie","==Aboulie==","Retrait social"]},
+ {h:"Sd de désorganisation",l:["Pb du cours de la pensée : discours hermétique / impénétrable, ==barrage, fading==","Illogisme : ambivalence, rationalisme morbide / paralogique, pb d'abstraction","Pb du langage : maniérisme, néologismes, paralogismes, jargonophasie","Ambivalence affective, ==discordance idéo-affective==","Pb du comportement : maniérisme, ambivalence, parakinésies"]},
+ {h:"Âge de début",l:["Normal : ++18–25 ans++","Précoce : < ++18 ans++","Très précoce : < ++13 ans++","Tardif : > ++35 ans++"]},
+ {h:"Diagnostic positif",l:["≥ ++2++ syndromes pendant ≥ ++1 mois++","Retentissement ≥ ++6 mois++","Répercussions sociales + professionnelles","∅ DD"]},
+ {h:"Selon la durée",l:["++1 j – 1 mois++ : ==trouble psychotique bref==","++1 – 6 mois++ : ==trouble schizophréniforme=="]},
+ {h:"Traitement",l:["§Crise",["Antipsychotiques : ==cyamémazine, lévomépromazine==","BZD : ==diazépam, oxazépam=="],"§Fond",["Antipsychotiques de 2e génération ou atypiques : amisulpride (Solian), aripiprazole (Abilify), quétiapine (Xeroquel), rispéridone","Épisode unique : ≥ ++2 ans++","Rechute : ≥ ++5 ans++","Résistance à 2 TTT : ==clozapine=="]]}
+]);
+F("psy","65","Trouble délirant persistant",[
+ {h:"≈ Sd positif de schizophrénie",l:["§Thèmes des idées délirantes",["Érotomanie","Mégalomanie","Jalousie","Persécution","Somatique"]]},
+ {h:"Diagnostic positif",l:["≥ ++1 mois++","Idées délirantes ==logiques==, ∅ Sd de désorganisation, ∅ Sd négatif","∅ altération du fonctionnement, ∅ bizarrerie du comportement","∅ symptôme thymique","∅ DD"]}
+]);
+F("psy","64","Trouble bipolaire",[
+ {h:"Sd maniaque",l:["≥ ++1 semaine++","Humeur maniaque : labilité, hyperactivité, hyperesthésie, hypersyntonie, ↗ estime de soi, mégalomanie, ↘ ou ∅ conscience du trouble","Excitation psychomotrice : tachypsychie, fuite des idées, coq-à-l'âne, jeux de mots, hypervigilance, distractibilité, ↗ activités dirigées vers un but, logorrhée, tachyphémie, hypermimie, désinhibition","Insomnie, ∅ fatigue, ↗/↘ appétit, amaigrissement, déshydratation, hypersexualité"]},
+ {h:"Sd hypomaniaque",l:["≥ ++4 jours++","Moins important"]},
+ {h:"Sd dépressif évocateur de bipolarité",l:["< ++25 ans++","Post-partum (++4 semaines++)","Début brutal","ATCD d'EDC ≥ ++3++, ATCD familial de trouble de l'humeur","Réponse inadéquate aux antidépresseurs"]},
+ {h:"Types",l:["Type I = ==(hypo)maniaque== : diagnostic même sans EDC","Type II = ==hypomaniaque + EDC==, ∅ épisode maniaque"]},
+ {h:"Formes",l:["++25 %++ saisonnier",["Régulier : rémission / virage à une période précise","∅ épisode non saisonnier","≥ ++2++ épisodes saisonniers pendant ++2 ans++"],"++25 %++ cycles rapides",["≥ ++4++ épisodes en ++1 an++"]]},
+ {h:"Diag + épisode maniaque",l:["≥ ++1 semaine++","≥ ++3++ parmi :",["↗ estime de soi, idées de grandeur","↘ besoin de sommeil","↗ communicabilité / désir de parler","Fuite des idées","Distractibilité","Agitation","Activités à risque"],"Retentissement, hospitalisation, symptômes psychotiques","∅ DD"]},
+ {h:"Diag + épisode hypomaniaque",l:["≥ ++4 jours++","Mêmes critères symptomatiques que l'épisode maniaque","Modification indiscutable","Changement observé par les proches","Modification du comportement","∅ DD"]},
+ {h:"Diag + EDC dans le trouble bipolaire",l:["≥ ++5++ parmi, pendant ≥ ++2 semaines++ :",["Humeur dépressive","↘ plaisir",["!!Obligatoire : 1 des 2!!"],"↘/↗ poids ou appétit","Insomnie / hypersomnie","Agitation / ralentissement psychomoteur","Fatigue, ↘ énergie","Dévalorisation, culpabilité","↘ concentration, indécision","IDS"],"Retentissement","∅ DD"]},
+ {h:"TTT de l'épisode maniaque",l:["§Crise",["Thymorégulateur : ==lithium== ⊕, valproate, carbamazépine","Antipsychotique 2e G : rispéridone, olanzapine, quétiapine, aripiprazole"],"§Fond",["Lithium, valproate, antipsychotique 2e G : ++4–6 mois++","Prophylaxie : ==thymorégulateur=="]]},
+ {h:"TTT de l'EDC (bipolaire)",l:["§Crise",["Thymorégulateur : ==lithium, lamotrigine==","Antipsychotique : ==quétiapine==","Échec : ISRS"],"§Fond",["Lithium, lamotrigine, quétiapine : ++4–6 mois++","Prophylaxie : ==thymorégulateur=="]]}
+]);
+F("psy","66a","Épisode dépressif caractérisé",[
+ {h:"Clinique",l:["§Psychoaffective",["Humeur dépressive","Anhédonie, anesthésie affective, anxiété","Pb du contenu de la pensée : culpabilité, dévalorisation, incurabilité","Pensées de mort, IDS"],"§Psychomotrice",["Ralentissement","Pb du cours de la pensée : bradypsychie, ruminations, monoïdéisme","Altération mémoire / concentration / attention, indécision","Bradykinésie, hypomimie, bradyphémie, aprosodie, incurie, clinophilie, aboulie"],"§Physiologique",["Insomnie, somnolence","Fatigue, ↘ énergie","Anorexie > hyperphagie","↘ libido"]]},
+ {h:"Évolution",l:["EDC isolé : ++1++ épisode","Trouble dépressif récurrent : ≥ ++2++ épisodes séparés de ≥ ++2 mois++"]},
+ {h:"Diagnostic positif",l:["≥ ++5++ parmi, pendant ≥ ++2 semaines++ :",["Humeur dépressive","↘ intérêt / plaisir",["!!Au moins 1 des 2 pour le diagnostic!!"],"↘/↗ poids (++5 %++) ou appétit","Insomnie / hypersomnie","Agitation / ralentissement psychomoteur","Fatigue, ↘ énergie","Dévalorisation, culpabilité","↘ concentration, indécision","IDS"],"Altération de la qualité de vie","∅ DD","∅ critères de trouble psychotique"]},
+ {h:"Traitement",l:["Antidépresseur ISRS (==fluoxétine==)",["Arrêt après ++6 mois – 1 an++"],"Selon la forme clinique : antipsychotique, BZD, hypnotique"]}
+]);
+F("psy","66b","Trouble anxieux généralisé",[
+ {h:"Diagnostic positif",l:["≥ ++6 mois++","Difficulté à contrôler la préoccupation","≥ ++3++ parmi (dont certains depuis ++6 mois++) :",["Agitation, survolté, à bout","Fatigabilité","Troubles de concentration / mémoire","Irritabilité","Tension musculaire","Perturbation du sommeil"],"Retentissement","∅ DD"]},
+ {h:"Traitement",l:["§Crise",["BZD : ++12 semaines++ max","Hydroxyzine = ==Atarax=="],"§Fond (≥ 6 mois)",["==ISRS==","==IRSNa=="]]}
+]);
+F("psy","351","Agitation",[
+ {h:"Traitement",l:["BZD PO : ==oxazépam==","Antipsychotiques : ==cyamémazine, loxapine=="]}
+]);
+F("psy","352","Crise d'angoisse",[
+ {h:"Symptômes",l:["==Dépersonnalisation==","==Déréalisation=="]},
+ {h:"TTT si attaque de panique prolongée",l:["BZD PO : ==lorazépam, alprazolam, oxazépam==","==Hydroxyzine== = antihistaminique"]}
+]);
+F("psy","353","Suicide",[
+ {h:"Épidémiologie",l:["TS : ⊕ ==ado + femme==","Suicide : ⊕ ==adulte + homme=="]},
+ {h:"Sd présuicidaire de Ringel",l:["Accalmie ⊕","= ==passage à l'acte imminent=="]},
+ {h:"Évaluation du risque suicidaire = RUD",l:["==Risque== = facteurs de risque + facteurs protecteurs","==Urgence== = projet suicidaire (scénario, délai)","==Dangerosité== = moyens à disposition"]},
+ {h:"Prévention primaire · HEAADSSSSS",sub:"guide d'entretien psychosocial",l:["H : ==habitat== = Home","E : ==école== = Education","A : ==alimentation==","A : ==activités== (camarades, internet)","D : ==drogues==","S : ==sexualité==","S : ==suicide==","S : ==sécurité, sévices subis==","S : ==symptômes flous==","S : ==suivis=="]},
+ {h:"Questionnaire BITS (enfant)",l:["§Brimades (harcèlement)",["+1 si à l'école","+2 si hors école (internet)"],"§Insomnies",["+1 si fréquentes","+2 si cauchemars"],"§Tabac",["+1 si irrégulier","+2 si quotidien"],"§Stress",["+1 si scolaire / travail","+2 si familial"],"→ ==approfondir si ≥ 3=="]}
+]);

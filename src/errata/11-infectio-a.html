@@ -1,0 +1,76 @@
+
+/* ---------------- INFECTIO (1/2) ---------------- */
+F("infectio","149","Angines",[
+ {h:"Angine pseudomembraneuse",l:["==EBV==","==Diphtérie== (adhère + déborde)","==VIH=="]},
+ {h:"Angine vésiculeuse",l:["Herpétique (==HSV1==)","Herpangine (==entérovirus== = coxsackie, échovirus)","==VZV==","!!TOUJOURS!! viral"]},
+ {h:"Angine ulcéro-nécrotique",l:["==Vincent== (Fusobacterium necrophorum + Treponema vincenti → mauvais état bucco-dentaire, haleine fétide)","Chancre ==syphilitique==","==K==","==Agranulocytose== sur hémopathie"]},
+ {h:"Score de Mac Isaac",sub:"moyen mnémo : F(A3)T",table:{head:["Critère","Point"],rows:[["Température > 38 °","1"],["Absence de toux","1"],["Adénopathie(s) cervicale(s) antérieure(s) douloureuse(s)","1"],["Augmentation de volume ou exsudat amygdalien","1"],["Âge 15 à 44 ans","0"],["Âge > 45 ans","−1"]]}},
+ {h:"TDR",l:["Pas < ++3 ans++","!!SYSTÉMATIQUE!! ++3–15 ans++","Si Mac Isaac ≥ ++2++ à > ++15 ans++"]},
+ {h:"À retenir",l:["Sd de ==Lemierre== : thrombose de la veine jugulaire interne post angine de Vincent","TTT diphtérie : ==déclaration obligatoire ARS + précaution gouttelettes==","TTT SBHA / scarlatine : ==éviction de collectivité 48 h=="]}
+]);
+F("infectio","151","Méningites et méningo-encéphalites",[
+ {h:"Méninges",l:["Pachyméninge = ==dure-mère==","Leptoméninge = ==arachnoïde, pie-mère=="]},
+ {h:"Germes et voies",l:["Méningo-encéphalite : ==HSV1== ++","Méningite virale : ==entérovirus== ++","Méningite, méningo-encéphalite : ==hématogène== ++","Abcès (frontal ++) : ==contiguïté== ++","++1–25 ans++ : ==méningocoque== ++","< ++1 an++ et > ++25 ans++ : ==pneumocoque== ++"]},
+ {h:"Examen clé",l:["Méningite : ==PL==","Encéphalite : IRMc + ==EEG==","Méningo-encéphalite : ==IRMc avant PL== + EEG"]},
+ {h:"Ponction lombaire",l:["L4-L5, ++2–3 mL++/tube = ++40–60++ gouttes","NFS + TP + TCA + fibrinogène + ==glycémie veineuse==","§IRM avant PL si",["Signe de focalisation, HTIC, GSC < ++11++, crise d'épilepsie"],"§CI à la PL",["TP < ++50 %++, TCA > ++1,5++, plaquettes < ++50++","Coagulopathie, anticoag (!!PAS les AAP!!), CIVD (purpura)","Instabilité, infection au point de ponction","Signe de processus extensif, signe d'engagement","Crise convulsive persistante"]]},
+ {h:"Bilan biologique",l:["Méningite : NFS, plaquettes, iono, créat, ==BH==, TP, TCA, fibrinogène, glycémie veineuse, ==procalcitonine==, hémocs","Méningo-encéphalite : ==+ CRP, glycémie capillaire, calcémie, sérologie VIH, PCR HSV1=="]},
+ {h:"Analyse du LCS",table:{head:["","LCS normal","LCS purulent","Clair · Listeria / BK","Clair · virus"],rows:[
+   ["Macroscopie","Clair « eau de roche »","Trouble","Clair","Clair"],
+   ["Éléments","< 5/mm³, 100 % mononucléées","> 100/mm³, en général > 1000/mm³, PNN > 50 %","> 5/mm³, en général 20–100/mm³, PNN > 50 % (> 10/mm³ chez le nouveau-né)","> 5/mm³, en général 20–100/mm³ · phase aiguë (30 % des méningites virales, entérovirus ++) : PNN > 50 % · puis PNN ≤ 50 % « panaché » ou prédominance lymphocytaire (> 10/mm³ chez le nouveau-né)"],
+   ["Glycorachie","> 2/3 × glycémie","≤ 0,4 × glycémie (Se 80 %, Sp 98 % pour bactérienne)","≤ 0,4 × glycémie","> 0,4 × glycémie"],
+   ["Protéinorachie","< 0,4 g/L","En général > 1 g/L","> 0,4 g/L, entre 1–2 g/L en général","> 0,4 g/L, souvent < 1 g/L"],
+   ["Lactatorachie","< 3,2 mmol/L","> 3,2 mmol/L","> 3,2 mmol/L","< 3,2 mmol/L"],
+   ["Examen direct","Négatif","Positif 60–80 % si Φ ATB · si négatif : méningite décapitée, bactérie fragile, faible inoculum","Positif dans < 1/3 des cas si Listeria ou BK","Négatif"],
+   ["Étiologie","LCS normal","Pneumocoque, méningocoque, H. influenzae, rarement Listeria (suite coupée sur la fiche)","L. monocytogenes, M. tuberculosis, spirochètes : Lyme, syphilis, leptospirose","Herpès, entérovirus, grippe, rougeole, oreillons"]]}},
+ {h:"TTT méningite à méningocoque",l:["==C3G IV== relais amox IV (ciprofloxacine) ++4 j++ + ==CTC== ++4 j++","==Déclaration obligatoire== ARS + précaution gouttelettes > ++24 h++","Cas contacts < ++10 j++ : ATB-prophylaxie (rifampicine ++2 j++, FQ, C3G IV) + vaccin ==ACYW135=="]},
+ {h:"TTT méningite à pneumocoque",l:["==C3G== (rifampicine + vancomycine, imipénème) ++10–14 j++ + CTC ++4 j++"]},
+ {h:"TTT méningite à Haemophilus",l:["C3G ++7 j++ + CTC ++4 j++ (chez l'enfant) + ==éviction scolaire==","Cas contact < ++4 ans++ : rifampicine ++4 j++"]},
+ {h:"Listeria et tuberculose",l:["Méningite à L. monocytogenes : ==rhombencéphalite== (atteinte du TC)","Méningite tuberculeuse : ==méningite basilaire== (TC + dysautonomie)","TTT Listeria : amox ++21 j++ + gentamicine ++7 j++ + ==déclaration obligatoire==","TTT neuro-tuberculose : quadrithérapie ++2 mois++ + bithérapie ++10 mois++ + ==précaution air== + ==CTC== + ==déclaration obligatoire CLAT + ARS=="]},
+ {h:"Lyme et syphilis",l:["TTT Lyme : C3G IV ++3–4 sem++","TTT syphilis : péni G IV ++2–3 sem++"]}
+]);
+F("infectio","152","Endocardite infectieuse",[
+ {h:"Porte d'entrée → germe",table:{head:["Porte d'entrée","Germe"],rows:[["Cutanée, matériel, toxico","S. aureus, staph coagulase (−), Candida"],["Buccodentaire","Streptocoques oraux = groupe D, groupe HACEK"],["Digestive","Streptococcus gallolyticus"],["Digestive, urinaire","Entérocoque"]]}},
+ {h:"Cardiopathies à risque d'EI",table:{head:["Haut risque (incidence > 100/pop. générale)","Risque moins élevé (incidence > 10–50/pop. générale)"],rows:[["Prothèses valvulaires (mécaniques, homogreffes ou bioprothèses, TAVI, TMVI)","Valvulopathies aortiques : insuffisance aortique, rétrécissement aortique, bicuspidie"],["Cardiopathies congénitales cyanogènes* non opérées et dérivations chirurgicales pulmonaires systémiques","Insuffisance mitrale ; prolapsus valvulaire mitral avec IM et/ou épaississement valvulaire"],["Antécédents d'endocardite infectieuse","Cardiopathies congénitales non cyanogènes** sauf CIA ; CMH obstructive avec souffle"]]}},
+ {h:"Notes du tableau",l:["TAVI : remplacement percutané de la valve aortique · TMVI : remplacement percutané de la mitrale","* tétralogie de Fallot, transposition des gros vaisseaux","** CIV, canal artériel persistant, canal atrioventriculaire"]},
+ {h:"Critères de Duke modifiés",sub:"moyen mnémo : BE TIMER",l:["§Majeurs : BE",["==B==lood culture : hémocs positives > 2 fois à 12 h d'intervalle","==E==cho : atteinte endocardique à l'échographie"],"§Mineurs : TIMER",["==T==empérature > ++38 °C++","==I==mmunologique : nodules d'Osler, taches de Roth","==M==icrobiologique : hémoc positive sans critère majeur","==E==mbolique : emboles artériels, emboles septiques, hémorragie conjonctivale, lésions cutanées indolores","==R==isque : cardiopathie congénitale ou toxicomanie IV"],"Diagnostic ==certain== : 2 majeurs, ou 1 majeur + 3 mineurs, ou 5 mineurs","Diagnostic ==possible== : 1 majeur + 1 mineur, ou 3 mineurs"]},
+ {h:"Traitement",l:["EI communautaire, sur prothèse > ++1 an++ : ==amox + oxacilline + gentamicine==","EI nosocomiale, sur prothèse < ++1 an++ : ==vancomycine + rifampicine + gentamicine==","Staph : oxacilline ++6 sem++","Streptocoque : amoxicilline ++4 sem++","Entérocoques : amox + gentamicine ou amox + C3G ++6 sem++","Hémocs négatives : augmentin + gentamicine ++6 sem++","Allergie : ==vancomycine=="]},
+ {h:"Clinique et examens",l:["Faux panaris d'==Osler== (nodule douloureux fugace), tache de ==Roth== (FO), placard de ==Janeway== (palmoplantaire)","EC de 1re intention : hémocs, ETT + ETO","!!TOUJOURS!! hémocs : ++3++ paires, prévenir le labo pour incubation ++14 j++"]},
+ {h:"SEPHORA",sub:"complications",l:["==S==PM","==É==rythème de Janeway","==P==urpura vasculaire","==H==émorragie sous-unguéale","Faux panaris d'==O==sler","Taches de ==R==oth","==A==névrisme mycotique"]},
+ {h:"Suivi et prévention",l:["Guérison = ==absence de rechute==","Prévention si dentiste : ==amox PO < 1 h avant==","Panoramique dentaire = ==orthopantomogramme 1×/an=="]}
+]);
+F("infectio","154","PAC : antibiothérapie",[
+ {h:"Score CRB65",sub:"gravité",l:["Confusion","FR > ++30++","PAS < ++90++, PAD < ++60++","> ++65 ans++"]},
+ {h:"TTT PAC grave / réa",l:["==C3G + macrolides ou lévofloxacine (FQ)== ++7 j++","Si FR de P. aeruginosa : pipé-tazo ou C4G ou carbapénème + aminosides + macrolides ou FQ","Si légionelle : ==déclaration obligatoire à l'ARS=="]},
+ {h:"TTT PAC ambulatoire / hospit",l:["Ambulatoire : ==amox ou macrolides==",["Si FR : augmentin ou C3G ou FQ"],"Hospitalisation : ==amox== ++"]},
+ {h:"À retenir",l:["Qualité de l'ECBC : PNN > ++25++/champ, cellules épithélioïdes < ++10++/champ","ATB efficaces contre légionelle : ==MAQUIS== (macrolides, quinolones)"]}
+]);
+F("infectio","155","Infections cutanées et mycoses",[
+ {h:"Candidose",l:["Saprophyte ==muqueux==","==Intertrigo== des grands plis (fond rouge, enduit, fissuré, bordure pustuleuse)","==Onychomycoses== des mains (prox + lat)",["→ ==imidazolé== / ciclopiroxolamine / terbinafine local, ==fluconazole== PO"],"==Perlèche==, glossite, muguet",["→ ==amphotéricine B, miconazole=="],"Vulvovaginite (lait caillé), balanite, urétrite",["→ antifongique local + ==savon alcalin=="],"Cuir chevelu (toxico IV)"]},
+ {h:"Dermatophytose",l:["!!NON!! saprophyte, !!RESPECTE!! les muqueuses","==Intertrigo== des petits plis (centrifuge, guérison centrale, bordure squameuse) : ==2 feet 1 hand==","==Ongles== des orteils (distal + lat)",["→ ==imidazolé== / ciclopiroxolamine / terbinafine local, ==terbinafine== / ==itraconazole== PO"],"==Peau glabre== : herpès circiné, kératodermie palmoplantaire","Teigne ==microsporique== (grande, éloignée), ==trichophytique== (petites, émergence), ==kérion== (teigne suppurée)",["→ ==éviction scolaire== + terbinafine (trichophytique) / itraconazole (microsporique)"]]},
+ {h:"Infections staphylococciques",l:["Impétigo, furonculose hors poussée : ==mupirocine==","Furoncle, furonculose en poussée : ==clindamycine, pristinamycine==","Abcès : ==clindamycine, pristinamycine, oxacilline, cloxacilline=="]}
+]);
+F("infectio","156","Infections ostéo-articulaires",[
+ {h:"Généralités",l:["Aiguë < ++4 sem++ / chronique ==> 4 sem==","ATB = ==bithérapie== initiale"]},
+ {h:"Traitement",l:["Arthrite septique : céfazoline / oxacilline / cloxacilline IV",["SASM : + clindamycine / FQ / rifampicine ++4–6 sem++","Streptocoque : amox ++4–6 sem++ (dont ++2 sem++ IV)"],"Spondylodiscite : ++6 sem++","Ostéite chronique : ++6–12 sem++"]},
+ {h:"Bonne diffusion osseuse : FC FRAC",l:["==F==osfomycine","==C==lindamycine","==F==Q","==R==ifampicine","==A==cide fusidique","==C==yclines (doxycycline)"]}
+]);
+F("infectio","159","Tuberculose",[
+ {h:"TTT de l'ITL",l:["Isoniazide ++6 mois++","Rifampicine + isoniazide ++3 mois++","Rifampicine ++4 mois++"]},
+ {h:"TTT PIT / TM",l:["Rifampicine + isoniazide + éthambutol + pyrazinamide ++2 mois++, puis rifampicine + isoniazide ++4 mois++","Rifampicine + isoniazide + éthambutol ++2 mois++, puis rifampicine + isoniazide ++7 mois++","ALD valable ++3 ans++"]},
+ {h:"Suivi",l:["Consultation : ++J15, M1, M2, M4, M6, M9, 2 ans++","Radio thorax : ++M1, M2, M6, M9, 2 ans++","ASAT / ALAT : ++J15, M1, M2, M4, M6++","Examen ophtalmo : ++M2++"]},
+ {h:"Précaution air",l:["Masque ==FFP2== pour les soignants","Masque ==chirurgical== + isolement en chambre à ==pression (−)== pour le patient"]},
+ {h:"Imagerie",l:["Cavités multiples dans des opacités ==bilatérales supérieures=="]}
+]);
+F("infectio","161","Infections urinaires",[
+ {h:"Échographie",l:["Si cystite ==récidivante compliquée=="]},
+ {h:"FR de BLSE",l:["IU / colonisation < ++3 mois++","ATB < ++3 mois++","Voyage < ++3 mois++","IAS","Anomalie de l'arbre urinaire"]},
+ {h:"PNA à risque de complication",l:["Anomalie de l'arbre urinaire","Homme","Grossesse","> ++65 ans++ + ≥ ++3++ critères de Fried, > ++75 ans++","DFG < ++30++","ID"]}
+]);
+F("infectio","162","IST",[
+ {h:"Syphilis",l:["TT = ==TPHA== (Sp tréponématose) : (+) ==à vie==","TNT = ==VDRL==","Guérison = ==négativation du VDRL== (++1 an++ si syphilis précoce, ++2 ans++ si tardive)"]},
+ {h:"Gonocoque et Chlamydia",l:["Gonocoque : ==pharyngite== (conjonctivite purulente du NN ++J2–J4++)","Chlamydia : ==Sd oculo-urétro-synovial== (conjonctivite pseudomembraneuse du NN ++J8++)"]}
+]);
+F("infectio","164","Exanthèmes et érythrodermie",[
+ {h:"Érythrodermie",l:["Érythème > ++90 %++ de la peau, > ++6 sem++, desquamative","Psoriasis, dermatite atopique, eczéma, DRESS, lichen plan","Lymphome T (==Sd de Sézary==)","VIH, gale hyperkératosique"]},
+ {h:"Exanthèmes",l:["Scarlatiniforme : origine ==bactérienne== ++","Morbilliforme : origine ==virale, médicamenteuse=="]}
+]);

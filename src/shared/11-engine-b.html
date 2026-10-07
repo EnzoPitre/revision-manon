@@ -1,0 +1,275 @@
+
+/* ---------- FICHE ---------- */
+function renderList(arr){
+  let out = "<ul>";
+  for (let i = 0; i < arr.length; i++) {
+    const x = arr[i]; if (Array.isArray(x)) continue;
+    const next = arr[i+1], sub = x.startsWith("§");
+    out += `<li${sub?' class="sub"':""}>${fmt(sub ? x.slice(1) : x)}${Array.isArray(next) ? renderList(next) : ""}</li>`;
+  }
+  return out + "</ul>";
+}
+function respSvg(name){
+  const W = 150, pts = [];
+  for (let x = 0; x <= W; x++) {
+    let y = 0;
+    if (name === "Cheyne-Stokes") { const c = x % 75; const env = c < 55 ? Math.sin(Math.PI*c/55) : 0; y = env*11*Math.sin(x*.75); }
+    else if (name === "Hyperpnée") y = 10*Math.sin(x*.55);
+    else if (name === "Apneustique") { const s = Math.sin(x*.12); y = s > 0 ? 11*Math.min(1, s*2.4) : 11*s; }
+    else if (name === "Kussmaul") y = 12*Math.sin(x*.2);
+    else [8,22,27,51,70,77,104,128,135].forEach(s => { const d = Math.abs(x-s); if (d < 3) y += (3-d)/3*(s%2 ? 9 : 12); });
+    pts.push(x + "," + (15 - y).toFixed(1));
+  }
+  return `<svg class="wave" viewBox="0 0 150 30" aria-hidden="true"><polyline points="${pts.join(" ")}" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+}
+function cardHtml(c){
+  let body = "";
+  if (c.resp) body = `<ul>${c.l.map(n => `<li>${esc(n)}${respSvg(n)}</li>`).join("")}</ul>`;
+  else if (c.l) body = renderList(c.l);
+  if (c.table) body += `<div class="tbl"><table><thead><tr>${c.table.head.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead>
+    <tbody>${c.table.rows.map(r => `<tr>${r.map(x => `<td>${esc(x)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  return `<article class="card ${c.tone === "postit" ? "postit" : "paper"}">
+    <h3>${esc(c.h)}</h3>${c.sub ? `<div class="csub">${esc(c.sub)}</div>` : ""}${body}</article>`;
+}
+function vFiche(){
+  const it = ITEM_BY[R.id]; if (!it) return vFiches();
+  const sib = ITEMS, idx = sib.indexOf(it), prev = sib[idx-1], next = sib[idx+1];
+  const m = !!S.mastered[it.id];
+  const nCards = CARDS.filter(c => c.item === it.id).length;
+  return `<div class="stack" style="${specVar(it.spec)}">
+    <div class="fhead">
+      <div class="row" style="justify-content:space-between">
+        <button class="back" data-go="fiches:${it.spec}">${I.left} ${SPECS[it.spec].name}</button>
+        <span class="pill">${SPECS[it.spec].name}</span>
+      </div>
+      <div><h1 class="paper tag"><span class="num">${esc(it.num)}</span><span>– ${esc(it.title)}</span></h1></div>
+      <div class="factions">
+        <button class="btn ghost small" data-act="hide" aria-pressed="${!!R.hide}">${I.hide} ${R.hide ? "Tout afficher" : "Cacher les mots-clés"}</button>
+        <button class="btn small ${m ? "on" : "ghost"}" data-act="master">${I.check} ${m ? "Maîtrisée" : "Je la maîtrise"}</button>
+        ${nCards ? `<button class="btn small" data-go="play:flash:${it.id}">${I.layers} ${nCards} flashcards</button>` : ""}
+      </div>
+      ${R.hide ? `<p class="hint">Récite, puis touche une case pour vérifier.</p>` : ""}
+    </div>
+    <div class="wall ${R.hide ? "hide" : ""}">${it.cards.map(cardHtml).join("")}</div>
+    <nav class="fnav" aria-label="Fiches voisines">
+      ${prev ? `<button class="back" data-go="fiche:${prev.id}">${I.left} ${esc(prev.num)} · ${esc(prev.title)}</button>` : "<span></span>"}
+      ${next ? `<button class="back" data-go="fiche:${next.id}">${esc(next.num)} · ${esc(next.title)} ${I.right}</button>` : ""}
+    </nav>
+  </div>`;
+}
+
+/* ---------- JEUX : hub ---------- */
+function vJeux(){
+  return `<div class="stack">
+    <h1 class="sec-title" style="font-size:28px">Jeux <span class="hand">pour que ça rentre</span></h1>
+    ${specChips(S.filter, "gspec")}
+    ${modesGrid()}
+  </div>`;
+}
+
+/* ---------- moteur des jeux ---------- */
+function groupVals(g, only){
+  const ps = g.pairs.filter(p => pass(p[2]||g.item, only));
+  return {ps, vals:[...new Set(g.pairs.map(p => p[1]))]};
+}
+function startGame(mode, only){
+  G = {mode, only, ok:0, err:0, wrong:[], over:false};
+  if (mode === "flash") {
+    const pool = CARDS.filter(c => pass(c.item, only));
+    G.q = shuffle(pool).sort((a,b) => (S.box[a.id]||0) - (S.box[b.id]||0)).slice(0, 20).map(c => ({c, r:0}));
+    G.total = G.q.length; G.i = 0; G.flipped = false;
+  }
+  else if (mode === "quiz") {
+    const pool = [];
+    GROUPS.forEach(g => { const {ps, vals} = groupVals(g, only); if (vals.length >= 3) ps.forEach(p => pool.push({g, p, vals})); });
+    G.qs = shuffle(pool).slice(0, 10).map(({g,p,vals}) => ({
+      q:g.q.replace("{k}", p[0]), a:p[1], item:p[2]||g.item,
+      opts:shuffle([p[1], ...shuffle(vals.filter(v => v !== p[1])).slice(0,3)])
+    }));
+    G.i = 0; G.pick = null;
+  }
+  else if (mode === "vf") {
+    G.pool = [];
+    GROUPS.forEach(g => { const {ps, vals} = groupVals(g, only); if (vals.length >= 2) ps.forEach(p => G.pool.push({g, p, vals})); });
+    G.t = 60; G.streak = 0; G.bestStreak = 0; G.deck = [];
+    if (G.pool.length) { vfNext(); G.timer = setInterval(vfTick, 1000); }
+  }
+  else if (mode === "assoc") { G.round = 0; G.used = []; assocRound(); }
+  else if (mode === "tri" || mode === "ordre") G.stage = "pick";
+}
+function setsFor(list){ return list.filter(s => pass(s.item, G.only) || (!G.only && S.filter === "all")); }
+
+/* VF */
+function vfNext(){
+  if (!G.deck.length) G.deck = shuffle(G.pool);
+  const e = G.deck.pop(), truth = Math.random() < .5;
+  const others = e.vals.filter(v => v !== e.p[1]);
+  G.cur = {ctx:e.g.q.replace("{k}", e.p[0]), shown: truth || !others.length ? e.p[1] : pick(others), truth: truth || !others.length, a:e.p[1], item:e.p[2]||e.g.item};
+}
+function vfTick(){
+  G.t--;
+  const t = $("#vf-t"), b = $("#vf-bar");
+  if (t) t.textContent = G.t;
+  if (b) b.style.width = (G.t/60*100) + "%";
+  if (G.t <= 0) { clearTimer(); G.over = true; saveBest("vf", G.ok); render(); }
+}
+
+/* Associations */
+function assocRound(){
+  const ok = GROUPS.filter(g => {
+    const {ps} = groupVals(g, G.only);
+    return new Set(ps.map(p => p[1])).size >= 4 && ps.every(p => p[0].length <= 60 && p[1].length <= 60);
+  });
+  let pool = ok.filter(g => !G.used.includes(g.id)); if (!pool.length) pool = ok;
+  if (!pool.length) { G.none = true; return; }
+  const g = pick(pool); G.used.push(g.id);
+  const seen = new Set();
+  G.g = g;
+  G.ps = shuffle(groupVals(g, G.only).ps).filter(p => !seen.has(p[1]) && seen.add(p[1])).slice(0, 5);
+  G.L = shuffle(G.ps.map((_, i) => i)); G.Rr = shuffle(G.ps.map((_, i) => i));
+  G.done = []; G.sel = null; G.bad = null;
+}
+
+/* ---------- vues de jeu ---------- */
+function gHead(title, prog){
+  return `<div class="ghead"><button class="back" data-go="jeux">${I.left} Jeux</button>${prog ? `<span class="prog">${prog}</span>` : ""}</div>
+    <h1 class="gtitle">${title}</h1>`;
+}
+function emptyGame(title){
+  return `<div class="game">${gHead(title)}<div class="plain empty">Pas assez de contenu pour ce filtre. Choisis « Toutes » dans les jeux ou une autre spécialité.</div></div>`;
+}
+function verdict(p){
+  if (p >= 90) return "Parfait, rien à redire.";
+  if (p >= 70) return "Très solide.";
+  if (p >= 50) return "Ça rentre. Encore un tour ?";
+  return "On relit la fiche et on recommence.";
+}
+function vEnd(title, big, pct, extra){
+  const replay = `play:${G.mode}${G.only ? ":" + G.only : ""}`;
+  return `<div class="game">${gHead(title)}
+    <div class="paper end tape"><div class="sc">${big}</div><div class="hand msg">${verdict(pct)}</div>${extra || ""}
+      <div class="row" style="justify-content:center;margin-top:8px">
+        <button class="btn" data-go="${replay}">Rejouer</button>
+        <button class="btn ghost" data-go="jeux">Autre jeu</button></div></div>
+    ${G.wrong.length ? `<h2 class="sec-title">À revoir <span class="hand">${G.wrong.length}</span></h2>
+      <div class="wrongs">${G.wrong.map(w => `<div class="plain wr"><span class="q">${esc(w.q)}</span><span class="a">${esc(w.a)}</span>${fromLabel(w.item)}</div>`).join("")}</div>` : ""}
+  </div>`;
+}
+function vGame(){
+  if (!G) return vJeux();
+  const m = MODES.find(x => x.id === G.mode);
+  const title = m.name + (G.only ? ` · fiche ${ITEM_BY[G.only].num}` : S.filter !== "all" ? ` · ${SPECS[S.filter].name}` : "");
+  return ({flash:gFlash, quiz:gQuiz, vf:gVf, assoc:gAssoc, tri:gTri, ordre:gOrdre})[G.mode](title);
+}
+function gFlash(title){
+  if (!G.total) return emptyGame(title);
+  if (G.i >= G.q.length) {
+    const pct = Math.round(G.ok / Math.max(1, G.ok + G.err) * 100);
+    saveBest("flash", pct);
+    return vEnd(title, `${G.ok}<small style="font-size:.4em"> / ${G.ok + G.err}</small>`, pct, `<p class="muted">Bonnes réponses du premier coup ou après révision dans cette session.</p>`);
+  }
+  const {c} = G.q[G.i], box = S.box[c.id] || 0;
+  return `<div class="game">${gHead(title, `${G.i+1} / ${G.q.length}`)}
+    ${fromLabel(c.item)}
+    <button class="flip ${G.flipped ? "flipped" : ""}" data-act="flip" aria-label="Retourner la carte">
+      <div class="inner">
+        <div class="face paper"><span class="lbl">Question · boîte ${box}</span><div class="q">${esc(c.q)}</div><span class="muted" style="font-size:14px">Touche pour voir la réponse</span></div>
+        <div class="face back paper"><span class="lbl">Réponse</span><div class="a">${esc(c.a)}</div></div>
+      </div>
+    </button>
+    ${G.flipped ? `<div class="twobtn">
+      <button class="bigbtn ko" data-act="fc" data-v="0">${I.x} À revoir</button>
+      <button class="bigbtn okb" data-act="fc" data-v="1">${I.check} Je savais</button></div>`
+      : `<p class="muted" style="text-align:center;font-size:14px;margin:0">Réponds dans ta tête, puis retourne la carte.</p>`}
+  </div>`;
+}
+function gQuiz(title){
+  if (!G.qs.length) return emptyGame(title);
+  if (G.i >= G.qs.length) {
+    const pct = Math.round(G.ok / G.qs.length * 100); saveBest("quiz", pct);
+    return vEnd(title, `${G.ok}<small style="font-size:.4em"> / ${G.qs.length}</small>`, pct);
+  }
+  const q = G.qs[G.i], L = "ABCD";
+  return `<div class="game">${gHead(title, `${G.i+1} / ${G.qs.length}`)}
+    <div class="paper qcard"><div class="q">${esc(q.q)}</div></div>
+    <div class="opts">${q.opts.map((o, i) => {
+      let cls = "";
+      if (G.pick != null) { if (o === q.a) cls = "good"; else if (i === G.pick) cls = "bad"; }
+      return `<button class="opt ${cls}" data-act="qo" data-i="${i}" ${G.pick != null ? "disabled" : ""}><span class="l">${L[i]}</span>${esc(o)}</button>`;
+    }).join("")}</div>
+    ${G.pick != null ? `<div class="row" style="justify-content:space-between">${fromLabel(q.item)}<button class="btn" data-act="qnext">${G.i+1 < G.qs.length ? "Suivante" : "Voir le score"} ${I.right}</button></div>` : ""}
+  </div>`;
+}
+function gVf(title){
+  if (!G.pool.length) return emptyGame(title);
+  if (G.over) return vEnd(title, `${G.ok}<small style="font-size:.4em"> pts</small>`, Math.round(G.ok / Math.max(1, G.ok + G.err) * 100),
+    `<p class="muted">${G.ok} bonnes, ${G.err} erreurs · meilleure série : ${G.bestStreak}</p>`);
+  const c = G.cur;
+  return `<div class="game">${gHead(title, `<span id="vf-t">${G.t}</span> s`)}
+    <div class="timer"><i id="vf-bar" style="width:${G.t/60*100}%"></i></div>
+    <div class="score-line"><span>${G.ok} pts</span><span class="muted">série ${G.streak}</span></div>
+    <div class="paper vf ${G.fb ? "flash-" + G.fb : ""}">
+      <div class="ctx">${esc(c.ctx)}</div>
+      <div class="prop">${esc(c.shown)}</div>
+    </div>
+    <div class="twobtn">
+      <button class="bigbtn ko" data-act="vf" data-v="0">${I.x} Faux</button>
+      <button class="bigbtn okb" data-act="vf" data-v="1">${I.check} Vrai</button>
+    </div>
+  </div>`;
+}
+function gAssoc(title){
+  if (G.none) return emptyGame(title);
+  if (G.over) { const pct = Math.round(G.ok / Math.max(1, G.ok + G.err) * 100); saveBest("assoc", pct);
+    return vEnd(title, pct + "<small style='font-size:.4em'> %</small>", pct, `<p class="muted">${G.ok} paires trouvées, ${G.err} erreurs</p>`); }
+  const cell = (side, i, txt) => {
+    const done = G.done.includes(i), sel = G.sel && G.sel.s === side && G.sel.i === i, bad = G.bad && G.bad[side] === i;
+    return `<button class="as ${side} ${done ? "done" : ""} ${sel ? "sel" : ""} ${bad ? "wrong" : ""}" data-act="as" data-s="${side}" data-i="${i}" ${done ? "disabled" : ""}>${esc(txt)}</button>`;
+  };
+  return `<div class="game">${gHead(title, `Manche ${G.round+1} / 3`)}
+    <div class="row" style="justify-content:space-between"><span class="muted" style="font-weight:700">${esc(G.g.q.replace("{k}", "…"))}</span>${fromLabel(G.g.item)}</div>
+    <div class="assoc">
+      <div class="col">${G.L.map(i => cell("L", i, G.ps[i][0])).join("")}</div>
+      <div class="col">${G.Rr.map(i => cell("R", i, G.ps[i][1])).join("")}</div>
+    </div>
+  </div>`;
+}
+function setPicker(title, list, kind){
+  const sets = setsFor(list);
+  if (!sets.length) return emptyGame(title);
+  return `<div class="game">${gHead(title)}
+    <p class="muted" style="margin:0">Choisis une série.</p>
+    <div class="setlist">${sets.map(s => `<button class="plain setb" style="${specVar(specOf(s.item))}" data-act="pickset" data-id="${s.id}">
+      <span class="t">${esc(s.title)}</span><span class="pill">${SPECS[specOf(s.item)].name}</span></button>`).join("")}
+      <button class="plain setb" data-act="pickset" data-id="*"><span class="t">Au hasard</span>${I.dice}</button></div>
+  </div>`;
+}
+function gTri(title){
+  if (G.stage === "pick") return setPicker(title, TRIS);
+  if (G.i >= G.items.length) { const pct = Math.round(G.ok / G.items.length * 100); saveBest("tri", pct);
+    return vEnd(title, `${G.ok}<small style="font-size:.4em"> / ${G.items.length}</small>`, pct); }
+  const cur = G.items[G.i], cats = Object.keys(G.set.cats);
+  return `<div class="game">${gHead(esc(G.set.title), `${G.i+1} / ${G.items.length}`)}
+    ${fromLabel(G.set.item)}
+    <div class="paper tri-item">${esc(cur.t)}</div>
+    <div class="cats">${cats.map(c => {
+      let cls = ""; if (G.fb) { if (c === cur.c) cls = "good"; else if (c === G.fb) cls = "bad"; }
+      return `<button class="cat ${cls}" data-act="tri" data-c="${esc(c)}">${esc(c)}</button>`; }).join("")}</div>
+  </div>`;
+}
+function gOrdre(title){
+  if (G.stage === "pick") return setPicker(title, ORDRES);
+  const seq = G.set.seq, finished = G.next >= seq.length;
+  if (finished && G.over) { const pct = Math.round(seq.length / (seq.length + G.err) * 100); saveBest("ordre", pct);
+    return vEnd(title, pct + "<small style='font-size:.4em'> %</small>", pct, `<p class="muted">${G.err} erreur${G.err>1?"s":""} sur « ${esc(G.set.title)} »</p>`); }
+  return `<div class="game">${gHead(esc(G.set.title), `${G.next} / ${seq.length}`)}
+    ${fromLabel(G.set.item)}
+    <p class="muted" style="margin:0">Touche les éléments dans l'ordre.</p>
+    <div class="ord">${G.order.map(i => {
+      const pos = G.placed.indexOf(i), done = pos >= 0;
+      return `<button class="ordi ${done ? "done" : ""} ${G.bad === i ? "wrong" : ""}" data-act="ord" data-i="${i}" ${done ? "disabled" : ""}>
+        <span class="k">${done ? pos + 1 : ""}</span><span>${esc(seq[i][0])}</span>${done ? `<span class="det">${esc(seq[i][1])}</span>` : ""}</button>`;
+    }).join("")}</div>
+    ${finished ? `<button class="btn" data-act="ordend">Voir le score ${I.right}</button>` : ""}
+  </div>`;
+}

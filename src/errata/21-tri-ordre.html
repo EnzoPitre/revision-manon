@@ -1,0 +1,43 @@
+
+/* ---------- Tri ---------- */
+const TRIS = [
+ {id:"t-pp",item:"gyneco-24",title:"Placenta praevia ou HRP ?",cats:{"Placenta praevia":["Hémorragie abondante, sang rouge","Utérus souple et indolore","Présentation siège ou transverse","RCF ok","Placenta bas inséré < 50 mm de l'orifice interne"],"HRP":["Contexte vasculaire","Hémorragie noirâtre, incoagulable","Ventre de bois","Retentissement maternel sans rapport avec l'hémorragie","Anomalie du RCF"]}},
+ {id:"t-ang",item:"infectio-149",title:"Quel type d'angine ?",cats:{"Pseudomembraneuse":["EBV","Diphtérie","VIH"],"Vésiculeuse":["HSV1","Herpangine","VZV"],"Ulcéro-nécrotique":["Angine de Vincent","Chancre syphilitique","Agranulocytose"]}},
+ {id:"t-myc",item:"infectio-155",title:"Candidose ou dermatophytose ?",cats:{"Candidose":["Saprophyte muqueux","Intertrigo des grands plis","Onychomycose des mains","Perlèche, muguet","Fluconazole PO"],"Dermatophytose":["Respecte les muqueuses","Intertrigo des petits plis","Ongles des orteils","Teigne, kérion","Terbinafine / itraconazole PO"]}},
+ {id:"t-prec",item:"interne-4",title:"Quelle précaution d'hygiène ?",cats:{"Gouttelettes":["Grippe","Méningocoque","Coqueluche","Rubéole","Oreillons","Parvovirus B19"],"Air":["Rougeole","Tuberculose"],"Contact":["SARM, BLSE","C. difficile","Gale","Pédiculose"]}},
+ {id:"t-diar",item:"infectio-176",title:"Quel tableau de diarrhée ?",cats:{"Cholériforme":["Vibrio cholerae","E. coli entérotoxinogène","Rotavirus","Bacillus cereus"],"Dysentérique":["Shigella","E. coli entéro-invasif","Amoebose colique"],"Gastro-entéritique":["Campylobacter","Salmonella non typhi","Yersinia","E. coli entéropathogène"]}},
+ {id:"t-tabac",item:"pneumo-75",title:"Tabac : protecteur ou K indépendant ?",cats:{"Tabac protecteur":["Sarcoïdose","K de l'endomètre","PE","Parkinson","RCH"],"K indépendant du tabac":["K du testicule","K de la prostate","Cholangiocarcinome"]}},
+ {id:"t-shunt",item:"pneumo-208",title:"IRC : quel mécanisme ?",cats:{"Effet shunt":["HTP","ICD"],"Shunt vrai":["FOP","MAV","Atélectasie","SDRA"],"Hypoventilation / espace mort":["Opiacés","Insuffisance diaphragmatique","EP"]}},
+ {id:"t-dmard",item:"rhumato-196",title:"Quelle famille de DMARD ?",cats:{"csDMARD":["Méthotrexate","Sulfasalazine","Léflunomide","Hydroxychloroquine"],"bDMARD":["Adalimumab","Tocilizumab","Rituximab","Abatacept"],"tsDMARD":["Tofacitinib","Baricitinib","Upadacitinib"]}},
+ {id:"t-ira",item:"nephro-348",title:"IRA fonctionnelle ou NTA ?",cats:{"IRA fonctionnelle":["Urée/créat P > 100","Na U < 20 mmol/L","FE Na < 1 %","U/P urée > 10","U/P créat > 30"],"NTA":["Urée/créat P < 50","Na U > 40 mmol/L","FE urée > 35–40 %","Na/K urinaire > 1","U/P créat < 30"]}},
+ {id:"t-nta",item:"nephro-348",title:"NTA ou néphropathie interstitielle ?",cats:{"NTA":["Choc","Aminosides","PDC iodés","Cisplatine","Aciclovir","Rhabdomyolyse"],"Néphropathie interstitielle":["PNA","Leptospirose","Fièvre hémorragique","Fluindione","IPP"]}},
+ {id:"t-ap",item:"psy-74",title:"Antipsychotique 1re ou 2e génération ?",cats:{"1re génération":["Halopéridol","Loxapine","Cyamémazine (-mazine)"],"2e génération":["Amisulpride","Olanzapine","Clozapine","Quétiapine","Rispéridone","Aripiprazole"]}},
+ {id:"t-oh",item:"psy-76",title:"Alcool : aide au sevrage ou maintien de l'abstinence ?",cats:{"Aide au sevrage":["Nalméfène","Baclofène"],"Maintien de l'abstinence":["Acamprosate","Naltrexone","Disulfirame"]}},
+ {id:"t-lip",item:"cardio-223",title:"Quelle dyslipidémie secondaire ?",cats:{"Hypercholestérolémie pure":["Cholestase","Anorexie"],"Hypertriglycéridémie pure":["OH","Diabète","Acromégalie","Œstrogènes","Rétinoïdes","ARV","BB"],"Hyperlipidémie mixte":["SN","VIH","Grossesse","Diurétiques thiazidiques"]}},
+ {id:"t-goitre",item:"endoc-241",title:"Goitre : quelle fonction thyroïdienne ?",cats:{"Hyperthyroïdie":["Maladie de Basedow","GHMNT","Thyroïdite de De Quervain"],"Hypothyroïdie":["Carence iodée","Thyroïdite d'Hashimoto","Hypothyroïdie congénitale"],"Euthyroïdie":["Goitre simple","Cancers thyroïdiens","Amylose"]}},
+ {id:"t-denut",item:"endoc-250",title:"Dénutrition modérée ou sévère ?",cats:{"Modérée":["17 < IMC < 18,5","Perte ≥ 5 % en 1 mois","Perte ≥ 10 % en 6 mois","Albumine entre 30 et 35 g/L"],"Sévère":["IMC ≤ 17","Perte ≥ 10 % en 1 mois","Perte ≥ 15 % en 6 mois","Albumine ≤ 30 g/L"]}},
+ {id:"t-lca",item:"lca-Se/Sp",title:"Intrinsèque ou extrinsèque ?",cats:{"Intrinsèque (indépendant de la prévalence)":["Sensibilité","Spécificité","Rapport de vraisemblance"],"Extrinsèque (dépend de la prévalence)":["VPP","VPN"]}}
+];
+
+/* ---------- Ordre : [élément, précision révélée] ---------- */
+const ORDRES = [
+ {id:"o-sa",item:"gyneco-23",title:"Périodes de la grossesse",seq:[["Loi du tout ou rien","0–2 SA"],["Risque tératogène","3–8 SA"],["Risque fonctionnel","> 8 SA"]]},
+ {id:"o-fiv",item:"gyneco-39",title:"Étapes de la FIV",seq:[["Agoniste / antagoniste GnRH","blocage de l'axe HH"],["FSH","une fois le blocage obtenu"],["Analogue hCG / agonistes GnRH","follicules 16–20 mm"],["Ponction ovocytaire + sperme","36 h après"],["Fécondation","20–24 h"],["Transfert","2–3 j après la ponction"],["Test de grossesse","J14 de la ponction"]]},
+ {id:"o-ins",item:"gyneco-39",title:"Étapes de l'insémination",seq:[["Stimulation par FSH","ovulation"],["Analogue hCG","follicules matures"],["Insémination","36 h après"]]},
+ {id:"o-emm",item:"neuro-105",title:"État de mal épileptique",seq:[["CTCG > 5 min ou 2 crises sans retour à la conscience","état de mal"],["Rivotril 1 mg IV directe","1re ligne"],["Rivotril 1 mg IVD","après 5 min"],["Lévétiracétam, valproate, phénobarbital, fosphénytoïne + réa","après 5 min de plus"]]},
+ {id:"o-gnl",item:"interne-194",title:"GN lupique, classe I → VI",seq:[["MO normale, dépôts en IF","I"],["Épaississement mésangial","II"],["Prolifération ≤ 50 % des glomérules","III"],["Prolifération ≥ 50 % des glomérules","IV"],["Dépôts extramembraneux","V"],["> 90 % de glomérules scléreux","VI"]]},
+ {id:"o-gold",item:"pneumo-209",title:"GOLD, de 1 à 4",seq:[["VEMS ≥ 80 %","GOLD 1"],["VEMS 50–79 %","GOLD 2"],["VEMS 30–49 %","GOLD 3"],["VEMS < 30 %","GOLD 4"]]},
+ {id:"o-mmrc",item:"pneumo-203",title:"mMRC, de 0 à 4",seq:[["Effort important seulement","0"],["En se dépêchant ou en pente légère","1"],["Plus lent que les gens de son âge","2"],["S'arrête après 90 m","3"],["Rien qu'à s'habiller","4"]]},
+ {id:"o-ann",item:"hemato-319",title:"Ann Arbor, de I à IV",seq:[["Un seul groupe de ganglions","I"],["≥ 2 groupes du même côté","II"],["Poitrine et abdomen","III"],["Maladie généralisée","IV"]]},
+ {id:"o-sh",item:"ortho-361",title:"Salter et Harris, de I à V",seq:[["Glissement épiphysaire seul","I"],["Cartilage + triangle métaphysaire","II"],["À travers l'épiphyse","III"],["Épiphyse + métaphyse","IV"],["Écrasement du cartilage","V"]]},
+ {id:"o-kh",item:"onco-290",title:"Incidence des K chez l'homme",seq:[["Prostate","1er"],["Poumon","2e"],["CCR","3e"],["Vessie","4e"]]},
+ {id:"o-kf",item:"onco-290",title:"Incidence des K chez la femme",seq:[["Sein","1er"],["CCR","2e"],["Poumon","3e"]]},
+ {id:"o-kg",item:"onco-290",title:"Incidence des K, population générale",seq:[["Sein","1er"],["Prostate","2e"],["Poumon","3e"],["CCR","4e"]]},
+ {id:"o-mh",item:"onco-290",title:"Mortalité par K chez l'homme",seq:[["Poumon","1er"],["CCR","2e"],["Prostate","3e"]]},
+ {id:"o-mf",item:"onco-290",title:"Mortalité par K chez la femme",seq:[["Sein","1er"],["Poumon","2e"],["CCR","3e"]]},
+ {id:"o-fr",item:"onco-290",title:"Facteurs de risque de K, du plus au moins important",seq:[["Tabac","1er"],["OH","2e"],["Alimentation","20–25 %"],["Infectieux","4 %"],["Environnement","5–10 %"]]},
+ {id:"o-chol",item:"cardio-223",title:"Hypercholestérolémie pure : ordre des TTT",seq:[["Statines","1re"],["Ézétimibe","2e"],["Inhibiteur de PCSK9","3e"]]},
+ {id:"o-tb",item:"infectio-159",title:"Tuberculose : consultations de suivi",seq:[["J15","consult + ASAT/ALAT"],["M1","consult + radio + ASAT/ALAT"],["M2","consult + radio + ASAT/ALAT + ophtalmo"],["M4","consult + ASAT/ALAT"],["M6","consult + radio + ASAT/ALAT"],["M9","consult + radio"],["2 ans","consult + radio"]]},
+ {id:"o-pal",item:"infectio-170",title:"Paludisme : suivi",seq:[["J3","suivi"],["J7","suivi"],["J28","suivi"]]},
+ {id:"o-bres",item:"dermato-302",title:"Mélanome : marge selon Breslow",seq:[["Breslow < 1 mm","1 cm"],["Breslow 1–2 mm","1–2 cm"],["Breslow > 2 mm","2 cm"]]}
+];

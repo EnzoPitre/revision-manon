@@ -1,0 +1,84 @@
+
+/* =========================================================
+   JEUX — paires [question, réponse, (fiche si différente)]
+   ========================================================= */
+const GROUPS = [
+ /* gynéco */
+ {id:"e-sa",item:"gyneco-23",q:"Grossesse, {k} :",pairs:[["0–2 SA (préimplantatoire)","Loi du tout ou rien"],["3–8 SA (organogenèse)","Risque tératogène"],["> 8 SA (période fœtale)","Risque fonctionnel, trouble du développement"]]},
+ {id:"e-conge",item:"gyneco-23",q:"Congé maternité (prénatal / postnatal) : {k}",pairs:[["1 enfant à naître, 0 ou 1 déjà à charge","6 sem / 10 sem"],["1 enfant à naître, 2 ou plus à charge","8 sem / 18 sem"],["2 enfants à naître","12 sem / 22 sem"],["3 enfants ou plus à naître","24 sem / 22 sem"]]},
+ {id:"e-dg",item:"gyneco-23",q:"Diabète gestationnel, seuil : {k}",pairs:[["Glycémie à jeun T1","0,92 ≤ x < 1,26"],["HGPO H1","≥ 1,80"],["HGPO H2","≥ 1,53"]]},
+ {id:"e-pil",item:"gyneco-36",q:"Délai pour la pilule : {k}",pairs:[["Drospirénone seule","< 24 h"],["Pilule combinée","< 12 h"],["Désogestrel seul","< 12 h"],["Microprogestative (lévonorgestrel)","< 3 h"]]},
+ {id:"e-ampage",item:"gyneco-39",q:"AMP, âge : {k}",pairs:[["Femme, FIV / ICSI (prélèvement)","< 42 ans"],["Femme, FIV / ICSI (utilisation)","< 44 ans"],["Conjoint","< 59 ans"],["Conservation des gamètes, femme","29–37 ans"],["Conservation des gamètes, homme","29–45 ans"]]},
+ {id:"e-ampbil",item:"gyneco-39",q:"AMP, délai de validité : {k}",pairs:[["Sérologies VIH + VHB + VHC + syphilis","< 3 mois"],["PV","< 6 mois"],["Bilan spermatique + test de migration","< 1 an"]]},
+ {id:"e-ampnb",item:"gyneco-39",q:"AMP, nombre : {k}",pairs:[["Inséminations remboursées","6"],["FIV ou ICSI remboursées","4"],["Enfants max créés par donneur","10"]]},
+ {id:"e-fivj",item:"gyneco-39",q:"FIV, transfert au stade {k} :",pairs:[["4 cellules","J2"],["8 cellules","J3"],["blastocyste","J5"]]},
+ {id:"e-ths",item:"gyneco-124",q:"THS, {k} :",pairs:[["séquentiel : œstrogène","J1–J25"],["séquentiel : progestatif","J12–J25"],["combiné / continu","Œstrogène + progestatif J1–J30"],["progestatif (durée)","> 12 j/mois"]]},
+ /* infectio */
+ {id:"e-ang",item:"infectio-149",q:"Angine due à {k} :",pairs:[["EBV","Pseudomembraneuse"],["Diphtérie","Pseudomembraneuse"],["HSV1","Vésiculeuse"],["Herpangine (entérovirus)","Vésiculeuse"],["VZV","Vésiculeuse"],["Vincent","Ulcéro-nécrotique"],["Chancre syphilitique","Ulcéro-nécrotique"],["Agranulocytose sur hémopathie","Ulcéro-nécrotique"]]},
+ {id:"e-mening",item:"infectio-151",q:"TTT : {k}",pairs:[["Méningite à méningocoque","C3G IV relais amox IV 4 j + CTC 4 j"],["Méningite à pneumocoque","C3G 10–14 j + CTC 4 j"],["Méningite à Haemophilus","C3G 7 j + CTC 4 j (enfant) + éviction scolaire"],["Listeria","Amox 21 j + gentamicine 7 j"],["Neuro-tuberculose","Quadrithérapie 2 mois + bithérapie 10 mois"],["Lyme (neuro)","C3G IV 3–4 sem"],["Syphilis (neuro)","Péni G IV 2–3 sem"]]},
+ {id:"e-lcs",item:"infectio-151",q:"LCS normal : {k}",pairs:[["Éléments","< 5/mm³, 100 % mononucléées"],["Glycorachie","> 2/3 × glycémie"],["Protéinorachie","< 0,4 g/L"],["Lactatorachie","< 3,2 mmol/L"]]},
+ {id:"e-eiporte",item:"infectio-152",q:"EI, porte d'entrée {k} :",pairs:[["cutanée, matériel, toxico","S. aureus, staph coagulase (−), Candida"],["buccodentaire","Streptocoques oraux, HACEK"],["digestive","Streptococcus gallolyticus"],["digestive ou urinaire","Entérocoque"]]},
+ {id:"e-eittt",item:"infectio-152",q:"EI, TTT : {k}",pairs:[["Staphylocoque","Oxacilline 6 sem"],["Streptocoque","Amoxicilline 4 sem"],["Entérocoque","Amox + gentamicine ou amox + C3G 6 sem"],["Hémocs négatives","Augmentin + gentamicine 6 sem"],["Allergie","Vancomycine"],["Communautaire, prothèse > 1 an","Amox + oxacilline + gentamicine"],["Nosocomiale, prothèse < 1 an","Vancomycine + rifampicine + gentamicine"]]},
+ {id:"e-eisig",item:"infectio-152",q:"EI : {k}",pairs:[["Faux panaris d'Osler","Nodule douloureux fugace"],["Tache de Roth","Au FO"],["Placard de Janeway","Palmoplantaire"]]},
+ {id:"e-fcfrac",item:"infectio-156",q:"Bonne diffusion osseuse, FC FRAC : {k}",pairs:[["F (1re lettre)","Fosfomycine"],["C (2e lettre)","Clindamycine"],["F (3e lettre)","FQ"],["R","Rifampicine"],["A","Acide fusidique"],["C (dernière lettre)","Cyclines (doxycycline)"]]},
+ {id:"e-osdur",item:"infectio-156",q:"Durée de TTT : {k}",pairs:[["Arthrite septique à SASM","4–6 sem"],["Arthrite à streptocoque","4–6 sem (dont 2 sem IV)"],["Spondylodiscite","6 sem"],["Ostéite chronique","6–12 sem"]]},
+ {id:"e-itl",item:"infectio-159",q:"ITL : {k}",pairs:[["Isoniazide seul","6 mois"],["Rifampicine + isoniazide","3 mois"],["Rifampicine seule","4 mois"]]},
+ {id:"e-palprev",item:"infectio-170",q:"Prévention du palu : {k}",pairs:[["Doxycycline","S+4, 1×/j (CI grossesse)"],["Atovaquone-proguanil","S+3, 1×/j"],["Méfloquine","J-10 à S+3, 1×/sem"],["Enfant","Chloroquine, proguanil"]]},
+ {id:"e-palseuil",item:"infectio-170",q:"Paludisme, seuil : {k}",pairs:[["Parasitémie, gravité (adulte)","> 4 %"],["Parasitémie, hospitalisation","> 2 %"],["Parasitémie, gravité (enfant)","> 10 %"],["Créat, gravité","> 265"],["Créat, hospitalisation","> 150"],["Hb, gravité","< 7"],["Hb, hospitalisation","< 10"],["Lactates, gravité (enfant)","> 5"],["PAS, gravité","< 80"],["Glycémie, gravité","< 2,2 mmol/L"]]},
+ {id:"e-zoo",item:"infectio-173",q:"{k} = ?",pairs:[["Maladie de Lyme","Borrelia burgdorferi"],["Maladie des griffes du chat","Bartonellose"],["Fièvre Q","Coxiella burnetii"],["Rage","Lyssavirus"],["Hydatidose","Échinococcose"]]},
+ {id:"e-zoottt",item:"infectio-173",q:"TTT : {k}",pairs:[["Lyme","Doxycycline 14 j (enfant : amox)"],["Pasteurellose","Augmentin probabiliste"],["Maladie des griffes du chat","Azithromycine 5 j"],["Fièvre Q aiguë","Doxycycline 2–3 sem"],["Fièvre Q chronique","Doxycycline + hydroxychloroquine 18–24 mois"],["Leishmaniose","Cryothérapie + antimonié"],["Hydatidose","Chir ± albendazole M-1 à M+1"]]},
+ {id:"e-vect",item:"infectio-175",q:"Vecteur : {k}",pairs:[["Paludisme","Anophèle"],["Arboviroses, fièvre jaune","Aedes"],["Leishmaniose","Phlébotome femelle"],["Encéphalite japonaise","Culex"]]},
+ {id:"e-vacc",item:"infectio-175",q:"Vaccin du voyageur {k} : à partir de / durée",pairs:[["fièvre jaune","Dès 9 mois, à vie"],["hépatite A","Dès 1 an, 10 ans"],["typhoïde","Dès 2 ans, 3 ans"],["rage","Dès la marche, 5 ans"]]},
+ {id:"e-retour",item:"infectio-175",q:"Fièvre au retour, délai d'apparition : {k}",pairs:[["Shigella, choléra","< 7 j"],["Dengue, zika, chikungunya","< 7 j"],["Leptospirose, borréliose","7–14 j"],["Rickettsiose","7–14 j"],["VHA, VHB, VHE","> 14 j"],["Schistosomose","> 14 j"],["Trypanosomoses","Plusieurs mois"],["Leishmaniose viscérale","Plusieurs mois"],["Amoebose hépatique","Plusieurs mois"]]},
+ /* pneumo */
+ {id:"e-gds",item:"pneumo-203",q:"GDS normaux : {k}",pairs:[["PaO₂","75–100"],["PaCO₂","38–42"],["pH","7,38–7,42"],["HCO₃","22–26"]]},
+ {id:"e-abcde",item:"pneumo-205",q:"Hémoptysie, ABCDE : {k}",pairs:[["A","Aspergillome"],["B","BK = tuberculose"],["C","Cancer"],["D","Dilatation des bronches"],["E","EP"]]},
+ {id:"e-bode",item:"pneumo-209",q:"Score BODE : {k}",pairs:[["B","IMC"],["O","Obstruction (VEMS)"],["D","Dyspnée (mMRC)"],["E","Effort (test de marche de 6 min)"]]},
+ {id:"e-gold",item:"pneumo-209",q:"VEMS : {k}",pairs:[["GOLD 1","≥ 80 %"],["GOLD 2","50–79 %"],["GOLD 3","30–49 %"],["GOLD 4","< 30 %"]]},
+ {id:"e-fager",item:"pneumo-75",q:"Fagerström simplifié, score : {k}",pairs:[["0–1","Pas de dépendance"],["2–3","Dépendance modérée"],["4–5–6","Dépendance forte"]]},
+ {id:"e-paraneo",item:"pneumo-309",q:"Sd paranéoplasique : {k}",pairs:[["SIADH","Sd de Schwartz-Bartter"],["Pseudo-PTH","HyperCa"],["Pseudo-ACTH","Sd de Cushing"]]},
+ /* interne */
+ {id:"e-somuv",item:"interne-194",q:"Lupus, SO MUV : {k}",pairs:[["S","Silice"],["O","Œstrogènes"],["M","Médicaments"],["U","UV"],["V","Virus (EBV)"]]},
+ {id:"e-bimac",item:"interne-194",q:"Lupus induit, BIMAC : {k}",pairs:[["B","BB"],["I","Interféron"],["M","Minocycline"],["A","Anti-TNF α"],["C","Carbamazépine"]]},
+ {id:"e-gnl",item:"interne-194",q:"GN lupique classe {k} :",pairs:[["I","Dépôts mésangiaux en IF, MO normale"],["II","Épaississement mésangial"],["III","Prolifération endo + extracapillaire ≤ 50 % des glomérules"],["IV","Prolifération endo + extracapillaire ≥ 50 % des glomérules"],["V","Dépôts granuleux extramembraneux"],["VI","> 90 % de glomérules scléreux"]]},
+ {id:"e-cs",item:"interne-195",q:"CTC, dose : {k}",pairs:[["ACG","0,7 mg/kg/j, sevrage sur 18 mois"],["PPR","0,2–0,3 mg/kg/j"]]},
+ /* neuro */
+ {id:"e-ceph",item:"neuro-99",q:"Céphalées, seuil : {k}",pairs:[["Céphalées chroniques quotidiennes","> 15 j/mois pendant > 3 mois"],["Abus de triptans, antalgiques combinés, opioïdes","> 10 j/mois"],["Abus d'AINS, paracétamol","> 15 j/mois"]]},
+ {id:"e-myas",item:"neuro-98",q:"Myasthénie, TTT {k} :",pairs:[["symptomatique","Pyridostigmine, ambénonium"],["de crise","Ig polyvalentes IV 5 j / échanges plasmatiques"],["de fond","Azathioprine / MMF, CTC"],["de la forme anti-MuSK","Rituximab"]]},
+ /* rhumato */
+ {id:"e-nerfs",item:"rhumato-95",q:"Sensibilité de {k} :",pairs:[["N. médian","Face palmaire des 3 premiers doigts"],["N. ulnaire","5e doigt + moitié latérale du 4e"],["N. radial","Face dorsale des 1er + 2e doigts"],["C5","Moignon, bras latéral, ROT bicipital"],["C7","Tout le bras postérieur"],["C8-T1","Face médiale du bras"]]},
+ {id:"e-nerfm",item:"rhumato-95",q:"Motricité de {k} :",pairs:[["N. médian","Court abducteur, opposant du pouce, loge thénar"],["N. ulnaire","Adducteur du pouce, interosseux, hypothénar"],["N. radial","Extenseurs (main tombante), long supinateur"],["C5","Abduction du bras, rotation de l'épaule"],["C6","Flexion du coude + pouce, supination"],["C7","Extension du coude aux doigts, pronation"]]},
+ /* néphro */
+ {id:"e-pvfoie",item:"nephro-259",q:"ProtU intermittente, PV FOIE : {k}",pairs:[["P","Polyglobulie"],["V","VD (ICD)"],["F","Fièvre"],["O","Orthostatique"],["I","Infection"],["E","Effort"]]},
+ {id:"e-vald",item:"nephro-259",q:"SN secondaire au TTT, VALD : {k}",pairs:[["V","Anti-VEGF"],["A","AINS"],["L","Lithium"],["D","D-pénicillamine"]]},
+ {id:"e-gnrp",item:"nephro-261",q:"{k} :",pairs:[["GNRP type 1","Ac anti-MBG, dépôts IgG linéaires"],["GNRP type 2","Dépôts endomembraneux de complexes immuns"],["GNRP type 3","Pauci-immune, Φ dépôts"],["Néphropathie à IgA","Dépôts IgA + C3 mésangiaux"],["GEM","Dépôts granuleux IgG + C3 extramembraneux"],["SNLGM","Fusion des podocytes, Φ dépôts"]]},
+ {id:"e-e2cg",item:"nephro-261",q:"GN avec hypocomplémentémie, L'E2CG : {k}",pairs:[["L","Lupus"],["E (1)","Endocardite"],["E (2)","Emboles de cholestérol"],["C","Cryoglobulinémie"],["G","GNA post-streptococcique"]]},
+ {id:"e-pkd",item:"nephro-266",q:"Polykystose : {k}",pairs:[["PKD1","IR terminale à 54 ans"],["PKD2","IR terminale à 69 ans"]]},
+ /* hémato */
+ {id:"e-lymph",item:"hemato-319",q:"Marqueurs du lymphome {k} :",pairs:[["de Hodgkin","CD30, CD15"],["folliculaire","CD20, CD10, BCL6, BCL2 (t(14;18))"],["du manteau","CD20, CD5, cycline D1, t(11;14)"],["de la zone marginale","CD20"],["de Burkitt","CD20, CD10"]]},
+ {id:"e-annarbor",item:"hemato-319",q:"Ann Arbor stade {k} :",pairs:[["I","Un seul groupe de ganglions"],["II","≥ 2 groupes du même côté"],["III","Poitrine et abdomen"],["IV","Maladie généralisée"]]},
+ /* psy */
+ {id:"e-psycrit",item:"psy-66",q:"Critère diagnostique : {k}",pairs:[["EDC","2 sur 2 sem"],["TAG","3 sur 6 mois"],["Trouble panique","1 sur 1 mois"],["Agoraphobie","2 sur 6 mois"],["Trouble de stress aigu","9 sur 3 j – 1 mois"],["TCA","Sur 3 mois"]]},
+ {id:"e-adclass",item:"psy-74",q:"Classe de : {k}",pairs:[["Escitalopram","ISRS"],["Paroxétine","ISRS"],["Venlafaxine","IRSNA"],["Duloxétine","IRSNA"],["Amitriptyline","Tricyclique"],["Clomipramine","Tricyclique"],["Moclobémide","IMAO"],["Halopéridol","Antipsychotique 1re G"],["Loxapine","Antipsychotique 1re G"],["Amisulpride","Antipsychotique 2e G"],["Quétiapine","Antipsychotique 2e G"]]},
+ {id:"e-iatro",item:"psy-74",q:"TTT : {k}",pairs:[["Sd malin des neuroleptiques","Bromocriptine"],["Dyskinésie aiguë","Tropatépine IM"],["Delirium tremens","USI / réa + vit B1 + B6 + PP + BZD IV","psy-76"],["Sevrage en OH","Vit B1 PO ± diazépam","psy-76"]]},
+ {id:"e-encep",item:"psy-76",q:"Alcool, {k} :",pairs:[["Gayet-Wernicke","Carence en B1"],["Encéphalopathie pellagreuse","Carence en B3 (PP)"],["Korsakoff","Amnésie antérograde, circuit de Papez"],["Marchiafava-Bignami","Mutisme akinétique, astasie-abasie"],["Encéphalopathie hépatique","Lactulose + néomycine"]]},
+ /* cardio */
+ {id:"e-inr",item:"cardio-153",q:"INR cible, valve mécanique, risque {k} :",pairs:[["faible, 0 FR","2,5"],["faible, ≥ 1 FR","3,0"],["moyen, 0 FR","3,0"],["moyen, ≥ 1 FR","3,5"],["élevé, 0 FR","3,5"],["élevé, ≥ 1 FR","4,0"]]},
+ {id:"e-lipid",item:"cardio-223",q:"Dyslipidémie, TTT de 1re ligne : {k}",pairs:[["Hypercholestérolémie pure","Statines"],["Hypertriglycéridémie pure","Fibrate"]]},
+ /* dig */
+ {id:"e-signapp",item:"dig-356",q:"Appendicite, {k} :",pairs:[["Signe de Blumberg","Douleur à la décompression de la FID"],["Signe de Rovsing","Douleur à la compression de la FIG"],["Signe de Lapinski (Meltzer)","Appui sur McBurney + lever de la jambe"]]},
+ {id:"e-perit",item:"dig-357",q:"Péritonite, TTT : {k}",pairs:[["Sur ISLA","C3G"],["Sur infection de KT de dialyse","Vancomycine + aminosides intrapéritonéaux"],["Communautaire","Augmentin + amikacine IV + chir"],["Nosocomiale, signes de gravité","Pipé-tazo + aminosides IV + chir"]]},
+ {id:"e-hamb",item:"dig-357",q:"Péritonite {k} :",pairs:[["primaire","Pneumocoque, ISLA, KT de dialyse, tuberculose, SN"],["secondaire","Infection / perforation d'un viscère"],["tertiaire","Persiste malgré le TTT"]]},
+ {id:"e-forrest",item:"dig-355",q:"UGD, Forrest {k} :",pairs:[["Ia–IIb","IPP IV 72 h puis IPP double dose PO"],["IIc–III","Relais IPP double dose PO"]]},
+ {id:"e-child",item:"dig-279",q:"Child-Pugh {k} : survie à 1 an",pairs:[["A (5–6 points)","100 %"],["B (7–9 points)","80 %"],["C (10–15 points)","45 %"]]},
+ /* dermato */
+ {id:"e-acne",item:"dermato-111",q:"Acné, {k} agit sur :",pairs:[["Rétinoïde","Rétentionnel"],["Peroxyde de benzoyle","Papules / pustules"],["Cyclines","Sébum + inflammation"]]},
+ {id:"e-breslow",item:"dermato-302",q:"Mélanome, marge pour Breslow {k} :",pairs:[["< 1 mm","1 cm"],["1–2 mm","1–2 cm"],["> 2 mm","2 cm"]]},
+ /* endoc */
+ {id:"e-kcal",item:"endoc-250",q:"1 g de {k} =",pairs:[["lipides","9 kcal"],["glucides","4 kcal"]]},
+ {id:"e-tsa",item:"psy-67",q:"Outil diagnostique : {k}",pairs:[["ADI-R","Entretien semi-structuré avec les parents (TSA)"],["ADOS","Observation semi-structurée des symptômes (TSA)"],["Conners","Diagnostic du TDAH"]]},
+ /* orl, lca, pharmaco */
+ {id:"e-tympa",item:"orl-89",q:"Tympanogramme type {k} :",pairs:[["A","Normal"],["B","Épanchement (otite séromuqueuse)"],["C","Dépression (dysfonction tubaire)"],["D","Hypercompliance (discontinuité osseuse)"]]},
+ {id:"e-lca",item:"lca-Se/Sp",q:"{k} =",pairs:[["Sensibilité","Proba test (+) quand malade"],["Spécificité","Proba test (−) quand pas malade"],["VPP","Proba d'être malade quand test (+)"],["VPN","Proba de ne pas être malade quand test (−)"]]},
+ {id:"e-aap",item:"pharmaco-330",q:"{k} :",pairs:[["Aspirine","Inhibiteur de COX 1, irréversible"],["Clopidogrel, prasugrel","Anti-P2Y12, irréversible"],["Ticagrélor","Anti-P2Y12, réversible"]]}
+];

@@ -1,0 +1,15 @@
+<header class="top"><div class="top-in">
+  <button class="brand" data-go="home" aria-label="Accueil"><span class="brand-tag" id="brand-tag"></span><span class="brand-name" id="brand-name"></span></button>
+  <nav class="nav-top" aria-label="Navigation principale" id="nav-top"></nav>
+</div></header>
+<main id="app"></main>
+<nav class="nav-bot" aria-label="Navigation" id="nav-bot"></nav>
+
+<script>
+/* =========================================================
+   CONTENU — transcrit uniquement depuis les fiches de Manon
+   ==x== surligné (mot-clé)  ++x++ chiffre (encre verte)  !!x!! encre rouge
+   "§Titre" = sous-titre dans une liste ; un tableau [] = sous-liste
+   ========================================================= */
+const ITEMS = [];
+function F(spec, num, title, cards){ ITEMS.push({id:spec+"-"+num, spec, num, title, cards}); }
